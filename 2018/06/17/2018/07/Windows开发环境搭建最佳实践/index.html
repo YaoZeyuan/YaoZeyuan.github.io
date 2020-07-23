@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="刚才卸Docker把电脑卸崩了, 连不上网, 重置一下电脑, 正好记录下Windows开发环境的最佳实践. 必备软件 OneDrive OneDrive是微软官方云盘, 普通用户有5G容量, office365用户可以升到1T, 文件自带版本控制功能, 30天以内的不同版本都可以还原 一个很重要的功能在于, OneDrive在系统级别支持同步个人目录下的Desktop&#x2F;Document&#x2F;Pictu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows开发环境搭建最佳实践">
+<meta property="og:url" content="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="刚才卸Docker把电脑卸崩了, 连不上网, 重置一下电脑, 正好记录下Windows开发环境的最佳实践. 必备软件 OneDrive OneDrive是微软官方云盘, 普通用户有5G容量, office365用户可以升到1T, 文件自带版本控制功能, 30天以内的不同版本都可以还原 一个很重要的功能在于, OneDrive在系统级别支持同步个人目录下的Desktop&#x2F;Document&#x2F;Pictu">
+<meta property="og:image" content="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/img/wsl/tasksel.png">
+<meta property="og:image" content="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/img/wsl/sudo%E4%B8%8D%E8%BE%93%E5%AF%86%E7%A0%81.png">
+<meta property="og:image" content="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/img/wsl/%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%90%AF%E5%8A%A8.png">
+<meta property="og:image" content="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/img/docker/vbox/%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9.png">
+<meta property="og:image" content="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/img/docker/vbox/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91.png">
+<meta property="og:image" content="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/img/docker/%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%90%AF%E5%8A%A8.png">
+<meta property="article:published_time" content="2018-06-17T09:48:01.000Z">
+<meta property="article:modified_time" content="2020-07-23T13:44:20.154Z">
+<meta property="article:author" content="姚泽源">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/img/wsl/tasksel.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows开发环境搭建最佳实践/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Windows开发环境搭建最佳实践 | 代号647</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+  <meta name="referrer" content="same-origin">
+  <meta name="referrer" content="no-referrer" />
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">代号647</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">前进四</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/%20" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/%20" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.yaozeyuan.online/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="姚泽源">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/00749HCsly1fq4hkxxz66j308c08cweq.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="代号647">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Windows开发环境搭建最佳实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-17T17:48:01+08:00">2018-06-17</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>刚才卸Docker把电脑卸崩了, 连不上网, 重置一下电脑, 正好记录下Windows开发环境的最佳实践.</p>
+<h1 id="必备软件"><a href="#必备软件" class="headerlink" title="必备软件"></a>必备软件</h1><ol>
+<li>OneDrive<ol>
+<li>OneDrive是微软官方云盘, 普通用户有5G容量, office365用户可以升到1T, 文件自带版本控制功能, 30天以内的不同版本都可以还原</li>
+<li>一个很重要的功能在于, OneDrive在系统级别支持同步个人目录下的Desktop/Document/Picture, 而我们所有个人文件(软件配置/数据库/工作代码)默认都在这三个目录里, 这三个文件夹放在云上, 即使系统重置, 我们也只要重装一遍软件, 装软件时一路next, 其他啥都不用管(所有配置都在Document里(云上), 嗯哼)</li>
+<li>常用的工具类软件都可以放在这里, 我自己的目录结构为<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">        OneDrive</span><br><span class="line">            -   文档(对应于Document)</span><br><span class="line">                -   个人文档</span><br><span class="line">                    -   keepass</span><br><span class="line">                        -   password.kdbx 保存的keepass密码数据库, 所有密码均记录在这里</span><br><span class="line">                        -   Chinese_Simplified.lngx keepass中文语言包, 系统重装完直接往&#96;C:&#x2F;Program Files (x86)&#x2F;KeePass Password Safe 2&#x2F;Languages&#96;拷一份</span><br><span class="line">                            -   下载地址: https:&#x2F;&#x2F;downloads.sourceforge.net&#x2F;keepass&#x2F;KeePass-2.39-Chinese_Simplified.zip</span><br><span class="line">                    -   Program</span><br><span class="line">                        -   comder</span><br><span class="line">                            -   最好用的PowerShell客户端</span><br><span class="line">                            -   为了方便从comder中直接进入开发目录(F:&#x2F;www), 可以给www目录在主目录下建个硬链接</span><br><span class="line">                                -   New-Item -Path C:\Users\yaoze\www -ItemType SymbolicLink -Value F:\www </span><br><span class="line">                                -   当然也可以在设置里配置powershell的启动目录, 更省事</span><br><span class="line">                                    -   ![配置powershell启动目录](.&#x2F;img&#x2F;onedrive&#x2F;cmder&#x2F;配置启动目录.png)</span><br><span class="line">                        -   hosts</span><br><span class="line">                            -   对应于Windows的host文件, 保存到云盘上, 这样即使切换到其他电脑也能同步过去</span><br><span class="line">                            -   配置命令为(在管理员权限下的PowerShell中进行操作):</span><br><span class="line">                                -   删除旧Hosts文件 </span><br><span class="line">                                    -   rm C:\Windows\System32\drivers\etc\hosts</span><br><span class="line">                                -   在原有位置生成云盘hosts的硬链接</span><br><span class="line">                                    -   New-Item -Path C:\Windows\System32\drivers\etc\hosts -ItemType SymbolicLink -Value F:\OneDrive\Documents\个人文档\Program\hosts </span><br><span class="line">                        -   shadowsocks</span><br><span class="line">                            -   科学上网</span><br><span class="line">                            -   把运行程序放到云盘里, 重置机器, 装完系统, 双击运行. over  </span><br><span class="line">        &#96;&#96;&#96;                            </span><br><span class="line">2.  Chrome</span><br><span class="line">    1.  浏览器</span><br><span class="line">    2.  [扩展推荐](http:&#x2F;&#x2F;www.yaozeyuan.online&#x2F;2018&#x2F;01&#x2F;08&#x2F;2018&#x2F;01&#x2F;Chrome扩展推荐&#x2F;)</span><br><span class="line">    3.  [调试进阶](http:&#x2F;&#x2F;www.yaozeyuan.online&#x2F;2018&#x2F;05&#x2F;18&#x2F;2018&#x2F;05&#x2F;Chrome调试进阶&#x2F;)</span><br><span class="line">3.  迅雷</span><br><span class="line">    1.  广告虽然多, 但迅雷下载还是最快的</span><br><span class="line">4.  KeePass</span><br><span class="line">    1.  密码管理程序</span><br><span class="line">    2.  程序员会有各种各样的账号密码, 管理账号密码是个问题, 所以对应的最佳实践如下:</span><br><span class="line">        1.  所有账户密码均使用keepass生成&#x2F;管理, 只要记住数据文件的主密码即可</span><br><span class="line">            1.  KeePass设定上每15分钟&amp;锁屏自动锁定, 避免窥屏 </span><br><span class="line">        2.  密码数据库存放到云盘上(OneDrive), 避免丢失(OneDrive有自动同步&amp;版本管理功能, 5G的免费空间, Mac&#x2F;Windows上都能用)</span><br><span class="line">        3.  一共需要记住两个密码:</span><br><span class="line">            1.  Windows账户密码(OneDrive&#x2F;Office&#x2F;Windows登录&#x2F;Microsoft相关服务都是这个账号)</span><br><span class="line">            2.  Keepass数据库主密码</span><br><span class="line">        4.  然后其他密码用的时候去KeePass里找就行</span><br><span class="line">4.  VSCode</span><br><span class="line">    1.  安装时记得勾上![将Code添加到Path](.&#x2F;img&#x2F;vscode&#x2F;将Code添加到Path.png)</span><br><span class="line">5.  jre-64位</span><br><span class="line">    1.  java运行环境, 肯定要装</span><br><span class="line">6.  Python3.7</span><br><span class="line">    1.  Docker Toolbox需要这个</span><br><span class="line">8.  PHPStrom&#x2F;WebStrom</span><br><span class="line">    1.  连IDE都没用到, 怎么谈软件工程呢</span><br><span class="line">9.  XShell</span><br><span class="line">    1.  专业的SSH客户端</span><br><span class="line">10.  WSL</span><br><span class="line">    1.  运行在Windows上的Ubuntu, 可能是世界上最好用的Linux发行版</span><br><span class="line">    2.  首先打开WSL功能, 在控制面板-程序-启用或关闭Windows功能(需要重启)[打开WSL功能](.&#x2F;img&#x2F;wsl&#x2F;打开wsl功能.png)</span><br><span class="line">    3.  在应用商店(Microsoft Store)里, 搜索ubuntu, 安装ubuntu18.04[安装ubuntu18.04](.&#x2F;img&#x2F;wsl&#x2F;安装ubuntu18.04.png)</span><br><span class="line">    4.  然后进入开始菜单, 点击Ubuntu的图标, 就可以自动安装了</span><br><span class="line">    5.  安装之后配置阿里云镜像</span><br><span class="line">        -   &#96;sudo cp &#x2F;etc&#x2F;apt&#x2F;sources.list &#x2F;etc&#x2F;apt&#x2F;sources.list.backup&#96; </span><br><span class="line">        -   &#96;sudo vim &#x2F;etc&#x2F;apt&#x2F;sources.list&#96;</span><br><span class="line">        -   &#96;&#96;&#96;bash</span><br><span class="line">            deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic main restricted universe multiverse</span><br><span class="line">            deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">            deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-security main restricted universe multiverse</span><br><span class="line">            deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">            deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-updates main restricted universe multiverse</span><br><span class="line">            deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">            deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-proposed main restricted universe multiverse</span><br><span class="line">            deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">            deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-backports main restricted universe multiverse</span><br><span class="line">            deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure></li>
+<li><code>sudo apt-get upate</code></li>
+<li>LAMP环境<ol>
+<li>安装tasksel, <code>sudo apt-get install tasksel</code></li>
+<li>sudo tasksel, 上下左右选择需要安装的服务器, 比如LAMP 啥的<ol>
+<li><img src="./img/wsl/tasksel.png" alt="tasksel"></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>启动ssh服务<ol>
+<li>命令窗口毕竟没有XShell好用, 所以最好还是用SSH登录</li>
+<li>WSL自带的openssh-server 有点问题. 有的文件没有初始化, 所以需要先卸再装<code>sudo apt remove openssh-server &amp;&amp; sudo apt install openssh-server</code></li>
+<li>修改配置文件. Windows因为历史上曾经有过ssh-server, 所以子系统里不能使用22端口作为标准端口, 编辑<code>/etc/ssh/sshd_config</code>, Port 改成2233, PasswordAuthentication 改成 yes, 允许账号密码登录</li>
+<li><code>sudo /etc/init.d/ssh restart</code> 启动子系统ssh服务</li>
+</ol>
+</li>
+<li>开机自动启动WSL&amp; rc 5服务<ol>
+<li>配置sudo不需要密码<ol>
+<li><code>sudo vim /etc/sudoers</code>, 添加上自己的用户名, 然后加上NOPASSWD: <ul>
+<li><img src="./img/wsl/sudo%E4%B8%8D%E8%BE%93%E5%AF%86%E7%A0%81.png" alt="sudo不输密码"></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>在启动文件夹(<code>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp</code>)中添加启动脚本<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">"C:\Windows\System32\bash.exe" -c 'sudo service ssh restart'</span><br></pre></td></tr></table></figure>
+<ul>
+<li>目前, Ubuntu16.04可以直接执行<code>sudo service rc 5</code>, 但是Ubuntu18.04只能手工指定启动服务, demo =&gt; <code>sudo service ssh restart &amp;&amp; sudo service php7.2-fpm restart</code></li>
+</ul>
+<ol start="3">
+<li>截图示例<ul>
+<li><img src="./img/wsl/%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%90%AF%E5%8A%A8.png" alt="开机自动启动WSL"></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>建立文件夹快捷方式.<ol>
+<li>WSL会把硬盘挂载到/mnt下边, 但是每次都cd进去很麻烦</li>
+<li>所以可以直接 <code>ln -s /mnt/f/www /home/yao/www</code>, 在主目录下给开发目录建个链接, over<ol>
+<li>我的习惯是独立文件放在F盘里, OneDrive/www/微信&amp;QQ聊天记录</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>安装nvm<ol>
+<li>毕竟是前端, 专业解决node版本问题, </li>
+<li><code>wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash</code></li>
+<li>然后<code>nvm install stable &amp;&amp; nvm use stable</code>, over </li>
+</ol>
+</li>
+<li>vimrc<ol>
+<li>1000个开发会有1500种vimrc, 我的习惯是在保证可用性的情况下尽可能减少对vimrc的依赖. 所以有了这个对外部环境0依赖的版本</li>
+<li>功能概述:<ol>
+<li>vimrc中自带使用说明, 对新人友好</li>
+<li>shift+t 打开文件夹浏览窗口, 再按一次关闭<ol>
+<li>使用t可以在新标签页中打开文件</li>
+<li>ctrl + w    切换浏览区域</li>
+<li>ctrl + b    切换到上个标签页</li>
+<li>ctrl + n    切换到下个标签页</li>
+</ol>
+</li>
+<li>不会生成swp交换文件</li>
+<li>使用空格替换tab</li>
+<li>配置文件修改后可以自动加载</li>
+<li>光标抵达行首/行尾可以继续向前</li>
+</ol>
+</li>
+<li>使用方法<ol>
+<li>vim ~/.vimrc</li>
+<li>:set paest</li>
+<li>粘贴以下内容:<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot; 功能说明：</span><br><span class="line">&quot; 显示行号 &#x3D;&gt; 可使用&#96;set nonumber&#96; 关闭行号显示</span><br><span class="line">&quot; 不生成swp交换文件</span><br><span class="line">&quot; 关闭粘贴代码时添加注释的功能</span><br><span class="line">&quot; 在行头&#x2F;行尾使用左&#x2F;右键时自动前往上一行&#x2F;下一行</span><br><span class="line">&quot; 在插入模式下, 按 &#96;ctrl+n&#96; 自动补全单词(多个单词可选时使用&#96;↑&#96;、&#96;↓&#96;键选择, 回车确认)</span><br><span class="line">&quot; </span><br><span class="line">&quot; 使用方式：</span><br><span class="line">&quot; 将文件重命名为.vimrc ,置于用户的~目录下</span><br><span class="line">&quot; </span><br><span class="line">autocmd! bufwritepost .vimrc source % &quot; vimrc文件修改之后自动加载。 linux。</span><br><span class="line">&quot; 常规设定</span><br><span class="line">&quot;set number &quot; 显示行号。</span><br><span class="line">set ambiwidth&#x3D;double &quot; 将所有字符显示为全角宽度</span><br><span class="line">set autoindent &quot; 自动缩进</span><br><span class="line">set wildmenu &quot; 自动补全的时候，将补全内容使用一个漂亮的单行菜单形式显示出来。</span><br><span class="line">set whichwrap&#x3D;b,s,&lt;,&gt;,[,] &quot; 光标从行首和行末时可以跳到另一行去</span><br><span class="line">set nobackup &quot; 取消备份</span><br><span class="line">set noswapfile &quot; 不生成交换文件</span><br><span class="line">autocmd FileType * setl fo-&#x3D;cro &quot; 关闭自动添加注释的效果</span><br><span class="line">&quot; 支持鼠标滚动</span><br><span class="line">&quot; set mouse&#x3D;a</span><br><span class="line">colorscheme elflord &quot; 设定颜色主题</span><br><span class="line">&quot; tab 空格</span><br><span class="line">set expandtab &quot; 将输入的tab自动转换为空格(默认4个空格)</span><br><span class="line">set smarttab &quot; 在行首输入tab时自动转换为空格</span><br><span class="line">set shiftwidth&#x3D;4 &quot; 缩进时默认的缩进宽度(4个空格)</span><br><span class="line">&quot; netrw文件浏览器</span><br><span class="line">set autochdir &quot; 当打开一个文件时，自动切换到该文件所在的目录</span><br><span class="line">let g:netrw_altv &#x3D; 1 &quot; 与preview项相配合，在右侧打开预览文件</span><br><span class="line">let g:netrw_preview &#x3D; 1 &quot; 在一个垂直列表中打开预览文件</span><br><span class="line">let g:netrw_liststyle &#x3D; 3 &quot; 列表模式-文件夹浏览模式</span><br><span class="line">let g:netrw_winsize &#x3D; 30 &quot; 文件夹列表的宽度(30个字符)</span><br><span class="line">let g:netrw_browse_split &#x3D; 4 &quot; 在当前窗口的新区域内预览文件(与P操作相同)</span><br><span class="line">&quot; 编写函数实现开关 Vexplore 文件夹列表的效果</span><br><span class="line">function! ToggleVExplorer()</span><br><span class="line">if exists(&quot;t:expl_buf_num&quot;)</span><br><span class="line">    let expl_win_num &#x3D; bufwinnr(t:expl_buf_num)</span><br><span class="line">if expl_win_num !&#x3D; -1</span><br><span class="line">    let cur_win_nr &#x3D; winnr()</span><br><span class="line">exec expl_win_num . &#39;wincmd w&#39;</span><br><span class="line">close</span><br><span class="line">exec cur_win_nr . &#39;wincmd w&#39;</span><br><span class="line">unlet t:expl_buf_num</span><br><span class="line">else</span><br><span class="line">unlet t:expl_buf_num</span><br><span class="line">endif</span><br><span class="line">else</span><br><span class="line">&quot;exec &#39;1wincmd w&#39;</span><br><span class="line">Vexplore</span><br><span class="line">let t:expl_buf_num &#x3D; bufnr(&quot;%&quot;)</span><br><span class="line">endif</span><br><span class="line">endfunction</span><br><span class="line">&quot; 按键 &#x3D;&gt; 指令快捷方式</span><br><span class="line">map &lt;C-n&gt; :tabn&lt;CR&gt;</span><br><span class="line">map &lt;C-b&gt; :tabprevious&lt;CR&gt;</span><br><span class="line">map &lt;S-t&gt; :call ToggleVExplorer()&lt;CR&gt;</span><br><span class="line">set paste &quot; 复制模式</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="11">
+<li><p>Vbox</p>
+<ol>
+<li>For Docker</li>
+</ol>
+</li>
+<li><p>Docker Toolbox</p>
+<ol>
+<li>如果考虑高可用的话, Dockerfile其实才是最好的高可用开发环境</li>
+<li>截止到目前为止(2018年7月), 基于Hyper-V 的 Docker for Windows 有兼容性问题(只有Win10专业版可用), 性能问题(一个页面触发4个异步请求, 稳定有1~2个请求404), 所以Windows版本上选用的是Docker Toolbox</li>
+<li>Docker配置时需要注意三点<ol>
+<li>将Docker项目所在盘挂在为共享文件夹(避免找不到文件)<ul>
+<li><img src="./img/docker/vbox/%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9.png" alt="共享文件夹"></li>
+</ul>
+</li>
+<li>将Docker项目expose的端口在虚拟机上绑定好映射<ul>
+<li><img src="./img/docker/vbox/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91.png" alt="端口转发"></li>
+</ul>
+</li>
+<li>需要用docker-compose官方最新版本的<a href="https://github.com/docker/compose/releases" target="_blank" rel="noopener">release</a>替换掉Toolbox自带的docker-compose.exe, 否则无法解析有中文注释的yaml文件(万恶的Python编码问题)</li>
+<li>创建docker-machine并配置阿里镜像源<ol>
+<li>删除旧机器 =&gt; <code>docker-machine rm default</code></li>
+<li>添加新机器并配置阿里镜像源 =&gt; <code>docker-machine create --engine-registry-mirror=https://ns0io9ia.mirror.aliyuncs.com -d virtualbox default</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>自动启动vbox &amp; docker<ol>
+<li>在启动文件夹(<code>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp</code>)中添加bat启动脚本<figure class="highlight bat"><table><tr><td class="code"><pre><span class="line">"C:\Program Files\Oracle\VirtualBox\VBoxManage.exe" startvm "default" --<span class="built_in">type</span> "headless"</span><br><span class="line">"C:\Program Files\Docker Toolbox\docker-machine.exe" <span class="built_in">start</span> default</span><br><span class="line"><span class="built_in">echo</span> "等待vbox启动完毕(<span class="number">2</span>分钟)"</span><br><span class="line"><span class="built_in">ping</span> <span class="number">127</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">1</span> -n <span class="number">120</span></span><br><span class="line"><span class="built_in">echo</span> "启动docker"</span><br><span class="line">"C:\Program Files\Docker Toolbox\docker-compose.exe" -f "F:\www\ha_develope_env\docker-compose.yml" up -d </span><br><span class="line">"C:\Program Files\Docker Toolbox\docker-compose.exe" -f "F:\www\docker\docker-compose.yml" up -d</span><br></pre></td></tr></table></figure></li>
+<li>截图示例<ul>
+<li><img src="./img/docker/%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%90%AF%E5%8A%A8.png" alt="开机自动启动vbox&amp;docker"></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>git/ssh</p>
+<ol>
+<li>打开PowerShell, 输入ssh-keygen.exe, 然后把公钥填到git上就可以</li>
+<li>公钥可以在everything上搜.ssh, 找到对应文件夹, 然后用VSCode打开id_rsa.pub即可</li>
+</ol>
+</li>
+<li><p>nvm for windows</p>
+<ol>
+<li>windows上有时也需要跑node </li>
+<li><a href="https://github.com/coreybutler/nvm-windows/releases" target="_blank" rel="noopener">项目地址</a></li>
+</ol>
+</li>
+<li><p>Adobe XC</p>
+<ol>
+<li>可以在Windows上查看Sketch, 免费</li>
+</ol>
+</li>
+<li><p>2345看图王 &amp; 2345好压 &amp; QQ影音</p>
+<ol>
+<li>日常应用</li>
+<li>好压的文件批量改名很好用</li>
+</ol>
+</li>
+<li><p>输入法</p>
+<ol>
+<li>只留两种键盘模式, 中文&amp;英文, 平常可以用Win+空格来回切换</li>
+<li>使用系统内置输入法<ol>
+<li>Win10内置的输入法是<a href="http://mindhacks.cn/" target="_blank" rel="noopener">刘未鹏</a>牵头开发的, 体验上不输搜狗, 而且永远没有广告</li>
+<li>使用其他输入法的问题在于, 切换起来太麻烦, 带来的好处不足以覆盖广告导致的体验下降</li>
+</ol>
+</li>
+<li>在设置里, 配上中文模式下也使用英文标点, 可以减少30%的bug</li>
+</ol>
+</li>
+<li><p>动图捕捉</p>
+<ol>
+<li>使用<a href="https://www.cockos.com/licecap/" target="_blank" rel="noopener">LICEcap</a>即可</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/17/2018/06/%E4%B8%8D%E5%86%8D%E9%87%8D%E8%A6%81%E7%9A%84CSS%E8%B0%83%E4%BC%98_%E8%AF%BB_CSS%E9%87%8D%E6%9E%84_%E6%A0%B7%E5%BC%8F%E8%A1%A8%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" rel="next" title="不再重要的CSS调优:读 CSS重构:样式表性能调优">
+                <i class="fa fa-chevron-left"></i> 不再重要的CSS调优:读 CSS重构:样式表性能调优
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/23/2020/07/Windows%E7%B3%BB%E7%BB%9F%E9%87%8D%E8%A3%85%E6%8C%87%E5%8D%97/" rel="prev" title="Windows系统重装指南">
+                Windows系统重装指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://ww1.sinaimg.cn/large/00749HCsly1fq4hkxxz66j308c08cweq.jpg"
+                alt="姚泽源" />
+            
+              <p class="site-author-name" itemprop="name">姚泽源</p>
+              <p class="site-description motion-element" itemprop="description">东风夜放花千树, 山长水阔知何处</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/YaoZeyuan" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yaozeyuan93@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#必备软件"><span class="nav-number">1.</span> <span class="nav-text">必备软件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate"> 
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚泽源</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.0.6</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.6"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      /**
+      * [js-md5]{@link https://github.com/emn178/js-md5}
+      *
+      * @namespace md5
+      * @version 0.7.3
+      * @author Chen, Yi-Cyuan [emn178@gmail.com]
+      * @copyright Chen, Yi-Cyuan 2014-2017
+      * @license MIT
+      */
+      !function(){"use strict";function t(t){if(t)d[0]=d[16]=d[1]=d[2]=d[3]=d[4]=d[5]=d[6]=d[7]=d[8]=d[9]=d[10]=d[11]=d[12]=d[13]=d[14]=d[15]=0,this.blocks=d,this.buffer8=l;else if(a){var r=new ArrayBuffer(68);this.buffer8=new Uint8Array(r),this.blocks=new Uint32Array(r)}else this.blocks=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];this.h0=this.h1=this.h2=this.h3=this.start=this.bytes=this.hBytes=0,this.finalized=this.hashed=!1,this.first=!0}var r="input is invalid type",e="object"==typeof window,i=e?window:{};i.JS_MD5_NO_WINDOW&&(e=!1);var s=!e&&"object"==typeof self,h=!i.JS_MD5_NO_NODE_JS&&"object"==typeof process&&process.versions&&process.versions.node;h?i=global:s&&(i=self);var f=!i.JS_MD5_NO_COMMON_JS&&"object"==typeof module&&module.exports,o="function"==typeof define&&define.amd,a=!i.JS_MD5_NO_ARRAY_BUFFER&&"undefined"!=typeof ArrayBuffer,n="0123456789abcdef".split(""),u=[128,32768,8388608,-2147483648],y=[0,8,16,24],c=["hex","array","digest","buffer","arrayBuffer","base64"],p="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),d=[],l;if(a){var A=new ArrayBuffer(68);l=new Uint8Array(A),d=new Uint32Array(A)}!i.JS_MD5_NO_NODE_JS&&Array.isArray||(Array.isArray=function(t){return"[object Array]"===Object.prototype.toString.call(t)}),!a||!i.JS_MD5_NO_ARRAY_BUFFER_IS_VIEW&&ArrayBuffer.isView||(ArrayBuffer.isView=function(t){return"object"==typeof t&&t.buffer&&t.buffer.constructor===ArrayBuffer});var b=function(r){return function(e){return new t(!0).update(e)[r]()}},v=function(){var r=b("hex");h&&(r=w(r)),r.create=function(){return new t},r.update=function(t){return r.create().update(t)};for(var e=0;e<c.length;++e){var i=c[e];r[i]=b(i)}return r},w=function(t){var e=eval("require('crypto')"),i=eval("require('buffer').Buffer"),s=function(s){if("string"==typeof s)return e.createHash("md5").update(s,"utf8").digest("hex");if(null===s||void 0===s)throw r;return s.constructor===ArrayBuffer&&(s=new Uint8Array(s)),Array.isArray(s)||ArrayBuffer.isView(s)||s.constructor===i?e.createHash("md5").update(new i(s)).digest("hex"):t(s)};return s};t.prototype.update=function(t){if(!this.finalized){var e,i=typeof t;if("string"!==i){if("object"!==i)throw r;if(null===t)throw r;if(a&&t.constructor===ArrayBuffer)t=new Uint8Array(t);else if(!(Array.isArray(t)||a&&ArrayBuffer.isView(t)))throw r;e=!0}for(var s,h,f=0,o=t.length,n=this.blocks,u=this.buffer8;f<o;){if(this.hashed&&(this.hashed=!1,n[0]=n[16],n[16]=n[1]=n[2]=n[3]=n[4]=n[5]=n[6]=n[7]=n[8]=n[9]=n[10]=n[11]=n[12]=n[13]=n[14]=n[15]=0),e)if(a)for(h=this.start;f<o&&h<64;++f)u[h++]=t[f];else for(h=this.start;f<o&&h<64;++f)n[h>>2]|=t[f]<<y[3&h++];else if(a)for(h=this.start;f<o&&h<64;++f)(s=t.charCodeAt(f))<128?u[h++]=s:s<2048?(u[h++]=192|s>>6,u[h++]=128|63&s):s<55296||s>=57344?(u[h++]=224|s>>12,u[h++]=128|s>>6&63,u[h++]=128|63&s):(s=65536+((1023&s)<<10|1023&t.charCodeAt(++f)),u[h++]=240|s>>18,u[h++]=128|s>>12&63,u[h++]=128|s>>6&63,u[h++]=128|63&s);else for(h=this.start;f<o&&h<64;++f)(s=t.charCodeAt(f))<128?n[h>>2]|=s<<y[3&h++]:s<2048?(n[h>>2]|=(192|s>>6)<<y[3&h++],n[h>>2]|=(128|63&s)<<y[3&h++]):s<55296||s>=57344?(n[h>>2]|=(224|s>>12)<<y[3&h++],n[h>>2]|=(128|s>>6&63)<<y[3&h++],n[h>>2]|=(128|63&s)<<y[3&h++]):(s=65536+((1023&s)<<10|1023&t.charCodeAt(++f)),n[h>>2]|=(240|s>>18)<<y[3&h++],n[h>>2]|=(128|s>>12&63)<<y[3&h++],n[h>>2]|=(128|s>>6&63)<<y[3&h++],n[h>>2]|=(128|63&s)<<y[3&h++]);this.lastByteIndex=h,this.bytes+=h-this.start,h>=64?(this.start=h-64,this.hash(),this.hashed=!0):this.start=h}return this.bytes>4294967295&&(this.hBytes+=this.bytes/4294967296<<0,this.bytes=this.bytes%4294967296),this}},t.prototype.finalize=function(){if(!this.finalized){this.finalized=!0;var t=this.blocks,r=this.lastByteIndex;t[r>>2]|=u[3&r],r>=56&&(this.hashed||this.hash(),t[0]=t[16],t[16]=t[1]=t[2]=t[3]=t[4]=t[5]=t[6]=t[7]=t[8]=t[9]=t[10]=t[11]=t[12]=t[13]=t[14]=t[15]=0),t[14]=this.bytes<<3,t[15]=this.hBytes<<3|this.bytes>>>29,this.hash()}},t.prototype.hash=function(){var t,r,e,i,s,h,f=this.blocks;this.first?r=((r=((t=((t=f[0]-680876937)<<7|t>>>25)-271733879<<0)^(e=((e=(-271733879^(i=((i=(-1732584194^2004318071&t)+f[1]-117830708)<<12|i>>>20)+t<<0)&(-271733879^t))+f[2]-1126478375)<<17|e>>>15)+i<<0)&(i^t))+f[3]-1316259209)<<22|r>>>10)+e<<0:(t=this.h0,r=this.h1,e=this.h2,r=((r+=((t=((t+=((i=this.h3)^r&(e^i))+f[0]-680876936)<<7|t>>>25)+r<<0)^(e=((e+=(r^(i=((i+=(e^t&(r^e))+f[1]-389564586)<<12|i>>>20)+t<<0)&(t^r))+f[2]+606105819)<<17|e>>>15)+i<<0)&(i^t))+f[3]-1044525330)<<22|r>>>10)+e<<0),r=((r+=((t=((t+=(i^r&(e^i))+f[4]-176418897)<<7|t>>>25)+r<<0)^(e=((e+=(r^(i=((i+=(e^t&(r^e))+f[5]+1200080426)<<12|i>>>20)+t<<0)&(t^r))+f[6]-1473231341)<<17|e>>>15)+i<<0)&(i^t))+f[7]-45705983)<<22|r>>>10)+e<<0,r=((r+=((t=((t+=(i^r&(e^i))+f[8]+1770035416)<<7|t>>>25)+r<<0)^(e=((e+=(r^(i=((i+=(e^t&(r^e))+f[9]-1958414417)<<12|i>>>20)+t<<0)&(t^r))+f[10]-42063)<<17|e>>>15)+i<<0)&(i^t))+f[11]-1990404162)<<22|r>>>10)+e<<0,r=((r+=((t=((t+=(i^r&(e^i))+f[12]+1804603682)<<7|t>>>25)+r<<0)^(e=((e+=(r^(i=((i+=(e^t&(r^e))+f[13]-40341101)<<12|i>>>20)+t<<0)&(t^r))+f[14]-1502002290)<<17|e>>>15)+i<<0)&(i^t))+f[15]+1236535329)<<22|r>>>10)+e<<0,r=((r+=((i=((i+=(r^e&((t=((t+=(e^i&(r^e))+f[1]-165796510)<<5|t>>>27)+r<<0)^r))+f[6]-1069501632)<<9|i>>>23)+t<<0)^t&((e=((e+=(t^r&(i^t))+f[11]+643717713)<<14|e>>>18)+i<<0)^i))+f[0]-373897302)<<20|r>>>12)+e<<0,r=((r+=((i=((i+=(r^e&((t=((t+=(e^i&(r^e))+f[5]-701558691)<<5|t>>>27)+r<<0)^r))+f[10]+38016083)<<9|i>>>23)+t<<0)^t&((e=((e+=(t^r&(i^t))+f[15]-660478335)<<14|e>>>18)+i<<0)^i))+f[4]-405537848)<<20|r>>>12)+e<<0,r=((r+=((i=((i+=(r^e&((t=((t+=(e^i&(r^e))+f[9]+568446438)<<5|t>>>27)+r<<0)^r))+f[14]-1019803690)<<9|i>>>23)+t<<0)^t&((e=((e+=(t^r&(i^t))+f[3]-187363961)<<14|e>>>18)+i<<0)^i))+f[8]+1163531501)<<20|r>>>12)+e<<0,r=((r+=((i=((i+=(r^e&((t=((t+=(e^i&(r^e))+f[13]-1444681467)<<5|t>>>27)+r<<0)^r))+f[2]-51403784)<<9|i>>>23)+t<<0)^t&((e=((e+=(t^r&(i^t))+f[7]+1735328473)<<14|e>>>18)+i<<0)^i))+f[12]-1926607734)<<20|r>>>12)+e<<0,r=((r+=((h=(i=((i+=((s=r^e)^(t=((t+=(s^i)+f[5]-378558)<<4|t>>>28)+r<<0))+f[8]-2022574463)<<11|i>>>21)+t<<0)^t)^(e=((e+=(h^r)+f[11]+1839030562)<<16|e>>>16)+i<<0))+f[14]-35309556)<<23|r>>>9)+e<<0,r=((r+=((h=(i=((i+=((s=r^e)^(t=((t+=(s^i)+f[1]-1530992060)<<4|t>>>28)+r<<0))+f[4]+1272893353)<<11|i>>>21)+t<<0)^t)^(e=((e+=(h^r)+f[7]-155497632)<<16|e>>>16)+i<<0))+f[10]-1094730640)<<23|r>>>9)+e<<0,r=((r+=((h=(i=((i+=((s=r^e)^(t=((t+=(s^i)+f[13]+681279174)<<4|t>>>28)+r<<0))+f[0]-358537222)<<11|i>>>21)+t<<0)^t)^(e=((e+=(h^r)+f[3]-722521979)<<16|e>>>16)+i<<0))+f[6]+76029189)<<23|r>>>9)+e<<0,r=((r+=((h=(i=((i+=((s=r^e)^(t=((t+=(s^i)+f[9]-640364487)<<4|t>>>28)+r<<0))+f[12]-421815835)<<11|i>>>21)+t<<0)^t)^(e=((e+=(h^r)+f[15]+530742520)<<16|e>>>16)+i<<0))+f[2]-995338651)<<23|r>>>9)+e<<0,r=((r+=((i=((i+=(r^((t=((t+=(e^(r|~i))+f[0]-198630844)<<6|t>>>26)+r<<0)|~e))+f[7]+1126891415)<<10|i>>>22)+t<<0)^((e=((e+=(t^(i|~r))+f[14]-1416354905)<<15|e>>>17)+i<<0)|~t))+f[5]-57434055)<<21|r>>>11)+e<<0,r=((r+=((i=((i+=(r^((t=((t+=(e^(r|~i))+f[12]+1700485571)<<6|t>>>26)+r<<0)|~e))+f[3]-1894986606)<<10|i>>>22)+t<<0)^((e=((e+=(t^(i|~r))+f[10]-1051523)<<15|e>>>17)+i<<0)|~t))+f[1]-2054922799)<<21|r>>>11)+e<<0,r=((r+=((i=((i+=(r^((t=((t+=(e^(r|~i))+f[8]+1873313359)<<6|t>>>26)+r<<0)|~e))+f[15]-30611744)<<10|i>>>22)+t<<0)^((e=((e+=(t^(i|~r))+f[6]-1560198380)<<15|e>>>17)+i<<0)|~t))+f[13]+1309151649)<<21|r>>>11)+e<<0,r=((r+=((i=((i+=(r^((t=((t+=(e^(r|~i))+f[4]-145523070)<<6|t>>>26)+r<<0)|~e))+f[11]-1120210379)<<10|i>>>22)+t<<0)^((e=((e+=(t^(i|~r))+f[2]+718787259)<<15|e>>>17)+i<<0)|~t))+f[9]-343485551)<<21|r>>>11)+e<<0,this.first?(this.h0=t+1732584193<<0,this.h1=r-271733879<<0,this.h2=e-1732584194<<0,this.h3=i+271733878<<0,this.first=!1):(this.h0=this.h0+t<<0,this.h1=this.h1+r<<0,this.h2=this.h2+e<<0,this.h3=this.h3+i<<0)},t.prototype.hex=function(){this.finalize();var t=this.h0,r=this.h1,e=this.h2,i=this.h3;return n[t>>4&15]+n[15&t]+n[t>>12&15]+n[t>>8&15]+n[t>>20&15]+n[t>>16&15]+n[t>>28&15]+n[t>>24&15]+n[r>>4&15]+n[15&r]+n[r>>12&15]+n[r>>8&15]+n[r>>20&15]+n[r>>16&15]+n[r>>28&15]+n[r>>24&15]+n[e>>4&15]+n[15&e]+n[e>>12&15]+n[e>>8&15]+n[e>>20&15]+n[e>>16&15]+n[e>>28&15]+n[e>>24&15]+n[i>>4&15]+n[15&i]+n[i>>12&15]+n[i>>8&15]+n[i>>20&15]+n[i>>16&15]+n[i>>28&15]+n[i>>24&15]},t.prototype.toString=t.prototype.hex,t.prototype.digest=function(){this.finalize();var t=this.h0,r=this.h1,e=this.h2,i=this.h3;return[255&t,t>>8&255,t>>16&255,t>>24&255,255&r,r>>8&255,r>>16&255,r>>24&255,255&e,e>>8&255,e>>16&255,e>>24&255,255&i,i>>8&255,i>>16&255,i>>24&255]},t.prototype.array=t.prototype.digest,t.prototype.arrayBuffer=function(){this.finalize();var t=new ArrayBuffer(16),r=new Uint32Array(t);return r[0]=this.h0,r[1]=this.h1,r[2]=this.h2,r[3]=this.h3,t},t.prototype.buffer=t.prototype.arrayBuffer,t.prototype.base64=function(){for(var t,r,e,i="",s=this.array(),h=0;h<15;)t=s[h++],r=s[h++],e=s[h++],i+=p[t>>>2]+p[63&(t<<4|r>>>4)]+p[63&(r<<2|e>>>6)]+p[63&e];return t=s[h],i+=p[t>>>2]+p[t<<4&63]+"=="};var _=v();f?module.exports=_:(i.md5=_,o&&define(function(){return _}))}();
+
+
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: 'md5_' + md5(window.location.pathname),
+            owner: 'YaoZeyuan',
+            repo: 'YaoZeyuan.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'a14ba58393c24d8190b20de274822c4cc1d6c886',
+            
+                client_id: 'f165d0d191297f88178c'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

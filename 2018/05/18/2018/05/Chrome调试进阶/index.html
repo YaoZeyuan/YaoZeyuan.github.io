@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="目录 调试JavaScript     Preserve Log 代码断点与单步执行 debugger Event Listener Breakpoin &amp; 屏蔽无用log  提取断点内变量值 调试Immutable.js 彩色log 输出log时添加时间戳 JS执行计时 clear &amp; filter   调试元素 设备模拟 远程调试 远程调试微信页面 模拟元素状态   性能分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chrome调试进阶">
+<meta property="og:url" content="http://www.yaozeyuan.online/2018/05/18/2018/05/Chrome%E8%B0%83%E8%AF%95%E8%BF%9B%E9%98%B6/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="目录 调试JavaScript     Preserve Log 代码断点与单步执行 debugger Event Listener Breakpoin &amp; 屏蔽无用log  提取断点内变量值 调试Immutable.js 彩色log 输出log时添加时间戳 JS执行计时 clear &amp; filter   调试元素 设备模拟 远程调试 远程调试微信页面 模拟元素状态   性能分析">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlvsaa7f5j30ns07sgm6.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frjgwnaum2j31ft0hmjzr.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frjjtoxrttj30qo09575l.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frjjxdjqrgj30ql0aw75k.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/large/6671cfa8ly1frmed3jvhzg20go0ci7wk.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frjhxwhwlcj30dl08pjrj.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frji65o0ktj30iz06l0sz.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frji9k26gqj31hc0gpdhp.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frji9vkq22j30dt095gls.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frjy6sr74xj327y0yuwpb.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frjj3ya1hcj30sp0brn1p.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frjj8l0h9bj31h70g875y.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frjj9ci0r8j31hc0a4q4d.jpg">
+<meta property="og:image" content="https://wx4.sinaimg.cn/mw690/6671cfa8ly1frmed68n76g20go0ciqv6.gif">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frjjr3k2nqj31hc0gmmyi.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frltmrdkcyj30pc0l3q7j.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frmd6rnzvcj30mq0g4776.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frltst5my3j30ro0mst94.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlukz6y9rj31a20o1doa.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlv4pbutvj308c08ca9y.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlv77513rj30qo1hcju5.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlva13rsbj317y0m60xw.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlvkbaobej31hc0jejve.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlvxom51bj30nl04cmxg.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlw4tbiq7j30nh0as0uv.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlwgx6zy9j31hc0i3djp.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlwh8gcjzj30o20ofdk0.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlwm3r2gtj30le0feaf5.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/6671cfa8ly1frnq0euhx9j227y16ytrl.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlwtp2tpkj30x70rc43d.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlwxm1meoj30nz0bxac0.jpg">
+<meta property="article:published_time" content="2018-05-18T09:48:01.000Z">
+<meta property="article:modified_time" content="2020-07-23T13:44:20.140Z">
+<meta property="article:author" content="姚泽源">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/00749HCsly1frlvsaa7f5j30ns07sgm6.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://www.yaozeyuan.online/2018/05/18/2018/05/Chrome调试进阶/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Chrome调试进阶 | 代号647</title>
+  
+
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+  <meta name="referrer" content="same-origin">
+  <meta name="referrer" content="no-referrer" />
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">代号647</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">前进四</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/%20" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives/%20" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.yaozeyuan.online/2018/05/18/2018/05/Chrome%E8%B0%83%E8%AF%95%E8%BF%9B%E9%98%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="姚泽源">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://ww1.sinaimg.cn/large/00749HCsly1fq4hkxxz66j308c08cweq.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="代号647">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Chrome调试进阶</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T17:48:01+08:00">2018-05-18</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/18/2018/05/Chrome%E8%B0%83%E8%AF%95%E8%BF%9B%E9%98%B6/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2018/05/18/2018/05/Chrome%E8%B0%83%E8%AF%95%E8%BF%9B%E9%98%B6/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><ul>
+<li><a href="#调试JavaScript">调试JavaScript</a>    <ul>
+<li><a href="#Preserve-Log">Preserve Log</a></li>
+<li><a href="#代码断点与单步执行">代码断点与单步执行</a></li>
+<li><a href="#debugger">debugger</a></li>
+<li><a href="#Event-Listener-Breakpoin-amp-屏蔽无用log">Event Listener Breakpoin &amp; 屏蔽无用log</a> </li>
+<li><a href="#提取断点内变量值">提取断点内变量值</a></li>
+<li><a href="#调试Immutable.js">调试Immutable.js</a></li>
+<li><a href="#彩色log">彩色log</a></li>
+<li><a href="#输出log时添加时间戳">输出log时添加时间戳</a></li>
+<li><a href="#JS执行计时">JS执行计时</a></li>
+<li><a href="#clear-amp-filter">clear &amp; filter</a></li>
+</ul>
+</li>
+<li><a href="#调试元素">调试元素</a><ul>
+<li><a href="#设备模拟">设备模拟</a></li>
+<li><a href="#远程调试">远程调试</a></li>
+<li><a href="#远程调试微信页面">远程调试微信页面</a></li>
+<li><a href="#模拟元素状态">模拟元素状态</a></li>
+</ul>
+</li>
+<li><a href="#性能分析">性能分析</a><ul>
+<li><a href="#disable-cache">disable cache</a></li>
+<li><a href="#模拟弱网条件-amp-录制屏幕">模拟弱网条件 &amp; 录制屏幕</a></li>
+<li><a href="#调试动画">调试动画</a></li>
+</ul>
+</li>
+<li><a href="#神奇功能">神奇功能</a><ul>
+<li><a href="#密码找回">密码找回</a></li>
+<li><a href="#source-map抓源码">source map抓源码</a> </li>
+<li><a href="#Copy-as-Curl">Copy as Curl</a></li>
+</ul>
+</li>
+<li><a href="#扩展资料">扩展资料</a></li>
+</ul>
+<h1 id="调试JavaScript"><a href="#调试JavaScript" class="headerlink" title="调试JavaScript"></a>调试JavaScript</h1><h2 id="Preserve-Log"><a href="#Preserve-Log" class="headerlink" title="Preserve Log"></a>Preserve Log</h2><!-- demo => 知乎的登录页 -->
+<!-- demo => 0.0.0.0:6003 -->
+
+
+<p>调试页面的时候经常会遇到页面跳转, 跳转完之后 Console &amp; Network 面板里记录全部清空, 这在页面上存在302跳转时会很恶心.</p>
+<p>不过Chrome提供Preserve Log选项, 勾上这个, 只要不关页面, 记录就可以永久保存</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlvsaa7f5j30ns07sgm6.jpg" alt="Preserve Log"></p>
+<h2 id="代码断点与单步执行"><a href="#代码断点与单步执行" class="headerlink" title="代码断点与单步执行"></a>代码断点与单步执行</h2><p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frjgwnaum2j31ft0hmjzr.jpg" alt="JavaScript代码调试_断点_说明"></p>
+<h2 id="debugger"><a href="#debugger" class="headerlink" title="debugger"></a>debugger</h2><p>除了手工加断点, 在源代码中加入<code>debugger</code>, 也可以起到断点的效果</p>
+<p>注意: debugger 只能在本地测试的时候加, 线上要是有 debugger 的话用户的 js 就执行不了了</p>
+<h2 id="Event-Listener-Breakpoin-amp-屏蔽无用log"><a href="#Event-Listener-Breakpoin-amp-屏蔽无用log" class="headerlink" title="Event Listener Breakpoin &amp; 屏蔽无用log"></a>Event Listener Breakpoin &amp; 屏蔽无用log</h2><p>或者, 也可以按事件去加</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frjjtoxrttj30qo09575l.jpg" alt="按事件加断点"></p>
+<p>同样, 如果某些库绑了太多无用代码, 你可以选择屏蔽这整个库. 比如, 把这个库加到 黑盒 里, 黑盒里js的执行过程不会被显示出来, 略有用</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frjjxdjqrgj30ql0aw75k.jpg" alt="屏蔽无用log"></p>
+<p>demo =&gt;</p>
+<p><img src="http://wx4.sinaimg.cn/large/6671cfa8ly1frmed3jvhzg20go0ci7wk.gif" alt="加黑盒demo"></p>
+<h2 id="提取断点内变量值"><a href="#提取断点内变量值" class="headerlink" title="提取断点内变量值"></a>提取断点内变量值</h2><p>调试过程中有可能会需要将一些变量值保存下来, 这时候只要在想要保存的变量上点击右键, 选择<code>Store as global variable</code>, 就可以在<code>Console</code>面板里使用这个变量(temp1, temp2, temp3, …)</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frjhxwhwlcj30dl08pjrj.jpg" alt="保存为全局变量"></p>
+<h2 id="调试Immutable-js"><a href="#调试Immutable-js" class="headerlink" title="调试Immutable.js"></a>调试Immutable.js</h2><p>虽然将变量保存了下来, 但如果调试的是Immutable.js, 打印出来的Immutable对象其实会很难看. </p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frji65o0ktj30iz06l0sz.jpg" alt="原始immutable对象打印效果"></p>
+<p>解决办法也简单, F12 打开开发者工具, 然后 F1 打开开发者工具的设置, 勾选<code>Preference-&gt;Console -&gt; Enable Customer Formatters</code></p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frji9k26gqj31hc0gpdhp.jpg" alt="开启Enable Customer Formatters"></p>
+<p>然后点击安装<a href="https://chrome.google.com/webstore/detail/immutablejs-object-format/hgldghadipiblonfkkicmgcbbijnpeog" target="_blank" rel="noopener">Immutable.js Object Formatter</a>插件</p>
+<p>重启一下控制台, 再打印一下Immutable对象看看?</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frji9vkq22j30dt095gls.jpg" alt="新immutable对象打印效果"></p>
+<h2 id="彩色log"><a href="#彩色log" class="headerlink" title="彩色log"></a>彩色log</h2><p>Immutable的原理是利用了console.log API, console.log实际上是支持在打印结果中添加css效果的</p>
+<p>示例:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">"%c    "</span>, <span class="string">"padding:10% 50%background:ur('http://stcms.beisen.com/CmsPortal/107965/107965_mdias_2018514_2018514logo.png') no-repeatbackground-position:center center"</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"确认过眼神，你就是对的人\n来到链家，你可以尽发挥自己的特长\n来到链家，你可以不断提高自己的技术\n加入家，加入贝壳，成就房产行业新的巅峰"</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"请将简历发送至 %c guliming@lianjia.com（邮件标题请以“姓名-应聘XX职位-来自console”命名）"</span>,<span class="string">"color:red"</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"%c前端，PHP，QA等等各个岗位各个级别都有在哦，期待你的加入！"</span>, <span class="string">"color:red"</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"职位介绍：http://join.lianjia.com/"</span>)</span><br></pre></td></tr></table></figure>
+<p>效果 =&gt;</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frjy6sr74xj327y0yuwpb.jpg" alt="彩色log效果"></p>
+<p>参考 =&gt; <a href="https://developers.google.com/web/tools/chrome-devtools/console/console-write?hl=zh-cn#_8" target="_blank" rel="noopener">Chrome 开发者文档文档</a></p>
+<table>
+<thead>
+<tr>
+<th>说明符</th>
+<th>输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%s</td>
+<td>将值格式化为字符串</td>
+</tr>
+<tr>
+<td>%i</td>
+<td>或 %d 将值格式化为整型</td>
+</tr>
+<tr>
+<td>%f</td>
+<td>将值格式化为浮点值</td>
+</tr>
+<tr>
+<td>%o</td>
+<td>将值格式化为可扩展 DOM 元素。如同在 Elements 面板中显示的一样</td>
+</tr>
+<tr>
+<td>%O</td>
+<td>将值格式化为可扩展 JavaScript 对象</td>
+</tr>
+<tr>
+<td>%c</td>
+<td>将 CSS 样式规则应用到第二个参数指定的输出字符串</td>
+</tr>
+</tbody></table>
+<h2 id="输出log时添加时间戳"><a href="#输出log时添加时间戳" class="headerlink" title="输出log时添加时间戳"></a>输出log时添加时间戳</h2><p>log除了打印消息, 还有一个用途是拿来检测页面性能. 比如开发React Native时, 我们可以通过Android Studio输出的日志时间戳来判断JS的执行情况</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frjj3ya1hcj30sp0brn1p.jpg" alt="RN日志"></p>
+<p>其实这个功能Chrome也可以做到, 还是F1 打开开发者工具设置, 勾选<code>Preference-&gt;Console -&gt; Show Timestamps</code></p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frjj8l0h9bj31h70g875y.jpg" alt="打开log时间戳"></p>
+<p>再看看日志, 是不是以后优化页面加载性能, 查看js执行瓶颈的时候就方便多了</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frjj9ci0r8j31hc0a4q4d.jpg" alt="带时间戳的log"></p>
+<h2 id="JS执行计时"><a href="#JS执行计时" class="headerlink" title="JS执行计时"></a>JS执行计时</h2><p>说到JS执行计时, 其实不太需要看log日志, 看下边的动图就够了</p>
+<p><img src="https://wx4.sinaimg.cn/mw690/6671cfa8ly1frmed68n76g20go0ciqv6.gif" alt="JS执行计时"></p>
+<h2 id="clear-amp-filter"><a href="#clear-amp-filter" class="headerlink" title="clear &amp; filter"></a>clear &amp; filter</h2><p>Console面板里执行 clear() 清屏, 在filter 中输入关键字可以按条件过滤日志, 选项里有一条Preserve Log, 选中之后只要不关DevTool, 即使页面刷新也不会清空日志, 勾选之后调试带302跳转的页面特别方便</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frjjr3k2nqj31hc0gmmyi.jpg" alt="Console控制台说明"></p>
+<h1 id="调试元素"><a href="#调试元素" class="headerlink" title="调试元素"></a>调试元素</h1><h2 id="设备模拟"><a href="#设备模拟" class="headerlink" title="设备模拟"></a>设备模拟</h2><p>在大多数情况下, 网页/后端都是通过UA来判断设备类型的, 所以我们只要将 UA &amp; 分辨率改成和移动端一样, 再把点击鼠标事件从click改成touch, 就可以直接在浏览器里调试移动端页面</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frltmrdkcyj30pc0l3q7j.jpg" alt="切换为移动端模式"></p>
+<p>如果想要模拟App操作的话, 只要选择 Edit, 添加上 App 的 UA 就可以了(具体值用Charles抓)</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frmd6rnzvcj30mq0g4776.jpg" alt="更换UA_1"><br><img src="http://ww1.sinaimg.cn/large/00749HCsly1frltst5my3j30ro0mst94.jpg" alt="更换UA_2"></p>
+<p>一般来说靠这两步就可以解决99%的移动端调试问题, 但是谷歌显然还觉得不够,  如果你想了解进一步模拟DPI修改, 媒体查询检测等功能的话, 在<a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/emulate-mobile-viewports?hl=zh-cn" target="_blank" rel="noopener">这里</a>可以看到谷歌官方的说明(当然是汉语)</p>
+<h2 id="远程调试"><a href="#远程调试" class="headerlink" title="远程调试"></a>远程调试</h2><p>当然, 模拟归模拟, 谷歌表示有些移动端的功能实在模拟不了(iOS7 不支持WebGL, iOS 5 的方向缩放有bug, etc). 所以 Chrome 也提供了远程调试功能.可以让我们在电脑上<strong>直接</strong>调试App内的网页.</p>
+<p>方法如下:</p>
+<ol>
+<li>App启用WebView调试模式(一般的测试包都支持, 这里以Chrome为例)</li>
+<li>手机启用开发者模式, 打开 USB调试开关</li>
+<li>电脑装驱动(Windows), 然后用USB线把手机连到电脑上</li>
+<li>在Chrome上打开 <a href="chrome://inspect/">chrome://inspect/</a>, 找到App内的页面, 点击inspect, over</li>
+</ol>
+<p>效果 =&gt; </p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlukz6y9rj31a20o1doa.jpg" alt="Chrome调试手机WebView"></p>
+<p>然后就跟正常调试页面一样了, 想打断点打断点, 想看log看log, 比用Charles把线上js替换成本地js, 然后一个一个的写alert效率高多了</p>
+<p>详细说明见<a href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/?hl=zh-cn" target="_blank" rel="noopener">官方文档</a></p>
+<p>PS一句, iOS 下也可以这么干, 除了要用Safari而不是 Chrome 调试外, 其他地方都一样</p>
+<h2 id="远程调试微信页面"><a href="#远程调试微信页面" class="headerlink" title="远程调试微信页面"></a>远程调试微信页面</h2><p>和Chrome远程调试一样, 微信也支持远程调试功能, 只是需要手工开启一下</p>
+<ol>
+<li>微信内访问<a href="http://debugx5.qq.com/" target="_blank" rel="noopener">http://debugx5.qq.com/</a>, 或者直接扫描二维码<img src="http://ww1.sinaimg.cn/large/00749HCsly1frlv4pbutvj308c08ca9y.jpg" alt="二维码"></li>
+<li>如果是首次使用需要先装线上TBS内核<br><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlv77513rj30qo1hcju5.jpg" alt="安装线上TBS内核"></li>
+<li>然后打开<a href="http://debugx5.qq.com/" target="_blank" rel="noopener">http://debugx5.qq.com/</a>, 勾选 信息-TBS Setting- 打开TBS内核inspect调试功能</li>
+<li>剩下的和Chrome远程调试一样, 折腾完打开<a href="chrome://inspect/">chrome://inspect/</a>, 完毕<br><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlva13rsbj317y0m60xw.jpg" alt="微信调试效果图"></li>
+</ol>
+<h2 id="模拟元素状态"><a href="#模拟元素状态" class="headerlink" title="模拟元素状态"></a>模拟元素状态</h2><p>讲完远程调试, 就可以讲讲检查元素的具体办法. 有时候我们会为元素的hover设置一个样式, 但是调试的时候只有把鼠标移上去才能看见样式, 很麻烦.</p>
+<p>Chrome里可以直接模拟这种状态</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlvkbaobej31hc0jejve.jpg" alt="切换元素伪类状态"></p>
+<p>:hov中可以模拟各种伪类, .cls中可以为元素动态添加/删除class</p>
+<h1 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h1><h2 id="disable-cache"><a href="#disable-cache" class="headerlink" title="disable cache"></a>disable cache</h2><p>刷新页面的时候, 如果想访问到最新的资源(或者模拟初次打开页面), 除了使用隐身模式外, 还可以直接勾上<code>disable cache</code>这项, 效果一样</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlvxom51bj30nl04cmxg.jpg" alt="disable cache"></p>
+<h2 id="模拟弱网条件-amp-录制屏幕"><a href="#模拟弱网条件-amp-录制屏幕" class="headerlink" title="模拟弱网条件 &amp; 录制屏幕"></a>模拟弱网条件 &amp; 录制屏幕</h2><p>Chrome 还允许模拟 2G/3G 等弱网环境, 而且为了方便调试, 还提供了录屏功能, 可以录制页面的整个加载过程, 方便检查分析</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlw4tbiq7j30nh0as0uv.jpg" alt="录屏和模拟弱网"></p>
+<h2 id="调试动画"><a href="#调试动画" class="headerlink" title="调试动画"></a>调试动画</h2><p>和Network一样, 动画也提供了录屏, 模拟移动端CPU效果(主动降速), 分析动画成分功能</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlwgx6zy9j31hc0i3djp.jpg" alt="Chrome动画调试指南_1"><br><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlwh8gcjzj30o20ofdk0.jpg" alt="Chrome动画调试指南_2"></p>
+<h1 id="神奇功能"><a href="#神奇功能" class="headerlink" title="神奇功能"></a>神奇功能</h1><h2 id="密码找回"><a href="#密码找回" class="headerlink" title="密码找回"></a>密码找回</h2><p>浏览器里我们看到的密码都是打过马赛克的, 解码的方式也很简单—-只要把input的type类型从password随便改成其他值, 就可以看见我们输入的密码</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlwm3r2gtj30le0feaf5.jpg" alt="密码找回"></p>
+<h2 id="源代码下载"><a href="#源代码下载" class="headerlink" title="源代码下载"></a>源代码下载</h2><p>有些公司安全意识不强, 代码发布上线的时候还是debug版本(知乎), 甚至连source map都带上了. 如果是debug版本, 我们可以用React/Vue开发者工具查看他们的页面结构, 如果是source map都有的话, 加个<a href="https://chrome.google.com/webstore/detail/aioimldmpakibclgckpdfpfkadbflfkn" target="_blank" rel="noopener">插件</a>, 可以直接还原出页面的源码 =&gt; <a href="https://zhuanlan.zhihu.com/p/26033573" target="_blank" rel="noopener">点我看原理</a></p>
+<p><img src="http://ww1.sinaimg.cn/large/6671cfa8ly1frnq0euhx9j227y16ytrl.jpg" alt="Chrome 查看源代码"></p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlwtp2tpkj30x70rc43d.jpg" alt="源码下载"></p>
+<h2 id="Copy-as-Curl"><a href="#Copy-as-Curl" class="headerlink" title="Copy as Curl"></a>Copy as Curl</h2><p>如果要在命令行中模拟Http操作的话, 可以直接在NetWork面板中点右键, 这在手工抓接口数据的时候比较有用</p>
+<p><img src="http://ww1.sinaimg.cn/large/00749HCsly1frlwxm1meoj30nz0bxac0.jpg" alt="Copy as Curl"></p>
+<h1 id="扩展资料"><a href="#扩展资料" class="headerlink" title="扩展资料"></a>扩展资料</h1><ul>
+<li>我整理的<a href="http://www.yaozeyuan.online/2018/01/08/2018/01/Chrome扩展推荐/">Chrome常用插件 &amp; 推荐理由</a></li>
+<li><a href="https://developers.google.com/web/tools/chrome-devtools/?hl=zh-cn" target="_blank" rel="noopener">谷歌开发者工具文档</a></li>
+<li><a href="http://umaar.github.io/devtools-animated-2016/" target="_blank" rel="noopener">你不知道的devtools</a></li>
+<li><a href="https://umaar.com/dev-tips/" target="_blank" rel="noopener">未来的DevTools(里面提到的新功能, 目前仅在Canary中可用(2018))</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/29/2018/04/%E5%B0%8F%E7%B1%B36x%E5%AE%89%E8%A3%85%E8%B0%B7%E6%AD%8C%E5%9B%9B%E4%BB%B6%E5%A5%97/" rel="next" title="小米6x安装谷歌服务框架">
+                <i class="fa fa-chevron-left"></i> 小米6x安装谷歌服务框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/17/2018/06/%E4%B8%8D%E5%86%8D%E9%87%8D%E8%A6%81%E7%9A%84CSS%E8%B0%83%E4%BC%98_%E8%AF%BB_CSS%E9%87%8D%E6%9E%84_%E6%A0%B7%E5%BC%8F%E8%A1%A8%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/" rel="prev" title="不再重要的CSS调优:读 CSS重构:样式表性能调优">
+                不再重要的CSS调优:读 CSS重构:样式表性能调优 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://ww1.sinaimg.cn/large/00749HCsly1fq4hkxxz66j308c08cweq.jpg"
+                alt="姚泽源" />
+            
+              <p class="site-author-name" itemprop="name">姚泽源</p>
+              <p class="site-description motion-element" itemprop="description">东风夜放花千树, 山长水阔知何处</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/YaoZeyuan" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yaozeyuan93@gmail.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目录"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调试JavaScript"><span class="nav-number">2.</span> <span class="nav-text">调试JavaScript</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Preserve-Log"><span class="nav-number">2.1.</span> <span class="nav-text">Preserve Log</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码断点与单步执行"><span class="nav-number">2.2.</span> <span class="nav-text">代码断点与单步执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#debugger"><span class="nav-number">2.3.</span> <span class="nav-text">debugger</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Event-Listener-Breakpoin-amp-屏蔽无用log"><span class="nav-number">2.4.</span> <span class="nav-text">Event Listener Breakpoin &amp; 屏蔽无用log</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提取断点内变量值"><span class="nav-number">2.5.</span> <span class="nav-text">提取断点内变量值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试Immutable-js"><span class="nav-number">2.6.</span> <span class="nav-text">调试Immutable.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#彩色log"><span class="nav-number">2.7.</span> <span class="nav-text">彩色log</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出log时添加时间戳"><span class="nav-number">2.8.</span> <span class="nav-text">输出log时添加时间戳</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS执行计时"><span class="nav-number">2.9.</span> <span class="nav-text">JS执行计时</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clear-amp-filter"><span class="nav-number">2.10.</span> <span class="nav-text">clear &amp; filter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#调试元素"><span class="nav-number">3.</span> <span class="nav-text">调试元素</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设备模拟"><span class="nav-number">3.1.</span> <span class="nav-text">设备模拟</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程调试"><span class="nav-number">3.2.</span> <span class="nav-text">远程调试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程调试微信页面"><span class="nav-number">3.3.</span> <span class="nav-text">远程调试微信页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟元素状态"><span class="nav-number">3.4.</span> <span class="nav-text">模拟元素状态</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性能分析"><span class="nav-number">4.</span> <span class="nav-text">性能分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#disable-cache"><span class="nav-number">4.1.</span> <span class="nav-text">disable cache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟弱网条件-amp-录制屏幕"><span class="nav-number">4.2.</span> <span class="nav-text">模拟弱网条件 &amp; 录制屏幕</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试动画"><span class="nav-number">4.3.</span> <span class="nav-text">调试动画</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#神奇功能"><span class="nav-number">5.</span> <span class="nav-text">神奇功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#密码找回"><span class="nav-number">5.1.</span> <span class="nav-text">密码找回</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源代码下载"><span class="nav-number">5.2.</span> <span class="nav-text">源代码下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Copy-as-Curl"><span class="nav-number">5.3.</span> <span class="nav-text">Copy as Curl</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扩展资料"><span class="nav-number">6.</span> <span class="nav-text">扩展资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate"> 
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">姚泽源</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Gemini</a> v6.0.6</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.0.6"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      /**
+      * [js-md5]{@link https://github.com/emn178/js-md5}
+      *
+      * @namespace md5
+      * @version 0.7.3
+      * @author Chen, Yi-Cyuan [emn178@gmail.com]
+      * @copyright Chen, Yi-Cyuan 2014-2017
+      * @license MIT
+      */
+      !function(){"use strict";function t(t){if(t)d[0]=d[16]=d[1]=d[2]=d[3]=d[4]=d[5]=d[6]=d[7]=d[8]=d[9]=d[10]=d[11]=d[12]=d[13]=d[14]=d[15]=0,this.blocks=d,this.buffer8=l;else if(a){var r=new ArrayBuffer(68);this.buffer8=new Uint8Array(r),this.blocks=new Uint32Array(r)}else this.blocks=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];this.h0=this.h1=this.h2=this.h3=this.start=this.bytes=this.hBytes=0,this.finalized=this.hashed=!1,this.first=!0}var r="input is invalid type",e="object"==typeof window,i=e?window:{};i.JS_MD5_NO_WINDOW&&(e=!1);var s=!e&&"object"==typeof self,h=!i.JS_MD5_NO_NODE_JS&&"object"==typeof process&&process.versions&&process.versions.node;h?i=global:s&&(i=self);var f=!i.JS_MD5_NO_COMMON_JS&&"object"==typeof module&&module.exports,o="function"==typeof define&&define.amd,a=!i.JS_MD5_NO_ARRAY_BUFFER&&"undefined"!=typeof ArrayBuffer,n="0123456789abcdef".split(""),u=[128,32768,8388608,-2147483648],y=[0,8,16,24],c=["hex","array","digest","buffer","arrayBuffer","base64"],p="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),d=[],l;if(a){var A=new ArrayBuffer(68);l=new Uint8Array(A),d=new Uint32Array(A)}!i.JS_MD5_NO_NODE_JS&&Array.isArray||(Array.isArray=function(t){return"[object Array]"===Object.prototype.toString.call(t)}),!a||!i.JS_MD5_NO_ARRAY_BUFFER_IS_VIEW&&ArrayBuffer.isView||(ArrayBuffer.isView=function(t){return"object"==typeof t&&t.buffer&&t.buffer.constructor===ArrayBuffer});var b=function(r){return function(e){return new t(!0).update(e)[r]()}},v=function(){var r=b("hex");h&&(r=w(r)),r.create=function(){return new t},r.update=function(t){return r.create().update(t)};for(var e=0;e<c.length;++e){var i=c[e];r[i]=b(i)}return r},w=function(t){var e=eval("require('crypto')"),i=eval("require('buffer').Buffer"),s=function(s){if("string"==typeof s)return e.createHash("md5").update(s,"utf8").digest("hex");if(null===s||void 0===s)throw r;return s.constructor===ArrayBuffer&&(s=new Uint8Array(s)),Array.isArray(s)||ArrayBuffer.isView(s)||s.constructor===i?e.createHash("md5").update(new i(s)).digest("hex"):t(s)};return s};t.prototype.update=function(t){if(!this.finalized){var e,i=typeof t;if("string"!==i){if("object"!==i)throw r;if(null===t)throw r;if(a&&t.constructor===ArrayBuffer)t=new Uint8Array(t);else if(!(Array.isArray(t)||a&&ArrayBuffer.isView(t)))throw r;e=!0}for(var s,h,f=0,o=t.length,n=this.blocks,u=this.buffer8;f<o;){if(this.hashed&&(this.hashed=!1,n[0]=n[16],n[16]=n[1]=n[2]=n[3]=n[4]=n[5]=n[6]=n[7]=n[8]=n[9]=n[10]=n[11]=n[12]=n[13]=n[14]=n[15]=0),e)if(a)for(h=this.start;f<o&&h<64;++f)u[h++]=t[f];else for(h=this.start;f<o&&h<64;++f)n[h>>2]|=t[f]<<y[3&h++];else if(a)for(h=this.start;f<o&&h<64;++f)(s=t.charCodeAt(f))<128?u[h++]=s:s<2048?(u[h++]=192|s>>6,u[h++]=128|63&s):s<55296||s>=57344?(u[h++]=224|s>>12,u[h++]=128|s>>6&63,u[h++]=128|63&s):(s=65536+((1023&s)<<10|1023&t.charCodeAt(++f)),u[h++]=240|s>>18,u[h++]=128|s>>12&63,u[h++]=128|s>>6&63,u[h++]=128|63&s);else for(h=this.start;f<o&&h<64;++f)(s=t.charCodeAt(f))<128?n[h>>2]|=s<<y[3&h++]:s<2048?(n[h>>2]|=(192|s>>6)<<y[3&h++],n[h>>2]|=(128|63&s)<<y[3&h++]):s<55296||s>=57344?(n[h>>2]|=(224|s>>12)<<y[3&h++],n[h>>2]|=(128|s>>6&63)<<y[3&h++],n[h>>2]|=(128|63&s)<<y[3&h++]):(s=65536+((1023&s)<<10|1023&t.charCodeAt(++f)),n[h>>2]|=(240|s>>18)<<y[3&h++],n[h>>2]|=(128|s>>12&63)<<y[3&h++],n[h>>2]|=(128|s>>6&63)<<y[3&h++],n[h>>2]|=(128|63&s)<<y[3&h++]);this.lastByteIndex=h,this.bytes+=h-this.start,h>=64?(this.start=h-64,this.hash(),this.hashed=!0):this.start=h}return this.bytes>4294967295&&(this.hBytes+=this.bytes/4294967296<<0,this.bytes=this.bytes%4294967296),this}},t.prototype.finalize=function(){if(!this.finalized){this.finalized=!0;var t=this.blocks,r=this.lastByteIndex;t[r>>2]|=u[3&r],r>=56&&(this.hashed||this.hash(),t[0]=t[16],t[16]=t[1]=t[2]=t[3]=t[4]=t[5]=t[6]=t[7]=t[8]=t[9]=t[10]=t[11]=t[12]=t[13]=t[14]=t[15]=0),t[14]=this.bytes<<3,t[15]=this.hBytes<<3|this.bytes>>>29,this.hash()}},t.prototype.hash=function(){var t,r,e,i,s,h,f=this.blocks;this.first?r=((r=((t=((t=f[0]-680876937)<<7|t>>>25)-271733879<<0)^(e=((e=(-271733879^(i=((i=(-1732584194^2004318071&t)+f[1]-117830708)<<12|i>>>20)+t<<0)&(-271733879^t))+f[2]-1126478375)<<17|e>>>15)+i<<0)&(i^t))+f[3]-1316259209)<<22|r>>>10)+e<<0:(t=this.h0,r=this.h1,e=this.h2,r=((r+=((t=((t+=((i=this.h3)^r&(e^i))+f[0]-680876936)<<7|t>>>25)+r<<0)^(e=((e+=(r^(i=((i+=(e^t&(r^e))+f[1]-389564586)<<12|i>>>20)+t<<0)&(t^r))+f[2]+606105819)<<17|e>>>15)+i<<0)&(i^t))+f[3]-1044525330)<<22|r>>>10)+e<<0),r=((r+=((t=((t+=(i^r&(e^i))+f[4]-176418897)<<7|t>>>25)+r<<0)^(e=((e+=(r^(i=((i+=(e^t&(r^e))+f[5]+1200080426)<<12|i>>>20)+t<<0)&(t^r))+f[6]-1473231341)<<17|e>>>15)+i<<0)&(i^t))+f[7]-45705983)<<22|r>>>10)+e<<0,r=((r+=((t=((t+=(i^r&(e^i))+f[8]+1770035416)<<7|t>>>25)+r<<0)^(e=((e+=(r^(i=((i+=(e^t&(r^e))+f[9]-1958414417)<<12|i>>>20)+t<<0)&(t^r))+f[10]-42063)<<17|e>>>15)+i<<0)&(i^t))+f[11]-1990404162)<<22|r>>>10)+e<<0,r=((r+=((t=((t+=(i^r&(e^i))+f[12]+1804603682)<<7|t>>>25)+r<<0)^(e=((e+=(r^(i=((i+=(e^t&(r^e))+f[13]-40341101)<<12|i>>>20)+t<<0)&(t^r))+f[14]-1502002290)<<17|e>>>15)+i<<0)&(i^t))+f[15]+1236535329)<<22|r>>>10)+e<<0,r=((r+=((i=((i+=(r^e&((t=((t+=(e^i&(r^e))+f[1]-165796510)<<5|t>>>27)+r<<0)^r))+f[6]-1069501632)<<9|i>>>23)+t<<0)^t&((e=((e+=(t^r&(i^t))+f[11]+643717713)<<14|e>>>18)+i<<0)^i))+f[0]-373897302)<<20|r>>>12)+e<<0,r=((r+=((i=((i+=(r^e&((t=((t+=(e^i&(r^e))+f[5]-701558691)<<5|t>>>27)+r<<0)^r))+f[10]+38016083)<<9|i>>>23)+t<<0)^t&((e=((e+=(t^r&(i^t))+f[15]-660478335)<<14|e>>>18)+i<<0)^i))+f[4]-405537848)<<20|r>>>12)+e<<0,r=((r+=((i=((i+=(r^e&((t=((t+=(e^i&(r^e))+f[9]+568446438)<<5|t>>>27)+r<<0)^r))+f[14]-1019803690)<<9|i>>>23)+t<<0)^t&((e=((e+=(t^r&(i^t))+f[3]-187363961)<<14|e>>>18)+i<<0)^i))+f[8]+1163531501)<<20|r>>>12)+e<<0,r=((r+=((i=((i+=(r^e&((t=((t+=(e^i&(r^e))+f[13]-1444681467)<<5|t>>>27)+r<<0)^r))+f[2]-51403784)<<9|i>>>23)+t<<0)^t&((e=((e+=(t^r&(i^t))+f[7]+1735328473)<<14|e>>>18)+i<<0)^i))+f[12]-1926607734)<<20|r>>>12)+e<<0,r=((r+=((h=(i=((i+=((s=r^e)^(t=((t+=(s^i)+f[5]-378558)<<4|t>>>28)+r<<0))+f[8]-2022574463)<<11|i>>>21)+t<<0)^t)^(e=((e+=(h^r)+f[11]+1839030562)<<16|e>>>16)+i<<0))+f[14]-35309556)<<23|r>>>9)+e<<0,r=((r+=((h=(i=((i+=((s=r^e)^(t=((t+=(s^i)+f[1]-1530992060)<<4|t>>>28)+r<<0))+f[4]+1272893353)<<11|i>>>21)+t<<0)^t)^(e=((e+=(h^r)+f[7]-155497632)<<16|e>>>16)+i<<0))+f[10]-1094730640)<<23|r>>>9)+e<<0,r=((r+=((h=(i=((i+=((s=r^e)^(t=((t+=(s^i)+f[13]+681279174)<<4|t>>>28)+r<<0))+f[0]-358537222)<<11|i>>>21)+t<<0)^t)^(e=((e+=(h^r)+f[3]-722521979)<<16|e>>>16)+i<<0))+f[6]+76029189)<<23|r>>>9)+e<<0,r=((r+=((h=(i=((i+=((s=r^e)^(t=((t+=(s^i)+f[9]-640364487)<<4|t>>>28)+r<<0))+f[12]-421815835)<<11|i>>>21)+t<<0)^t)^(e=((e+=(h^r)+f[15]+530742520)<<16|e>>>16)+i<<0))+f[2]-995338651)<<23|r>>>9)+e<<0,r=((r+=((i=((i+=(r^((t=((t+=(e^(r|~i))+f[0]-198630844)<<6|t>>>26)+r<<0)|~e))+f[7]+1126891415)<<10|i>>>22)+t<<0)^((e=((e+=(t^(i|~r))+f[14]-1416354905)<<15|e>>>17)+i<<0)|~t))+f[5]-57434055)<<21|r>>>11)+e<<0,r=((r+=((i=((i+=(r^((t=((t+=(e^(r|~i))+f[12]+1700485571)<<6|t>>>26)+r<<0)|~e))+f[3]-1894986606)<<10|i>>>22)+t<<0)^((e=((e+=(t^(i|~r))+f[10]-1051523)<<15|e>>>17)+i<<0)|~t))+f[1]-2054922799)<<21|r>>>11)+e<<0,r=((r+=((i=((i+=(r^((t=((t+=(e^(r|~i))+f[8]+1873313359)<<6|t>>>26)+r<<0)|~e))+f[15]-30611744)<<10|i>>>22)+t<<0)^((e=((e+=(t^(i|~r))+f[6]-1560198380)<<15|e>>>17)+i<<0)|~t))+f[13]+1309151649)<<21|r>>>11)+e<<0,r=((r+=((i=((i+=(r^((t=((t+=(e^(r|~i))+f[4]-145523070)<<6|t>>>26)+r<<0)|~e))+f[11]-1120210379)<<10|i>>>22)+t<<0)^((e=((e+=(t^(i|~r))+f[2]+718787259)<<15|e>>>17)+i<<0)|~t))+f[9]-343485551)<<21|r>>>11)+e<<0,this.first?(this.h0=t+1732584193<<0,this.h1=r-271733879<<0,this.h2=e-1732584194<<0,this.h3=i+271733878<<0,this.first=!1):(this.h0=this.h0+t<<0,this.h1=this.h1+r<<0,this.h2=this.h2+e<<0,this.h3=this.h3+i<<0)},t.prototype.hex=function(){this.finalize();var t=this.h0,r=this.h1,e=this.h2,i=this.h3;return n[t>>4&15]+n[15&t]+n[t>>12&15]+n[t>>8&15]+n[t>>20&15]+n[t>>16&15]+n[t>>28&15]+n[t>>24&15]+n[r>>4&15]+n[15&r]+n[r>>12&15]+n[r>>8&15]+n[r>>20&15]+n[r>>16&15]+n[r>>28&15]+n[r>>24&15]+n[e>>4&15]+n[15&e]+n[e>>12&15]+n[e>>8&15]+n[e>>20&15]+n[e>>16&15]+n[e>>28&15]+n[e>>24&15]+n[i>>4&15]+n[15&i]+n[i>>12&15]+n[i>>8&15]+n[i>>20&15]+n[i>>16&15]+n[i>>28&15]+n[i>>24&15]},t.prototype.toString=t.prototype.hex,t.prototype.digest=function(){this.finalize();var t=this.h0,r=this.h1,e=this.h2,i=this.h3;return[255&t,t>>8&255,t>>16&255,t>>24&255,255&r,r>>8&255,r>>16&255,r>>24&255,255&e,e>>8&255,e>>16&255,e>>24&255,255&i,i>>8&255,i>>16&255,i>>24&255]},t.prototype.array=t.prototype.digest,t.prototype.arrayBuffer=function(){this.finalize();var t=new ArrayBuffer(16),r=new Uint32Array(t);return r[0]=this.h0,r[1]=this.h1,r[2]=this.h2,r[3]=this.h3,t},t.prototype.buffer=t.prototype.arrayBuffer,t.prototype.base64=function(){for(var t,r,e,i="",s=this.array(),h=0;h<15;)t=s[h++],r=s[h++],e=s[h++],i+=p[t>>>2]+p[63&(t<<4|r>>>4)]+p[63&(r<<2|e>>>6)]+p[63&e];return t=s[h],i+=p[t>>>2]+p[t<<4&63]+"=="};var _=v();f?module.exports=_:(i.md5=_,o&&define(function(){return _}))}();
+
+
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: 'md5_' + md5(window.location.pathname),
+            owner: 'YaoZeyuan',
+            repo: 'YaoZeyuan.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'a14ba58393c24d8190b20de274822c4cc1d6c886',
+            
+                client_id: 'f165d0d191297f88178c'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
