@@ -1,0 +1,581 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/favicon.png">
+  <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="东风夜放花千树, 山长水阔知何处">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  <title>解决Laravel编写数据库查询语句时的反人类设计 - 代号647</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/utils.js" ></script>
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>代号647</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2018-03-15 17:48" pubdate>
+        2018年3月15日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      325 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      5
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">解决Laravel编写数据库查询语句时的反人类设计</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>Laravel 本身是一个很好用的框架, 但是每次查询数据库的时候, 都要<code>DB::table(表名)</code>, 非常反人类</p>
+<p>今天研究了一下, 发现 DB::table(表名) 实际上是返回了一个<code>\Illuminate\Database\Query\Builder</code>, 而这个 builder 是在框架初始化时创建的<code>Illuminate\Database\Connection</code>, 存在 app(‘db’)字段里, 那就好办了, 搞个 Base 类, 调用 db 方法的时候直接返回<code>app(&#39;db&#39;)-&gt;query()-&gt;newQuery()</code>, over</p>
+<p>截图如下</p>
+<p><img src="https://ww1.sinaimg.cn/large/6671cfa8ly1fpk7hijeb3j20g50ah0sz.jpg" srcset="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/loading.gif" alt="Base类"></p>
+<p><img src="https://ww1.sinaimg.cn/large/6671cfa8ly1fpk7hu5263j20k80cxjsd.jpg" srcset="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/loading.gif" alt="实际查询"></p>
+<p>PS:</p>
+<ol>
+<li>相关代码</li>
+</ol>
+<p>基类=&gt;</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Created by PhpStorm.</span>
+<span class="hljs-comment"> * User: yaoze</span>
+<span class="hljs-comment"> * Date: 2017/10/22</span>
+<span class="hljs-comment"> * Time: 5:00</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Model</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-built_in">static</span> $Instance;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> static</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-built_in">static</span> <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Instance</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        $class = get_called_class();
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-built_in">self</span>::$Instance[$class])) &#123;
+            <span class="hljs-built_in">self</span>::$Instance[$class] = <span class="hljs-keyword">new</span> $class;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">self</span>::$Instance[$class];
+    &#125;
+
+    <span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> \Illuminate\Database\Query\Builder</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">db</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">return</span> app(<span class="hljs-string">&#x27;db&#x27;</span>)-&gt;query()-&gt;newQuery();
+    &#125;
+&#125;
+</code></pre>
+
+<p>查询代码=&gt;</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Created by PhpStorm.</span>
+<span class="hljs-comment"> * User: yaoze</span>
+<span class="hljs-comment"> * Date: 2017/10/22</span>
+<span class="hljs-comment"> * Time: 4:51</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Model</span>;
+
+<span class="hljs-keyword">use</span> \<span class="hljs-title">DB</span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 测试方法</span>
+<span class="hljs-comment"> * Class Test</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@package</span> App\Model</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Base</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 初始化地址库</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initAddressTable</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        $raw_address_list = <span class="hljs-keyword">$this</span>-&gt;db()-&gt;select(<span class="hljs-string">&#x27;*&#x27;</span>)
+            -&gt;from(<span class="hljs-string">&#x27;address&#x27;</span>)
+            -&gt;limit(<span class="hljs-number">10</span>)
+            -&gt;get();
+        <span class="hljs-keyword">return</span> $raw_address_list;
+    &#125;
+&#125;
+</code></pre>
+
+<ol start="2">
+<li>初始化数据库连接的位置</li>
+</ol>
+<pre><code class="hljs php">
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment">    * Register container bindings for the application.</span>
+<span class="hljs-comment">    *</span>
+<span class="hljs-comment">    * <span class="hljs-doctag">@return</span> void</span>
+<span class="hljs-comment">    */</span>
+   <span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">registerDatabaseBindings</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">   </span>&#123;
+       <span class="hljs-keyword">$this</span>-&gt;singleton(<span class="hljs-string">&#x27;db&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+           <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;loadComponent(
+               <span class="hljs-string">&#x27;database&#x27;</span>, [
+                   <span class="hljs-string">&#x27;Illuminate\Database\DatabaseServiceProvider&#x27;</span>,
+                   <span class="hljs-string">&#x27;Illuminate\Pagination\PaginationServiceProvider&#x27;</span>,
+               ], <span class="hljs-string">&#x27;db&#x27;</span>
+           );
+       &#125;);
+   &#125;
+
+</code></pre>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/03/28/2018/03/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93&amp;18%E5%B9%B4Todo/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">面试总结/18年Todo</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2018/01/09/2018/01/%E7%BA%BF%E4%B8%8A%E6%9C%8D%E5%8A%A1%E5%99%A8vimrc/">
+                        <span class="hidden-mobile">线上服务器vimrc</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/debouncer.js" ></script>
+<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "解决Laravel编写数据库查询语句时的反人类设计&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/local-search.js" ></script>
+  <script>
+    var path = "https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

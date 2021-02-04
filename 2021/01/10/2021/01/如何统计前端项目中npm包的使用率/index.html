@@ -1,0 +1,665 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/favicon.png">
+  <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="东风夜放花千树, 山长水阔知何处">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  <title>如何统计前端项目中npm包的使用率 - 代号647</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/gitalk/1.6.2/gitalk.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/utils.js" ></script>
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>代号647</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-01-10 08:00" pubdate>
+        2021年1月10日 早上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      12
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">如何统计前端项目中npm包的使用率</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>最近接了个需求, 需要统计公司前端项目中, 自研 npm 包的普及度&amp;包内函数使用量. 解决过程比较有意思, 这里分享下.</p>
+<p>项目的基础思路比较简单, 大致如下图所示.</p>
+<!--
+图片内容:
+
+1.  拉取公司所有前端项目
+2.  解析项目中每一个 js/jsx/ts/tsx 文件, 得到每个文件中引入的 npm 包列表. 匹配是否为自研 npm 包.
+    1.  若为自研 npm 包, 跟踪被导入的包内导出对象, 统计每个被导入对象的使用次数
+3.  npm 包对使用数据进行汇总. 存入数据库. 编写接口, 供前端展示
+-->
+
+<p><img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/parse_component_by_babel/doc/img/%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B.png" srcset="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/loading.gif" alt="基础流程"></p>
+<p>对于获取所有前端项目问题, 由于我司有一套自建的公共前端打包平台, 可以直接调用平台接口拉取项目源码.</p>
+<p>所以剩下的难点只有一个: <code>如何解析 js 文件, 得到目标 npm 包内导出对象的使用次数</code>.</p>
+<p>其实方法也很简单: <code>babel 怎么做, 我们就怎么做.</code></p>
+<p>用过 babel 的人都知道: babel 可以读取 ES6 代码, 先将 js 文件整体转化为抽象语法树, 然后遍历语法树, 调用插件对代码内容进行调整, 剔除/转换语法结构, 并最终输出为 ES5 代码. 而我们需要做的, 就是编写一个插件, 在 babel 遍历语法树时, 识别目标 npm 包, 统计从包中引出的变量使用情况. 流程如下.</p>
+<!--
+图片内容:
+
+1.  处理导入语句, 获取待监控变量列表
+    1.  数据结构: npm 包名 => 隶属于该包的一级导出变量(import {useState, useRef} from "react")
+2.  监控对导出变量的解构/重命名操作
+    1.  对由导出变量中引申出的新变量/重命名, 统一视为该变量的别名.
+3.  统计导出变量的使用次数
+    1.  作为函数使用
+    2.  作为参数使用
+-->
+
+<p><img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/parse_compontent_by_babel/doc/img/%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B.png" srcset="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/loading.gif" alt="解析流程"></p>
+<p>然后剩下的就是体力活: babel 解析出的所有语法树节点类型都在<code>babel-types</code>包中, 需要做的, 就是针对包中的每一种语法结构(导入/变量解构/重命名/函数调用/…)编写处理函数, 最后将所有结果输出为一个 json.</p>
+<p>代码比较冗长, 全文可以翻看这个<a target="_blank" rel="noopener" href="https://github.com/YaoZeyuan/parse_component_by_babel">Github 项目</a>, 这里只展示一下用于统计的数据解构</p>
+<h3 id="项目数据汇总-SummaryCollection"><a href="#项目数据汇总-SummaryCollection" class="headerlink" title="项目数据汇总: SummaryCollection"></a>项目数据汇总: SummaryCollection</h3><p>针对每个项目创建一个<code>SummaryCollection</code>对象. 调用 add 方法登记每个文件的解析结果</p>
+<table>
+<thead>
+<tr>
+<th>函数签名</th>
+<th>功能</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>constructor()</td>
+<td>初始化汇总类</td>
+<td>汇总项目内所有文件的分析记录</td>
+</tr>
+<tr>
+<td>add(target: UsedSummaryInFile)</td>
+<td>添加文件分析数据</td>
+<td></td>
+</tr>
+<tr>
+<td>toJson(): TypeUiLibReport[]</td>
+<td>输出汇总结果</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="文件数据汇总-UsedSummaryInFile"><a href="#文件数据汇总-UsedSummaryInFile" class="headerlink" title="文件数据汇总: UsedSummaryInFile"></a>文件数据汇总: UsedSummaryInFile</h3><p>针对单个 js 文件, 统计目标 npm 的使用记录</p>
+<table>
+<thead>
+<tr>
+<th>函数签名</th>
+<th>功能</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>constructor(fileUri: string)</td>
+<td>初始化文件分析记录</td>
+<td>记录文件<code>fileUri</code>中的 npm 包使用数据</td>
+</tr>
+<tr>
+<td>addLib(libName: string)</td>
+<td>发现目标 npm 后, 登记 npm 包名</td>
+<td></td>
+</tr>
+<tr>
+<td>addLibAlias(libName: string, aliasName: string)</td>
+<td>登记目标 npm 包的别名</td>
+<td></td>
+</tr>
+<tr>
+<td>addComponent(libName: string, componentName: string)</td>
+<td>登记目标 npm 包下组件</td>
+<td></td>
+</tr>
+<tr>
+<td>addComponentAlias(libName: string, componentName: string, componentNameAlias: string)</td>
+<td>登记目标 npm 包下组件的别名</td>
+<td></td>
+</tr>
+<tr>
+<td>incrComponentUseCount(libName: string, componentName: string)</td>
+<td>npm 包下组件使用次数+1</td>
+<td></td>
+</tr>
+<tr>
+<td>incrLibUseCount(libName: string)</td>
+<td>npm 包直接使用次数+1</td>
+<td></td>
+</tr>
+<tr>
+<td>isRegistedLibName(targetName: string)</td>
+<td>检查是否登记过该 npm 包</td>
+<td></td>
+</tr>
+<tr>
+<td>isRegistedComponentName(targetName: string)</td>
+<td>检查是否登记过该组件</td>
+<td></td>
+</tr>
+<tr>
+<td>getComponentNameBelongToLib(targetName: string)</td>
+<td>根据组件名, 查找其隶属的 npm 包名</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="统计-npm-使用情况-UsedLib"><a href="#统计-npm-使用情况-UsedLib" class="headerlink" title="统计 npm 使用情况: UsedLib"></a>统计 npm 使用情况: UsedLib</h3><p>记录 npm 包使用记录, 以及 npm 包内组件使用记录</p>
+<table>
+<thead>
+<tr>
+<th>函数签名</th>
+<th>功能</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>constructor(libName: string)</td>
+<td>初始化 npm 记录, npm 包名为<code>libName</code></td>
+<td>记录 npm 包使用数据</td>
+</tr>
+<tr>
+<td>addComponent(componentName: string)</td>
+<td>登记 <code>libName</code> 包中的组件</td>
+<td>-</td>
+</tr>
+<tr>
+<td>addComponentAlias(componentName: string, componentAliasName: string)</td>
+<td>登记 <code>libName</code> 包中组件的别名</td>
+<td>-</td>
+</tr>
+<tr>
+<td>incrComponentUseCount(componentName: string, fileUri: string)</td>
+<td>组件在文件<code>fileUri</code>中使用次数+1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>incrLibUseCount(fileUri: string)</td>
+<td>npm 库在文件<code>fileUri</code>中使用次数+1</td>
+<td>npm 包可能本身就是一个函数</td>
+</tr>
+<tr>
+<td>isRegistedComponentName(testComponentName: string)</td>
+<td>检查组件名<code>testComponentName</code>是否在<code>libName</code>包中注册过</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h3 id="统计组件使用情况-UsedCompontent"><a href="#统计组件使用情况-UsedCompontent" class="headerlink" title="统计组件使用情况: UsedCompontent"></a>统计组件使用情况: UsedCompontent</h3><p>记录组件使用次数</p>
+<table>
+<thead>
+<tr>
+<th>函数签名</th>
+<th>功能</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>constructor(name: string)</td>
+<td>初始化组件记录对象, name 为被统计组件的名字</td>
+<td>记录组件使用数据</td>
+</tr>
+<tr>
+<td>addAliasName(aliasName: string)</td>
+<td>登记组件别名</td>
+<td>-</td>
+</tr>
+<tr>
+<td>incrUseCount(fileUri: string)</td>
+<td>在文件<code>fileUri</code>中使用次数+1</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>👇 介绍了 babel 处理语法树的流程(Visitor 模式), 抽象语法树概念, babel 工作原理, 必读</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903746804137991">深入 Babel，这一篇就够了</a></p>
+<p>👇 同上, 也是对 babel 的介绍.</p>
+<p><a target="_blank" rel="noopener" href="https://www.zoo.team/article/babel">前端工程师需要了解的 Babel 知识</a></p>
+<p>👇 babel 使用 <code>@babel/babel-parser</code> 解析 js 代码, 而 <code>@babel/babel-parser</code> 则是 fork 的<code>acorn</code>. 处理 babel 生成的抽象语法树时, 必然需要理解每个语法树节点 type 字段的含义(如<code>VariableDeclaration</code>, <code>ImportDefaultSpecifier</code>).</p>
+<p>标准文档在<a target="_blank" rel="noopener" href="https://github.com/babel/babel/blob/master/packages/babel-parser/ast/spec.md">这里</a>, 不过是英文的, 下边是一份汉语版, 开发过程中可以参考</p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903450287800327">使用 Acorn 来解析 JavaScript</a></p>
+<p>👇 在线将 js 代码转换为 AST. 编写相关代码时的必备佳品</p>
+<p><a target="_blank" rel="noopener" href="https://astexplorer.net/">抽象语法树预览</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/02/04/2021/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AD%A6%E7%94%9F%E4%B8%8D%E5%96%9C%E6%AC%A2%E4%B8%8A%E5%AD%A6/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">为什么学生不喜欢上学-分享-逐字稿</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/15/2020/08/%E4%B8%9A%E5%86%85%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/">
+                        <span class="hidden-mobile">业内小程序编辑器实现方案分析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/debouncer.js" ></script>
+<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "如何统计前端项目中npm包的使用率&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/local-search.js" ></script>
+  <script>
+    var path = "https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>
