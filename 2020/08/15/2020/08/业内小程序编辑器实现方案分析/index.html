@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/favicon.png">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="东风夜放花千树, 山长水阔知何处">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  <meta name="description" content="当前, 实现小程序编辑器有以下方案 方案一: 基于 MonacoEditor, 封装文本编辑器在 Electron 中使用 方案一: 启动本地 VS Code 服务器, Electron 中通过 iframe 嵌入网页实现编辑器功能 方案二: 基于 VS Code 完成编辑器功能, 预览功能通过编写 VS Code 插件实现 方案三: 基于 VS Code &#x2F; Theia 源代码, 定制 IDE(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="业内小程序编辑器实现方案分析">
+<meta property="og:url" content="https://www.yaozeyuan.online/2020/08/15/2020/08/%E4%B8%9A%E5%86%85%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="当前, 实现小程序编辑器有以下方案 方案一: 基于 MonacoEditor, 封装文本编辑器在 Electron 中使用 方案一: 启动本地 VS Code 服务器, Electron 中通过 iframe 嵌入网页实现编辑器功能 方案二: 基于 VS Code 完成编辑器功能, 预览功能通过编写 VS Code 插件实现 方案三: 基于 VS Code &#x2F; Theia 源代码, 定制 IDE(">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/6671cfa8ly1ghqfsbfs9lj213c0sw40e.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/6671cfa8ly1ghqnf02e32j213c0sw426.jpg">
+<meta property="article:published_time" content="2020-08-15T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-09T03:54:50.036Z">
+<meta property="article:author" content="姚泽源">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ww1.sinaimg.cn/large/6671cfa8ly1ghqfsbfs9lj213c0sw40e.jpg">
+  
+  <title>业内小程序编辑器实现方案分析 - 代号647</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/customer.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/local-search.xml"};
+  </script>
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/utils.js" ></script>
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>代号647</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="业内小程序编辑器实现方案分析">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-15 08:00" pubdate>
+        2020年8月15日 早上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">业内小程序编辑器实现方案分析</h1>
+            
+            <div class="markdown-body">
+              <p>当前, 实现小程序编辑器有以下方案</p>
+<p>方案一: 基于 MonacoEditor, 封装文本编辑器在 Electron 中使用<br>
+方案一: 启动本地 VS Code 服务器, Electron 中通过 iframe 嵌入网页实现编辑器功能<br>
+方案二: 基于 VS Code 完成编辑器功能, 预览功能通过编写 VS Code 插件实现<br>
+方案三: 基于 VS Code / Theia 源代码, 定制 IDE(快应用/weex ide/TBE)</p>
+<p>各方案优缺点</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">方案名</th>
+<th style="text-align:left">是否便于预览小程序</th>
+<th style="text-align:left">是否便于构建编辑器</th>
+<th style="text-align:left">是否便于部署</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Electron + MonacoEditor</td>
+<td style="text-align:left">✅ 直接在 Electron 中使用 webview 即可预览小程序,<strong>不需要开发</strong></td>
+<td style="text-align:left">🚫 MonacoEditor 定制开发困难, 配置繁多,中文文档资源少,<strong>开发成本高</strong></td>
+<td style="text-align:left">✅ 有成熟的 Electron 打包方案, <strong>不需要开发</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">Electron + 通过本地 VS Code 服务进行编辑</td>
+<td style="text-align:left">✅ 直接在 Electron 中使用 webview 即可预览小程序,<strong>不需要开发</strong></td>
+<td style="text-align:left">✅ 基于 <a target="_blank" rel="noopener" href="https://github.com/cdr/code-server">code-server</a>, 通过 url 传入文件地址即可编辑文件,<strong>不需要开发</strong></td>
+<td style="text-align:left">🚫code-server 不支持 windows 平台.只能通过 docker 进行跨平台部署,但是需要将项目文件映射到 docker 容器内,<strong>部署成本不可接受</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">VSCode + 通过插件中的 webview 预览</td>
+<td style="text-align:left">🚫 vscode 中 webview 功能受限, 不能直接发出网络请求,需要由插件进程进行转发,无法接收 cookie.虽然有<a target="_blank" rel="noopener" href="https://github.com/auchenberg/vscode-browser-preview">Browser Preview</a>方案可以, 通过 puppeteer 单独启动一个 chrome 进程绕过 webview 限制. 但它是基于<a target="_blank" rel="noopener" href="https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-startScreencast">Chrome DevTools Protocol</a>的<code>Page.startScreencast</code>方法不断获取页面截图, 然后通过 webview 里的 canvas 将浏览器界面同步回 VS Code 中, 同步回来的图片模糊, 响应缓慢.<strong>无法满足实际开发需要</strong>,还是不能接受</td>
+<td style="text-align:left">✅ 直接使用 VS Code 本身作为编辑器,<strong>不需要开发</strong></td>
+<td style="text-align:left">🕛 不能上架插件市场, 需要开发团队在插件中内置升级检查接口, 由用户主动下载 vsix 文件安装, <strong>部署成本可以接受</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">VSCode + 修改源代码,解除 webview 中各种限制,定制开发环境</td>
+<td style="text-align:left">🚫 理论上定制后的项目 webview 可以和 Electron 一致, 但由于需要对 VS Code 整体代码进行修改, <strong>开发成本最高</strong></td>
+<td style="text-align:left">✅ 直接使用 VS Code 本身作为编辑器,<strong>不需要开发</strong></td>
+<td style="text-align:left">🕛 需要开发团队在项目中内置升级检查接口, 由用户主动下载安装文件, <strong>部署成本可以接受</strong></td>
+</tr>
+</tbody>
+</table>
+<p>可以看出, 目前没有一个很好的方案, 可以同时满足<code>不需要订制编辑器</code>和<code>不需要开发预览功能</code>两个需求. 无论哪个方案, 都要进行开发工作.</p>
+<p>所以, 如果要开发小程序编辑器, 我们需要在定制 VS Code 和定制 MonacoEditor 之间二选一</p>
+<h1>当前业内方案</h1>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">平台</th>
+<th style="text-align:left">方案</th>
+<th>文件列表中的图标解决方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">微信小程序开发者工具</td>
+<td style="text-align:left">基于 vscode 代码定制小程序编辑器</td>
+<td>通过 vscode 插件<code>wechat-icon-theme</code></td>
+</tr>
+<tr>
+<td style="text-align:left">字节跳动开发者工具</td>
+<td style="text-align:left">基于 MonacoEditor 定制编辑器, 编辑器通过 webview 的方式独立引入项目</td>
+<td>无法进入 webview 查看</td>
+</tr>
+<tr>
+<td style="text-align:left">百度开发者工具</td>
+<td style="text-align:left">基于 MonacoEditor 定制编辑器, 编辑器通过 webview 的方式独立引入项目</td>
+<td>无法进入 webview 查看</td>
+</tr>
+<tr>
+<td style="text-align:left">支付宝(小程序开发者工具)</td>
+<td style="text-align:left">基于 MonacoEditor 定制编辑器, 界面基于 React 渲染, 编辑器是页面的一部分</td>
+<td>通过 css 样式<code>小程序开发者工具/resources/app/vol_modules.asar/node_modules/@alipay/volans-source/out/browser/icon/icon.css</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><a target="_blank" rel="noopener" href="https://www.quickapp.cn/docCenter/IDEPublicity">快应用</a>/<a target="_blank" rel="noopener" href="https://g.alicdn.com/amte-fe/WEEX-IDE-PAGE/v2/index.html?t=1557792000100">Weex Studio</a>/<a target="_blank" rel="noopener" href="https://isv.taobao.com/ide">TBE</a></td>
+<td style="text-align:left">定制 vscode 源代码</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>可以看到, 在基于 Electron 的项目中, 基本都使用了定制<code>MonacoEditor</code>的方式. 虽然微信现在使用的是 Electron + vscode 定制版, 但查看微信开发者工具源代码, 能看到微信也是先定制的<code>MonacoEditor</code>, 然后才转为定制 vscode</p>
+<p>因此, 采用主流方案, 通过 Electron + 定制<code>MonacoEditor</code> 实现小程序编辑器, 还是比较稳妥的.</p>
+<h1>补充</h1>
+<h1>微信小程序开发工具调研</h1>
+<p>微信开发工具探索结论:</p>
+<p>微信使用某种方式, 基于 vscode 源代码, 重新编译出了一套 vscode.</p>
+<p>使用<code>ctrl+alt+shift+p</code>, 输入<code>Preferences:Open User Settings</code>, 可以进入 vscode 的用户配置页面</p>
+<p><img src="https://ww1.sinaimg.cn/large/6671cfa8ly1ghqfsbfs9lj213c0sw40e.jpg" alt="配置页面"></p>
+<p>编译出的代码位于<code>微信web开发者工具\code\package.nw\js\libs\vseditor\bundled\editor.bundled.js</code></p>
+<p>启动编辑器的代码位于<code>core.wxvpkg\45a982046814630a51e40d0fc49574e9.js</code></p>
+<p>编辑器启动配置为</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">const</span> q = &#123;<br>  appRootPath: o,<br>  appActualRoot: n,<br>  language: <span class="hljs-built_in">this</span>.currentLanguageForVsEditor,<br>  isStandaloneEditor: !<span class="hljs-number">1</span>,<br>  projectPath:<br>    <span class="hljs-literal">null</span> !== (a = <span class="hljs-literal">null</span> === k || <span class="hljs-built_in">void</span> <span class="hljs-number">0</span> === k ? <span class="hljs-built_in">void</span> <span class="hljs-number">0</span> : k.projectpath) &amp;&amp;<br>    <span class="hljs-built_in">void</span> <span class="hljs-number">0</span> !== a<br>      ? a<br>      : <span class="hljs-string">&quot;&quot;</span>,<br>  editorRootPath: m,<br>  editorRootRelativeToBundleJSPath: <span class="hljs-string">&quot;..&quot;</span>,<br>  styleSheetRelativeHref: <span class="hljs-string">&quot;../js/libs/vseditor/static/style.css&quot;</span>,<br>  isDev: l,<br>  httpServerPathPrefix: <span class="hljs-string">&quot;__vseditorapp__/&quot;</span> + h.randomString(),<br>  proxyPort: <span class="hljs-built_in">global</span>.proxyPort,<br>  webviewResourceBaseRoot: f.join(m, <span class="hljs-string">&quot;webview-resource&quot;</span>),<br>  isSimplifiedEditorApp: !!<span class="hljs-built_in">global</span>.isSettings2,<br>  useBundledCss: !<span class="hljs-number">0</span>,<br>  bundledStyleSheetRelativeHref: <span class="hljs-string">&quot;../js/libs/vseditor/static/style.bundled.css&quot;</span>,<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h1>支付宝小程序开发工具调研</h1>
+<p>通过查看支付宝小程序 ide 源代码, 可以看到支付宝小程序用的是 开天 Editor, 启动代码如下</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">let</span> K = <span class="hljs-keyword">class</span> VolansTextEditor &#123;<br>  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">e</span>) &#123;<br>    (<span class="hljs-built_in">this</span>.kaitianEditor = e),<br>      (<span class="hljs-built_in">this</span>.onDidEditorFocus = <span class="hljs-built_in">this</span>.kaitianEditor.monacoEditor.onDidFocusEditorWidget),<br>      (<span class="hljs-built_in">this</span>.onDidEditorBlur = <span class="hljs-built_in">this</span>.kaitianEditor.monacoEditor.onDidBlurEditorWidget);<br>  &#125;<br>  getCurrentTextDocument() &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.kaitianEditor.currentDocumentModel<br>      ? <span class="hljs-built_in">this</span>.editorAndDocuments.getVolansDocument(<br>          <span class="hljs-built_in">this</span>.kaitianEditor.currentDocumentModel<br>        )<br>      : <span class="hljs-built_in">void</span> <span class="hljs-number">0</span>;<br>  &#125;<br>  get editor() &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.kaitianEditor.monacoEditor;<br>  &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://minicode.alipay.com/">基于开天框架实现的支付宝小程序在线编辑器</a></p>
+<p>开天框架简介 =&gt;</p>
+<blockquote>
+<p>第一件事是开放的 IDE 生态建设，经过大半年的封闭开发我们已经完成了代号为 “开天” 的 IDE Framework 的研发，IDE Framework 是 IDE 的核心，通过 “开天” IDE Framework 构建的各种 IDE 实现（Web 或本地）来打通研发生态。待再进一步完善后，我们将开源整体的 IDE 解决方案，包括开放的扩展生态体系、Web IDE 容器侧能力等。未来阿里前端的工程体系一定是围绕着 IDE 展开的。</p>
+</blockquote>
+<p>via <a target="_blank" rel="noopener" href="https://www.infoq.cn/article/6tLtcBjW1YpzZ9Z4dXRZ">从阿里前端工程化中台实践，看中台建设的舍与得</a></p>
+<p>开天相关文档 =&gt;</p>
+<p><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/762768">为未来研发模式而生，KAITIAN IDE 在业务中的探索</a><br>
+<a target="_blank" rel="noopener" href="https://fed.taobao.org/blog/taofed/do71ct/custom-theme-in-vscode/">兼容 vscode 插件的主题服务</a><br>
+<a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/756938">跑在浏览器上的小程序 IDE</a> =&gt; 基于开天项目, 在浏览器中运行的小程序/IDE.<br>
+<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/4AIuLKhtOvgqxB15esFPqA">一种高性能的 Tree 组件实现方案</a> =&gt; 开天 IDE 中, 文件树列表的实现<br>
+<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/lmr5DHnkD4UpYHDLAoJo-A">KAITIAN IDE 是如何构建扩展能力极强的插件体系的？</a></p>
+<h1>订制 IDE 方案资料汇总</h1>
+<p><a target="_blank" rel="noopener" href="https://www.barretlee.com/blog/2019/10/23/vscode-study-01-start">让 VSCode 在本地 Run 起来</a><br>
+<a target="_blank" rel="noopener" href="https://www.barretlee.com/blog/2019/08/03/vscode-source-code-reading-notes/">VSCode 是怎么运行起来的？</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhaomenghuan.js.org/blog/theia-tech-architecture.html">Eclipse Theia 框架技术架构揭秘</a><br>
+<a target="_blank" rel="noopener" href="https://theia-ide.org/docs/composing_applications/">基于 Eclipse Theia 构建自有 IDE 文档(英语)</a></p>
+<h1>vscode 源码研究必读</h1>
+<p>执行以下命令, 为 git 克隆 github 项目单独配置 proxy, 走本地代理, 端口需要换成本地 v2ray/shadowsocks 代理端口 &amp; 仅对形如 http/https 协议地址有效 =&gt; <code>https://github.com/microsoft/vscode.git</code></p>
+<p>配置之后, 再在本地下载 vscode 源码会很方便</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">git config --global http.https://github.com.proxy https://127.0.0.1:1080<br>git config --global https.https://github.com.proxy https://127.0.0.1:1080<br></code></pre></td></tr></table></figure>
+<h1>花絮</h1>
+<ol>
+<li>在微信开发者界面, 同时按<code>ctrl+alt+shift+p</code>, 然后输入<code>Preferences:Open User Settings</code>, 可以看到 VS Code 的配置页面</li>
+</ol>
+<p><img src="https://ww1.sinaimg.cn/large/6671cfa8ly1ghqnf02e32j213c0sw426.jpg" alt="微信开发者工具中的vscode配置页"></p>
+<ol start="2">
+<li>微信定制了 vscode 源代码的实锤在<code>微信web开发者工具\code\package.nw\js\libs\vseditor\bundled\editor.bundled.js</code>, 打开这个文件, 能看到这是 n 个文件压缩后的结果. 搜索<code>安装程序文件夹已损坏或与此安装程序版本不兼容。请更正该问题或获取该程序的新副本</code>, 可以发现, 在<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/blob/6c5fa466293c8cb1822ece225c9a907c24c3793a/build/win32/i18n/Default.zh-cn.isl">github.com/microsoft/vscode/build/win32/i18n/Default.zh-cn.isl</a>中有同样的描述</li>
+<li>如果使用<code>MissingWOW64APIs:&quot;你正运行的 Windows 版本不包含安装程序执行 64 位安装所需的功能。要更正此问题，请安装服务包 %1。&quot;</code>这段话进行判断, 鉴于<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/blob/b4f8f96d0365aa0c0293d138175e732ba11be06d/build/win32/i18n/Default.zh-cn.isl">2017-04-20 的提交中</a>还有这段描述, 但在<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/blob/12ab70d329a13dd5b18d892cd40edd7138259bc3/build/win32/i18n/messages.zh-cn.isl">2018-03-05 的提交里删除了这段描述</a>, 所以可以推测, 微信是基于 2017-04-20~2018-03-05 之间的 vscode 版本进行的定制化</li>
+<li>当然也可能正好是微信打包的语言翻译跟过往代码重合了. 从最终界面中看, 微信内的 vscode 版本是相当新的, <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/105528000">2020 年 2 月 7 号</a>的时间线功能都有. 还是相当与时俱进的</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/01/10/2021/01/%E5%A6%82%E4%BD%95%E7%BB%9F%E8%AE%A1%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%ADnpm%E5%8C%85%E7%9A%84%E4%BD%BF%E7%94%A8%E7%8E%87/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">如何统计前端项目中npm包的使用率</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/07/23/2020/07/Windows%E7%B3%BB%E7%BB%9F%E9%87%8D%E8%A3%85%E6%8C%87%E5%8D%97/">
+                        <span class="hidden-mobile">Windows系统重装指南</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/events.js" ></script>
+<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/local-search.js" ></script>
+
+
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/boot.js" ></script>
+
+
+</body>
+</html>
