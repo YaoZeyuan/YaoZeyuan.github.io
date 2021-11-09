@@ -406,6 +406,94 @@ HostCo
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/10/30/2021/10/node%E6%8E%A5%E5%8F%A3%E8%BD%AC%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" target="_self">
+          node 接口转发注意事项
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/10/30/2021/10/node%E6%8E%A5%E5%8F%A3%E8%BD%AC%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" target="_self">
+          
+          
+            
+          
+          前端开发过程中经常遇到接口跨域问题, 很难处理. 因此有了本地起一个 koa, 通过转发接口绕过跨域限制的方案. 这个方案具体实现步骤如下
+处理同一服务的不同接口
+假设本地开发的请求需要转移到 a1.ke.com 项目上, 那么我们需要做这么几件事
+
+添加中间件, 捕获以指定字符串开始的请求, 以便后续转移
+
+
+首先配置服务地址, 区分本地/dev/测试/预览/线上环境
+
+123456789101
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-10-30 08:00" pubdate>
+              2021-10-30
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/10/20/2021/10/%E4%BC%81%E5%BE%AE%20h5-jssdk%20%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E8%B0%83%E7%94%A8%E6%8C%87%E5%8D%97/" target="_self">
+          企微 h5-jssdk 本地开发调用指南
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/10/20/2021/10/%E4%BC%81%E5%BE%AE%20h5-jssdk%20%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E8%B0%83%E7%94%A8%E6%8C%87%E5%8D%97/" target="_self">
+          
+          
+            
+          
+          企微在 h5 环境下调用 js-sdk, 需要解决以下五个问题
+
+在已验证的域名下调用, 域名下要有指定文件
+域名不能带端口号(想在本地开发时测试 api, dev-server 必须启动在 80 端口下)
+初始化 api 时, 企微 sdk 会发送请求验证是否有 api 调用权限(重要)
+初始化 api 时, 配置参数要带校验签名, 该签名由 signature + 当前域名计算得出
+
+由于该项
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-10-20 08:00" pubdate>
+              2021-10-20
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/07/28/2021/07/%E5%BE%AE%E5%A3%B3%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%A6%82%E8%A7%88/" target="_self">
           微壳小程序技术架构概览
         </a>
@@ -523,93 +611,11 @@ HostCo
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/01/10/2021/01/%E5%A6%82%E4%BD%95%E7%BB%9F%E8%AE%A1%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%ADnpm%E5%8C%85%E7%9A%84%E4%BD%BF%E7%94%A8%E7%8E%87/" target="_self">
-          如何统计前端项目中npm包的使用率
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/01/10/2021/01/%E5%A6%82%E4%BD%95%E7%BB%9F%E8%AE%A1%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%ADnpm%E5%8C%85%E7%9A%84%E4%BD%BF%E7%94%A8%E7%8E%87/" target="_self">
-          
-          
-            
-          
-          最近接了个需求, 需要统计公司前端项目中, 自研 npm 包的普及度&amp;包内函数使用量. 解决过程比较有意思, 这里分享下.
-项目的基础思路比较简单, 大致如下图所示.
-
-
-对于获取所有前端项目问题, 由于我司有一套自建的公共前端打包平台, 可以直接调用平台接口拉取项目源码.
-所以剩下的难点只有一个: 如何解析 js 文件, 得到目标 npm 包内导出对象的使用次数.
-其实方法也很简单: b
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-01-10 08:00" pubdate>
-              2021-01-10
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/08/15/2020/08/%E4%B8%9A%E5%86%85%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/" target="_self">
-          业内小程序编辑器实现方案分析
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/08/15/2020/08/%E4%B8%9A%E5%86%85%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/" target="_self">
-          
-          
-            
-          
-          当前, 实现小程序编辑器有以下方案
-方案一: 基于 MonacoEditor, 封装文本编辑器在 Electron 中使用
-方案一: 启动本地 VS Code 服务器, Electron 中通过 iframe 嵌入网页实现编辑器功能
-方案二: 基于 VS Code 完成编辑器功能, 预览功能通过编写 VS Code 插件实现
-方案三: 基于 VS Code / Theia 源代码, 定制 IDE(
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-15 08:00" pubdate>
-              2020-08-15
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
