@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaowrvpj30wd0fd12l.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1gw7uapb14fj30jg1837wh.jpg">
 <meta property="article:published_time" content="2021-11-08T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-11-09T03:54:50.099Z">
+<meta property="article:modified_time" content="2021-11-09T06:23:46.799Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="小程序架构指南">
 <meta name="twitter:card" content="summary_large_image">
@@ -80,7 +80,7 @@
   </script>
   <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/utils.js" ></script>
   <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.2.0"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 
 <body>
@@ -229,7 +229,7 @@
 <p>假设有天老板找到你, 笑眯眯的说: “小王啊, 你看微信百度支付宝都有自己的小程序平台了, 我们什么时候搞个呢?” 这时你会…</p>
 <h1>什么是小程序</h1>
 <p>评估我们是否需要小程序, 首先得定义什么才是小程序</p>
-<p>按照微信的解释, 小程序是一种特殊的网页应用. 传统模式下, 逻辑层(js)和渲染层(dom)都在同一页面上执行, 但在小程序里, 逻辑层运行在 jsCore, 渲染层运行在 webview, 互相不能接触, 而且 jsCore 中只提供了 ECMAScript 规范中定义的语言支持, 除此之外, 无论是浏览器环境中的 Dom/window, 还是 Node.js 中提供的 fs/path 模块, 统统欠奉. 但作为补偿, 微信提供了 wx 对象, 向逻辑层暴露了大量原生能力, 通过 wx 对象和微信平台本身的支持, 小程序最终实现了以下效果<a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/quickstart">出处<em>微信官方文档</em>小程序技术发展史</a></p>
+<p>按照微信的解释, 小程序是一种特殊的网页应用. 传统模式下, 逻辑层(js)和渲染层(dom)都在同一页面上执行, 但在小程序里, 逻辑层运行在 jsCore, 渲染层运行在 webview, 互相不能接触, 而且 jsCore 中只提供了 ECMAScript 规范中定义的语言支持, 除此之外, 无论是浏览器环境中的 Dom/window, 还是 Node.js 中提供的 fs/path 模块, 统统欠奉. 但作为补偿, 微信提供了 wx 对象, 向逻辑层暴露了大量原生能力, 通过 wx 对象和微信平台本身的支持, 小程序最终实现了以下效果<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
 <blockquote>
 <ul>
 <li>
@@ -414,7 +414,7 @@
     webview -&gt;&gt; 用户: 启动完成
 
 </code></pre>
-<p>事实上, 微信小程序文档自己也提到, 微信是先提供了 js-bridge , 然后才提出了小程序方案. <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>事实上, 微信小程序文档自己也提到, 微信是先提供了 js-bridge , 然后才提出了小程序方案. <sup class="footnote-ref"><a href="#fn1" id="fnref1:1">[1:1]</a></sup></p>
 <p>所以, 问题来了: <strong>什么才是小程序方案优于 js-bridge 等其他方案的关键因素?</strong></p>
 <h2 id="小程序方案的真正优势">小程序方案的真正优势</h2>
 <p>2015 年, 微信首先推出了 js-bridge 方案向<strong>公司内部开发者</strong>开放原生能力, 但很快被<strong>平台上的其他开发者</strong>发现, 于是微信顺带推出了正式的 js-sdk 方案, 希望作为平台向开发者提供更多能力.</p>
@@ -457,7 +457,7 @@
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/quickstart">微信官方文档_小程序技术发展史</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/framework/quickstart">微信官方文档_小程序技术发展史</a> <a href="#fnref1" class="footnote-backref">↩︎</a> <a href="#fnref1:1" class="footnote-backref">↩︎</a></p>
 </li>
 <li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1833749">微信小程序基础架构浅析</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
 </li>
