@@ -26,7 +26,7 @@
 <meta property="og:description" content="【译】Java 代码编辑规范 via 普林斯顿算法公开课 目前普林斯顿的算法公开课已经开到了第二周，执教老师是一如既往亮瞎眼的 Adobe 公司董事 Robert Sedgewick，如果你没听说过 Adobe 的话……算了，你只要知道 PhotoShop，PDF，Flash 现在都是他家出的就行，嗯。 译者作为一名没接受过代码规范教育的野生猿类，初次提交代码时被判卷系统的空格和缩进要求折磨的欲仙">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-06-23T09:48:01.000Z">
-<meta property="article:modified_time" content="2021-11-09T03:54:50.111Z">
+<meta property="article:modified_time" content="2022-05-13T14:48:01.829Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -272,7 +272,7 @@
 <li>块注释：使用『/<em>』起头，『</em>/』收尾的一块文本，其中所有内容都将被视为注释</li>
 <li>强调注释：这是一种特殊的块注释，用于提示此处需要注意</li>
 </ul>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">/<span class="hljs-strong">*---------------------------------------------------------</span><br><span class="hljs-strong">*</span>  这里是强调注释<br><span class="hljs-bullet">*  </span>用于将注意力吸引到这里来<br><span class="hljs-strong">*---------------------------------------------------------*</span>/<br></code></pre></td></tr></table></figure>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs markdown">/<span class="hljs-emphasis">*---------------------------------------------------------</span><br><span class="hljs-emphasis">*</span>  这里是强调注释<br><span class="hljs-bullet">*</span>  用于将注意力吸引到这里来<br><span class="hljs-emphasis">*---------------------------------------------------------*</span>/<br></code></pre></td></tr></table></figure>
 <ul>
 <li>Javadoc 注释：Javadoc 是以『/**』起头的特殊块注释，同城被用于自动生成类的 API 文档</li>
 </ul>
@@ -288,7 +288,7 @@
 <li>在每个文件的开头加上下面的注释，简要说明程序的用途以及调用的方法</li>
 </ul>
 <p>示例</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">/<span class="hljs-strong">*----------------------------------------------------------------</span><br><span class="hljs-strong">*</span>  Author:        Kevin Wayne<br><span class="hljs-bullet">*  </span>Written:       5/3/1997<br><span class="hljs-bullet">*  </span>Last updated:  8/7/2006<br><span class="hljs-strong">*</span><br><span class="hljs-strong">*</span>  Compilation:   javac HelloWorld.java<br><span class="hljs-bullet">*  </span>Execution:     java HelloWorld<br><span class="hljs-strong">*</span><br><span class="hljs-strong">*</span>  Prints &quot;Hello, World&quot;. By tradition, this is everyone&#x27;s<br><span class="hljs-bullet">*  </span>first program.<br><span class="hljs-strong">*</span><br><span class="hljs-strong">*</span>  % java HelloWorld<br><span class="hljs-bullet">*  </span>Hello, World<br><span class="hljs-strong">*</span><br><span class="hljs-strong">*</span>----------------------------------------------------------------<span class="hljs-strong">*/</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs markdown">/<span class="hljs-emphasis">*----------------------------------------------------------------</span><br><span class="hljs-emphasis">*</span>  Author:        Kevin Wayne<br><span class="hljs-bullet">*</span>  Written:       5/3/1997<br><span class="hljs-bullet">*</span>  Last updated:  8/7/2006<br><span class="hljs-bullet">*</span><br><span class="hljs-bullet">*</span>  Compilation:   javac HelloWorld.java<br><span class="hljs-bullet">*</span>  Execution:     java HelloWorld<br><span class="hljs-bullet">*</span><br><span class="hljs-bullet">*</span>  Prints &quot;Hello, World&quot;. By tradition, this is everyone&#x27;s<br><span class="hljs-bullet">*</span>  first program.<br><span class="hljs-bullet">*</span><br><span class="hljs-bullet">*</span>  % java HelloWorld<br><span class="hljs-bullet">*</span>  Hello, World<br><span class="hljs-bullet">*</span><br><span class="hljs-emphasis">*----------------------------------------------------------------*</span>/<br></code></pre></td></tr></table></figure>
 <h2 id="空格：">空格：</h2>
 <p>程序员通过留白让他们的程序更方便阅读</p>
 <ul>
@@ -297,13 +297,13 @@
 <li>使用一个空格将变量和操作符之间隔开，除非是想重点强调它</li>
 </ul>
 <p>例</p>
-<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gml">a*<span class="hljs-symbol">x</span> + b<br></code></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">a</span>*x + <span class="hljs-selector-tag">b</span><br></code></pre></td></tr></table></figure>
 <ul>
 <li>在关键字(<em>for</em>，<em>while</em>，<em>if</em>……)和括号间插入一个空格</li>
 <li>用空格将 for 声明内的表达式隔开，比如：</li>
 </ul>
 <p>示例</p>
-<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs matlab"><span class="hljs-keyword">for</span>(int <span class="hljs-built_in">i</span>=<span class="hljs-number">0</span>;<span class="hljs-built_in">i</span>&lt;N;<span class="hljs-built_in">i</span>++)    vs.      <span class="hljs-keyword">for</span> (int <span class="hljs-built_in">i</span> = <span class="hljs-number">0</span>; <span class="hljs-built_in">i</span> &lt; N; <span class="hljs-built_in">i</span>++)<br></code></pre></td></tr></table></figure>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs excel">for(<span class="hljs-built_in">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-built_in">N</span>;i++)    vs.      for (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">N</span>; i++)<br></code></pre></td></tr></table></figure>
 <ul>
 <li>在参数列表的每个逗号后面加上一个空格</li>
 <li>在每条注释定界符『//』的后面加上空格</li>
