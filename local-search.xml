@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>低代码业内资料综述</title>
+    <link href="/2022/05/17/2022/05/%E4%BD%8E%E4%BB%A3%E7%A0%81%E4%B8%9A%E5%86%85%E8%B5%84%E6%96%99%E7%BB%BC%E8%BF%B0/"/>
+    <url>/2022/05/17/2022/05/%E4%BD%8E%E4%BB%A3%E7%A0%81%E4%B8%9A%E5%86%85%E8%B5%84%E6%96%99%E7%BB%BC%E8%BF%B0/</url>
+    
+    <content type="html"><![CDATA[<h1>低代码业内资料综述</h1><table><thead><tr><th style="text-align:left">低代码平台</th><th style="text-align:left">特征</th></tr></thead><tbody><tr><td style="text-align:left">云凤蝶</td><td style="text-align:left">界面美观大方, 组件属性编辑器设计优雅. (缺点: 已停止运行, 无法参考)</td></tr><tr><td style="text-align:left"><a href="https://www.apicloud.com/studio3">API Cloud</a></td><td style="text-align:left">提供拖拉拽集成环境(IDE), 2021 年被用友 1.5 亿元收购</td></tr><tr><td style="text-align:left">乘法云</td><td style="text-align:left">陶文主持, 实现了陶文对于低代码的设想, 可以用于思路参考</td></tr></tbody></table><p><a href="https://github.com/taowen/awesome-lowcode">国内低代码平台汇总-陶文</a></p><h1>文章笔记</h1><h2 id="程序员为什么不喜欢低代码-陶文"><a href="https://zhuanlan.zhihu.com/p/377234404">程序员为什么不喜欢低代码-陶文</a></h2><p>低代码 =&gt; 最终用户编程</p><p>现有需求, 再有解决方案. 付出对应代价/不变, 才能获得想要的优化(C 语言=&gt; 丧失寄存器管理权, java =&gt; 丧失内存管理权)</p><p>强行通过 DSL 解决复杂组件联动, 最后的解决方案一定是 JavaScript 的变种</p><p>抽象与压缩建立在有规律有冗余的基础上, 没有冗余, 就没有压缩(信息熵)</p><p>程序员不喜欢低代码的实质是程序员不喜欢用低代码, 但这是正常现象, 低代码是给最终用户用而本身就不是给程序员用的. 而当程序员成为最终用户时----你看我 markdown 不也写得飞起吗</p><h2 id="云凤蝶可视化搭建的推导与实现"><a href="https://zhuanlan.zhihu.com/p/90746742">云凤蝶可视化搭建的推导与实现</a></h2><h2 id="低代码-无代码十日谈-一-——趋势背后的逻辑"><a href="https://zhuanlan.zhihu.com/p/470015215">低代码/无代码十日谈(一)——趋势背后的逻辑</a></h2>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>面试资料整理</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>小程序架构指南(五):源码详解小程序启动原理(下)</title>
     <link href="/2021/11/08/2021/11/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/"/>
     <url>/2021/11/08/2021/11/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/</url>
