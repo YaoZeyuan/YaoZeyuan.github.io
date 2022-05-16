@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="Laravel 本身是一个很好用的框架, 但是每次查询数据库的时候, 都要DB::table(表名), 非常反人类 今天研究了一下, 发现 DB::table(表名) 实际上是返回了一个\Illuminate\Database\Query\Builder, 而这个 builder 是在框架初始化时创建的Illuminate\Database\Connection, 存在 app(‘db’)字段里,">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ww1.sinaimg.cn/large/6671cfa8ly1fpk7hijeb3j20g50ah0sz.jpg">
-<meta property="og:image" content="https://ww1.sinaimg.cn/large/6671cfa8ly1fpk7hu5263j20k80cxjsd.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/6671cfa8ly1fpk7hijeb3j20g50ah0sz.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/6671cfa8ly1fpk7hu5263j20k80cxjsd.jpg">
 <meta property="article:published_time" content="2018-03-15T09:48:01.000Z">
-<meta property="article:modified_time" content="2022-05-13T14:48:01.782Z">
+<meta property="article:modified_time" content="2022-05-16T06:19:23.114Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://ww1.sinaimg.cn/large/6671cfa8ly1fpk7hijeb3j20g50ah0sz.jpg">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/6671cfa8ly1fpk7hijeb3j20g50ah0sz.jpg">
   
   <title>解决Laravel编写数据库查询语句时的反人类设计 - 代号647</title>
 
@@ -224,8 +224,8 @@
               <p>Laravel 本身是一个很好用的框架, 但是每次查询数据库的时候, 都要<code>DB::table(表名)</code>, 非常反人类</p>
 <p>今天研究了一下, 发现 DB::table(表名) 实际上是返回了一个<code>\Illuminate\Database\Query\Builder</code>, 而这个 builder 是在框架初始化时创建的<code>Illuminate\Database\Connection</code>, 存在 app(‘db’)字段里, 那就好办了, 搞个 Base 类, 调用 db 方法的时候直接返回<code>app('db')-&gt;query()-&gt;newQuery()</code>, over</p>
 <p>截图如下</p>
-<p><img src="https://ww1.sinaimg.cn/large/6671cfa8ly1fpk7hijeb3j20g50ah0sz.jpg" alt="Base类"></p>
-<p><img src="https://ww1.sinaimg.cn/large/6671cfa8ly1fpk7hu5263j20k80cxjsd.jpg" alt="实际查询"></p>
+<p><img src="https://tva1.sinaimg.cn/large/6671cfa8ly1fpk7hijeb3j20g50ah0sz.jpg" alt="Base类"></p>
+<p><img src="https://tva1.sinaimg.cn/large/6671cfa8ly1fpk7hu5263j20k80cxjsd.jpg" alt="实际查询"></p>
 <p>PS:</p>
 <ol>
 <li>相关代码</li>
