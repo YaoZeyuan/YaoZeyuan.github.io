@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/favicon.png">
-  <link rel="icon" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/img/favicon.png">
+  <link rel="icon" href="https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/img/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -25,19 +25,19 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="微壳小程序运行原理概览 大家好, 我是前端架构组的姚泽源, 今天分享下微壳小程序的运行原理概览. 这次分享的由三部分构成. 首先是小程序的基本运行模式和作为配套的平台整体架构. 然后会回答一个大家可能都想过的问题: 为什么我们要开发小程序平台, 为什么不直接用 H5 最后会具体介绍小程序的启动原理. 这一块涉及到自定义渲染器和 React 项目启动流程探索, 相信大家会比较感兴趣. 时间不多, 我">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/im广场.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/小程序基础架构.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/%E7%BE%A4%E9%AD%94%E4%B9%B1%E8%88%9E%E7%9A%84%E5%88%86%E4%BA%AB%E9%A1%B5.jpeg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/%E6%8B%BC%E5%A4%9A%E5%A4%9A_%E9%A6%96%E9%A1%B5.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/微信做小程序只办三件事.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/%E8%83%BD%E4%B8%8D%E8%83%BD%E5%86%8D%E7%BB%99%E5%8A%9B%E7%82%B9%E5%95%8A%E8%80%81%E5%B8%88.jpg">
+<meta property="og:image" content="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/im广场.jpg">
+<meta property="og:image" content="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/小程序基础架构.png">
+<meta property="og:image" content="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/%E7%BE%A4%E9%AD%94%E4%B9%B1%E8%88%9E%E7%9A%84%E5%88%86%E4%BA%AB%E9%A1%B5.jpeg">
+<meta property="og:image" content="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/%E6%8B%BC%E5%A4%9A%E5%A4%9A_%E9%A6%96%E9%A1%B5.png">
+<meta property="og:image" content="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/微信做小程序只办三件事.png">
+<meta property="og:image" content="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/%E8%83%BD%E4%B8%8D%E8%83%BD%E5%86%8D%E7%BB%99%E5%8A%9B%E7%82%B9%E5%95%8A%E8%80%81%E5%B8%88.jpg">
 <meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/784c51422e7646a190c9d3deefbaeab8~tplv-k3u1fbpfcp-zoom-1.image">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/reconciler_hostconfig_renderer.jpg">
+<meta property="og:image" content="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/reconciler_hostconfig_renderer.jpg">
 <meta property="article:published_time" content="2021-07-28T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-05-17T08:22:00.407Z">
+<meta property="article:modified_time" content="2022-05-17T09:43:57.019Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/im广场.jpg">
+<meta name="twitter:image" content="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/im广场.jpg">
   
   <title>微壳小程序技术架构概览 - 代号647</title>
 
@@ -69,7 +69,7 @@
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
 
 
-<link  rel="stylesheet" href="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/css/main.css" />
+<link  rel="stylesheet" href="https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
@@ -80,10 +80,10 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/local-search.xml"};
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/local-search.xml"};
   </script>
-  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/utils.js" ></script>
-  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/color-schema.js" ></script>
+  <script  src="https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/js/utils.js" ></script>
+  <script  src="https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/js/color-schema.js" ></script>
 <meta name="generator" content="Hexo 5.4.0"></head>
 
 
@@ -160,7 +160,7 @@
 </nav>
 
     <div class="banner" id="banner" parallax=true
-         style="background: url('https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/img/default.png') no-repeat center center;
+         style="background: url('https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/img/default.png') no-repeat center center;
            background-size: cover;">
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
@@ -244,14 +244,14 @@
 <p>大家可以把它理解成是贝壳版的微信小程序.</p>
 <h1>启动流程</h1>
 <p>微壳小程序通过 App 启动. 主要依赖<code>推荐列表</code>和<code>小程序详情</code>两个接口. App 会首先调用<code>推荐列表</code>接口展示小程序广场,</p>
-<img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/im广场.jpg" alt="小程序广场-截图" style="max-height:300px">
+<img src="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/im广场.jpg" alt="小程序广场-截图" style="max-height:300px">
 <p>当用户点击广场上的小程序 icon 时, 会调用<code>小程序详情</code>接口获取<code>小程序id</code>对应的<code>静态资源包地址</code>和资源包的<code>md5校验值</code>. App 先检查本地是否有<code>小程序id</code>和<code>md5校验值</code>一致的静态缓存, 有就直接用本地资源, 否则则清空缓存, 重新下载静态资源. 通过提前下载静态资源并保留缓存的方式, App 可以做到<code>一次加载, 全程秒开</code>. 用户体验上秒杀普通网页应用.</p>
 <h1>整体技术架构概览</h1>
 <h2 id="基础模型">基础模型</h2>
 <p>App 从静态资源包中解压出的文件目录如图所示</p>
 <figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs md"><span class="hljs-bullet">-</span> static<br><span class="hljs-bullet">  -</span> css<br><span class="hljs-bullet">    -</span> main.css<br><span class="hljs-bullet">  -</span> main.js<br><span class="hljs-bullet">-</span> index.html<br></code></pre></td></tr></table></figure>
 <p>很显然, 这是一个典型的<code>js/css/html</code>结构的网页应用. 但和普通网页不同, 小程序在运行时, 逻辑层和渲染层是分开的.</p>
-<img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/小程序基础架构.png" alt="小程序基础架构" style="max-height:300px">
+<img src="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/小程序基础架构.png" alt="小程序基础架构" style="max-height:300px">
 <p>启动小程序时, Native 会启动一个 V8 引擎和一个 webview 实例. V8 负责运行<code>main.js</code>文件作为逻辑层, webview 用于载入<code>html</code>和<code>css</code>文件作为表现层对外展示. 切换页面时, V8 不变, 只新增或销毁 webview 实例. 切换 webview 在本地执行, 消耗时间可以忽略不记, 也不会有网页应用中常见的页面切换白屏问题.</p>
 <p>需要特别说明的是, 在这套架构中, V8 中的 js 代码无法接触 webview 中的实际 Dom , 只能通过 Native 传递消息指令进行通信. 目前的微信/QQ/百度/头条/支付宝/钉钉/京东/快手小程序也都是这类架构, 换句话说, 这是业内小程序平台的通用架构. 逻辑层和渲染层相隔离是小程序架构最典型的特征, 也是后续面临的所有的问题之源. 我会在分享的第二部分解释我们选择这种模式的原因.</p>
 <h2 id="周边配套">周边配套</h2>
@@ -309,9 +309,9 @@
 <li>首先, 作为网页, 天然就有白屏问题. 首次加载时白屏, 页面跳转时也会白屏, 用户体验不佳</li>
 <li>其次, 由于网页内容无法控制, 所以出现了各种神奇页面. 给微信带来了巨大的安全风险</li>
 </ol>
-<p><img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/%E7%BE%A4%E9%AD%94%E4%B9%B1%E8%88%9E%E7%9A%84%E5%88%86%E4%BA%AB%E9%A1%B5.jpeg" alt="群魔乱舞"></p>
+<p><img src="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/%E7%BE%A4%E9%AD%94%E4%B9%B1%E8%88%9E%E7%9A%84%E5%88%86%E4%BA%AB%E9%A1%B5.jpeg" alt="群魔乱舞"></p>
 <p>针对这种情况, 微信第一反应就是针对违规页面进行封禁. 但 H5 页面的基本单元只有域名, 而搞黑产的根本不缺域名, 导致平台风控变成了打地鼠游戏, 防不胜防. 就在微信运营团队左支右拙忙的焦头烂额之际, 2015 年 9 月, 一家新注册的公司让微信彻底放弃了挣扎的念想.</p>
-<p><img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/%E6%8B%BC%E5%A4%9A%E5%A4%9A_%E9%A6%96%E9%A1%B5.png" alt="拼多多_首页"></p>
+<p><img src="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/%E6%8B%BC%E5%A4%9A%E5%A4%9A_%E9%A6%96%E9%A1%B5.png" alt="拼多多_首页"></p>
 <p>实际上, 只要允许开发者接触 Dom 环境, 开发者能想出 100 种方法把页面玩出花. 考虑到平台能力开放后的巨大风险, 安全可控成了微信对于第三方页面应用最大的诉求, 具体来说, 是以下三项</p>
 <blockquote>
 <ol>
@@ -320,7 +320,7 @@
 <li>不允许开发者随意使用 window 上的某些未知的可能有危险的 API(白名单是最好的防御)</li>
 </ol>
 </blockquote>
-<img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/微信做小程序只办三件事.png" alt="我微信做小程序只办三件事-安全-安全-还是TMD安全" style="max-width:200px">
+<img src="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/微信做小程序只办三件事.png" alt="我微信做小程序只办三件事-安全-安全-还是TMD安全" style="max-width:200px">
 <p>在这种情况下, 逻辑层和表现层完全分离的双进程方案, 就成了小程序架构的必然选择.</p>
 <table>
 <thead>
@@ -368,7 +368,7 @@ Webview-&gt;&gt;Native(转发): 点击事件
 Native(转发)-&gt;&gt;V8: 点击事件
 
 </code></pre>
-<p><img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/%E8%83%BD%E4%B8%8D%E8%83%BD%E5%86%8D%E7%BB%99%E5%8A%9B%E7%82%B9%E5%95%8A%E8%80%81%E5%B8%88.jpg" alt="能不能再给力点啊, 老师"></p>
+<p><img src="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/%E8%83%BD%E4%B8%8D%E8%83%BD%E5%86%8D%E7%BB%99%E5%8A%9B%E7%82%B9%E5%95%8A%E8%80%81%E5%B8%88.jpg" alt="能不能再给力点啊, 老师"></p>
 <p>当然可以, 但在讲解启动流程前, 我们需要先介绍两项小程序依赖的基础能力.</p>
 <h1>问题一: V8 引擎 和 webview 的通讯实现.</h1>
 <p>第一个问题, V8 ,Native 和 webview 间如何通信?</p>
@@ -421,7 +421,7 @@ Native(转发)-&gt;&gt;V8: 点击事件
 <p>Reconciler 在计算完成后, 会调用 Renderer 渲染器上的方法. 这些方法包括不限于:</p>
 <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jsx">createInstance; <span class="hljs-comment">// 创建节点实例</span><br>createTextInstance; <span class="hljs-comment">// 创建文本节点</span><br><br>appendChild; <span class="hljs-comment">// 在实例下添加子节点</span><br>removeChild; <span class="hljs-comment">// 在实例下删除子节点</span><br><br>appendChildToContainer; <span class="hljs-comment">// 在根容器内添加子节点</span><br>removeChildFromContainer; <span class="hljs-comment">// 在容器内删除子节点</span><br></code></pre></td></tr></table></figure>
 <p>这些方法合称为 <a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/main/packages/react-reconciler/src/forks/ReactFiberHostConfig.custom.js">HostConfig</a>, 相当于调和器和渲染器之间的协议. HostConfig 本身是一个具有以上方法的普通对象, 调和器实例化时接收这个对象, 然后会按实际需要调用 HostConfig 上的接口. HostConfig 收到请求后, 转调渲染器中的方法. 而渲染器的任务就是实现这些方法, 在平台上渲染出实际节点.</p>
-<p><img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/reconciler_hostconfig_renderer.jpg" alt="Reconciler--&gt;HostConfig--&gt;Reconciler"></p>
+<p><img src="https://raw.githubusercontents.com/YaoZeyuan/blog/master/source/_posts/2021/07/./img/reconciler_hostconfig_renderer.jpg" alt="Reconciler--&gt;HostConfig--&gt;Reconciler"></p>
 <p>但这里要注意下, 根据 HostConfig, 我们只要求渲染器实现<code>createInstance</code>/<code>appendChild</code>这些方法, 但没要求这些方法具体怎么实现. 像 <code>appendChild</code> 这种 dom 对象上直接就有的方法, 在 web 平台上写渲染器当然方便, 但要是我在 iOS 平台上也实现一套 HostConfig 协议呢?</p>
 <p>当然没问题.</p>
 <ul>
@@ -699,13 +699,13 @@ Native(转发)-&gt;&gt;V8: 点击事件
 
 <script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
 <script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/events.js" ></script>
-<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/plugins.js" ></script>
+<script  src="https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/js/events.js" ></script>
+<script  src="https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/js/plugins.js" ></script>
 
 <!-- Plugins -->
 
 
-  <script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/local-search.js" ></script>
+  <script  src="https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/js/local-search.js" ></script>
 
 
 
@@ -790,7 +790,7 @@ Native(转发)-&gt;&gt;V8: 点击事件
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="https://cdn.jsdelivr.net/gh/YaoZeyuan/YaoZeyuan.github.io@master/js/boot.js" ></script>
+<script  src="https://raw.githubusercontents.com/YaoZeyuan/YaoZeyuan.github.io/master/js/boot.js" ></script>
 
 
 </body>
