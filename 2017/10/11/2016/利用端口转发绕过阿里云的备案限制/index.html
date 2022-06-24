@@ -18,19 +18,19 @@
   <meta name="description" content="东风夜放花千树, 山长水阔知何处">
   <meta name="author" content="姚泽源">
   <meta name="keywords" content="">
-  <meta name="description" content="adminer是一个非常好用的数据库管理软件, 但是在我把网络服务器从apache换成ngnix之后，它的记住账号密码的功能突然不能用了。 每次重启完电脑，再点左边的登录记录，总是提示说『Master password expired. Implement permanentLogin() method to make it permanent.』 这个问题困扰了我很长时间，一开始认为是sessi">
+  <meta name="description" content="目前只有备案过的域名才能解析到阿里云服务器上,  这一点对于online域名来说就坑大了，所以需要利用端口转发，将域名先解析到国外的vps，由vps作为中转站将请求转发给阿里云服务器，再展示响应结果。这样才能绕过阿里云的备案限制 方案如下：   下载并安装端口转发服务器(tcptunnel) 123456git clone https:&#x2F;&#x2F;github.com&#x2F;vakuum&#x2F;tcptunnel.g">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决adminer不能自动登录的问题">
-<meta property="og:url" content="https://www.yaozeyuan.online/2017/10/11/%E8%A7%A3%E5%86%B3adminer%E4%B8%8D%E8%83%BD%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:title" content="利用端口转发绕过阿里云的备案限制">
+<meta property="og:url" content="https://www.yaozeyuan.online/2017/10/11/2016/%E5%88%A9%E7%94%A8%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%E7%BB%95%E8%BF%87%E9%98%BF%E9%87%8C%E4%BA%91%E7%9A%84%E5%A4%87%E6%A1%88%E9%99%90%E5%88%B6/index.html">
 <meta property="og:site_name" content="代号647">
-<meta property="og:description" content="adminer是一个非常好用的数据库管理软件, 但是在我把网络服务器从apache换成ngnix之后，它的记住账号密码的功能突然不能用了。 每次重启完电脑，再点左边的登录记录，总是提示说『Master password expired. Implement permanentLogin() method to make it permanent.』 这个问题困扰了我很长时间，一开始认为是sessi">
+<meta property="og:description" content="目前只有备案过的域名才能解析到阿里云服务器上,  这一点对于online域名来说就坑大了，所以需要利用端口转发，将域名先解析到国外的vps，由vps作为中转站将请求转发给阿里云服务器，再展示响应结果。这样才能绕过阿里云的备案限制 方案如下：   下载并安装端口转发服务器(tcptunnel) 123456git clone https:&#x2F;&#x2F;github.com&#x2F;vakuum&#x2F;tcptunnel.g">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-10-11T09:48:01.000Z">
-<meta property="article:modified_time" content="2022-06-24T13:27:34.710Z">
+<meta property="article:modified_time" content="2022-06-24T14:02:51.862Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
   
-  <title>解决adminer不能自动登录的问题 - 代号647</title>
+  <title>利用端口转发绕过阿里云的备案限制 - 代号647</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -156,7 +156,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="解决adminer不能自动登录的问题">
+            <span class="h2" id="subtitle" title="利用端口转发绕过阿里云的备案限制">
               
             </span>
 
@@ -177,7 +177,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      682 字
     </span>
   
 
@@ -186,7 +186,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3 分钟
+      2 分钟
     </span>
   
 
@@ -215,19 +215,35 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">解决adminer不能自动登录的问题</h1>
+            <h1 style="display: none">利用端口转发绕过阿里云的备案限制</h1>
             
             <div class="markdown-body">
-              <p><code>adminer</code>是一个非常好用的数据库管理软件, 但是在我把网络服务器从<code>apache</code>换成<code>ngnix</code>之后，它的记住账号密码的功能突然不能用了。</p>
-<p>每次重启完电脑，再点左边的登录记录，总是提示说『<code>Master password expired. Implement permanentLogin() method to make it permanent.</code>』</p>
-<p>这个问题困扰了我很长时间，一开始认为是<code>session</code>的问题，看了下配置&amp;重启虚拟机发现<code>session</code>记录完好。然后发现只要不关浏览器，就没有问题。这就很诡异了。。。</p>
-<p>今天下午突然发现每次重启浏览器后它的<code>cookie</code>都不一样，再查看源代码，发现有这么一句：</p>
-<pre><code>$params = session_get_cookie_params();
-cookie(&quot;adminer_key&quot;, ($_COOKIE[&quot;adminer_key&quot;] ? $_COOKIE[&quot;adminer_key&quot;] : rand_string()), $params[&quot;lifetime&quot;]);
-</code></pre>
-<p>果断编辑代码查看<code>$params[&quot;lifetime&quot;]</code>的值，果然是<code>0</code> =&gt;  <code>cookie</code>没有保存上！</p>
-<p>那答案就很明显了。由于<code>cookie</code>没记上，所以记住密码功能肯定也不能用了。查了下<code>session_get_cookie_params</code>的函数说明，把<code>php.ini</code>里<code>session.cookie_lifetime</code>的配置从<code>0</code>改成<code>8640000</code>，问题解决</p>
-<p>PS: 顺带补一句，如果在配置中没开启<code>session.auto_start</code>的话, <code>adminer</code>会在代码里重载<code>cookie</code>的生命周期配置,还是会导致cookie生存时间为0, 出现无法记录登录信息的bug。这里可以直接在<code>adminer.php</code>的代码前加行<code>session_name(&quot;adminer_sid&quot;);session_start();</code> 或者搜索<code>call_user_func_array('session_set_cookie_params'</code>,把前边那句<code>$xe=array(0,preg_replace('~\\?.*~','',$_SERVER[&quot;REQUEST_URI&quot;]),&quot;&quot;,$ba)</code>改成<code>$xe=array(8640000,preg_replace('~\\?.*~','',$_SERVER[&quot;REQUEST_URI&quot;]),&quot;&quot;,$ba)</code>，手工指定上<code>cookie</code>过期时间就好了</p>
+              <p>目前只有备案过的域名才能解析到阿里云服务器上,  这一点对于online域名来说就坑大了，所以需要利用端口转发，将域名先解析到国外的vps，由vps作为中转站将请求转发给阿里云服务器，再展示响应结果。这样才能绕过阿里云的备案限制</p>
+<p>方案如下：</p>
+<ol>
+<li>
+<p>下载并安装端口转发服务器(tcptunnel)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/vakuum/tcptunnel.git<br><span class="hljs-built_in">cd</span> tcptunnel<br>./configure<br>make<br>./tcptunnel --version<br>./tcptunnel --<span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>将转发配置添加到cron里(以确保能够自动启动)</p>
+<ul>
+<li>
+<p>由于端口号是独占的，所以可以设置成每分钟启动一次tcptunnel, 当已有tcptunnel实例存在时，新启动的实例会自动退出。所以不会有重复运行的问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">* * * * * /root/tcptunnel/tcptunnel --local-port=80 --remote-port=[阿里云服务器端口(非80/443端口)] --remote-host=[阿里云服务器ip] --fork --buffer-size=8192 --stay-alive &amp;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p>在阿里云上打开对指定端口的监听。 ubuntu apache的配置在<code>/etc/apache2/prots.conf</code>下边，如果tcptunnel的–remote-port设的是8733的话，只要在<code>listen 80</code> 下边加句<code>listen 8733</code>就可以了</p>
+</li>
+<li>
+<p>在<code>sites-enabled</code>配置文件中也要加上对指定端口的监听</p>
+</li>
+<li>
+<p>全部配置完成后，重启apache服务器载入配置，over</p>
+</li>
+</ol>
 
             </div>
             <hr>
@@ -248,9 +264,9 @@ cookie(&quot;adminer_key&quot;, ($_COOKIE[&quot;adminer_key&quot;] ? $_COOKIE[&q
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2017/10/11/%E5%88%A9%E7%94%A8%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%E7%BB%95%E8%BF%87%E9%98%BF%E9%87%8C%E4%BA%91%E7%9A%84%E5%A4%87%E6%A1%88%E9%99%90%E5%88%B6/">
+                      <a href="/2018/01/07/2018/01/ThinkPad%20T460p%20%E8%A7%A6%E6%91%B8%E6%9D%BF%E4%B8%8D%E5%AE%9A%E6%9C%9F%E5%A4%B1%E7%81%B5,%20%E9%BC%A0%E6%A0%87%E5%8A%A8%E4%B8%8D%E4%BA%86%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">利用端口转发绕过阿里云的备案限制</span>
+                        <span class="hidden-mobile">ThinkPad T460p 触摸板不定期失灵, 鼠标动不了的解决方案</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -258,8 +274,8 @@ cookie(&quot;adminer_key&quot;, ($_COOKIE[&quot;adminer_key&quot;] ? $_COOKIE[&q
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2016/06/26/%E7%BC%96%E5%86%99%E5%8F%AF%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%9A%84%E8%89%BA%E6%9C%AF/">
-                        <span class="hidden-mobile">编写可读代码的艺术</span>
+                      <a href="/2017/10/11/2016/%E8%A7%A3%E5%86%B3adminer%E4%B8%8D%E8%83%BD%E8%87%AA%E5%8A%A8%E7%99%BB%E5%BD%95%E7%9A%84%E9%97%AE%E9%A2%98/">
+                        <span class="hidden-mobile">解决adminer不能自动登录的问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
