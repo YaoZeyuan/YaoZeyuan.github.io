@@ -15,10 +15,10 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="东风夜放花千树, 山长水阔知何处">
   <meta name="author" content="姚泽源">
   <meta name="keywords" content="">
-  <meta name="description" content="微壳小程序运行原理概览 大家好, 我是前端架构组的姚泽源, 今天分享下微壳小程序的运行原理概览. 这次分享的由三部分构成. 首先是小程序的基本运行模式和作为配套的平台整体架构. 然后会回答一个大家可能都想过的问题: 为什么我们要开发小程序平台, 为什么不直接用 H5 最后会具体介绍小程序的启动原理. 这一块涉及到自定义渲染器和 React 项目启动流程探索, 相信大家会比较感兴趣. 时间不多, 我">
+  
+    <meta name="description" content="微壳小程序运行原理概览 大家好, 我是前端架构组的姚泽源, 今天分享下微壳小程序的运行原理概览. 这次分享的由三部分构成. 首先是小程序的基本运行模式和作为配套的平台整体架构. 然后会回答一个大家可能都想过的问题: 为什么我们要开发小程序平台, 为什么不直接用 H5 最后会具体介绍小程序的启动原理. 这一块涉及到自定义渲染器和 React 项目启动流程探索, 相信大家会比较感兴趣. 时间不多, 我">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微壳小程序技术架构概览">
 <meta property="og:url" content="https://www.yaozeyuan.online/2021/07/28/2021/07/%E5%BE%AE%E5%A3%B3%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%A6%82%E8%A7%88/index.html">
@@ -34,44 +34,46 @@
 <meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/784c51422e7646a190c9d3deefbaeab8~tplv-k3u1fbpfcp-zoom-1.image">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/reconciler_hostconfig_renderer.jpg">
 <meta property="article:published_time" content="2021-07-28T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-25T02:04:52.293Z">
+<meta property="article:modified_time" content="2022-06-25T02:09:33.808Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/im广场.jpg">
   
+  
+  
   <title>微壳小程序技术架构概览 - 代号647</title>
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
-    
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-  
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
 
   
 <link rel="stylesheet" href="/css/customer.css">
@@ -80,16 +82,59 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 
 <body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
       <strong>代号647</strong>
@@ -147,6 +192,7 @@
               &nbsp;<i class="iconfont icon-search"></i>&nbsp;
             </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
@@ -159,57 +205,71 @@
   </div>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('/static/img/banner/background-img.webp') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="微壳小程序技术架构概览">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-07-28 08:00" pubdate>
-        2021年7月28日 早上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      16k 字
-    </span>
   
 
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      50 分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background-img.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="微壳小程序技术架构概览"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-07-28 08:00" pubdate>
+          2021年7月28日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          16k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          133 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
@@ -218,16 +278,22 @@
 
 <div class="container-fluid nopadding-x">
   <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
     <div class="col-lg-8 nopadding-x-md">
       <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
+        <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
             <h1 style="display: none">微壳小程序技术架构概览</h1>
             
-            <div class="markdown-body">
-              <h1>微壳小程序运行原理概览</h1>
+            
+              <div class="markdown-body">
+                
+                <h1>微壳小程序运行原理概览</h1>
 <p>大家好, 我是<code>前端架构组</code>的姚泽源, 今天分享下微壳小程序的运行原理概览. 这次分享的由三部分构成.</p>
 <p>首先是小程序的基本运行模式和作为配套的平台整体架构.<br>
 然后会回答一个大家可能都想过的问题: 为什么我们要开发小程序平台, 为什么不直接用 H5<br>
@@ -380,7 +446,7 @@ Native(转发)-&gt;&gt;V8: 点击事件
 </code></pre>
 <p>考虑到 V8 和 webview 都是由 Native 创建出的 js 运行环境实例, 所以 webview 和 Native 间的通信原理和 V8 和 Native 间的通信原理基本一致, 我们只讲下 V8 和 Native 的通信过程实现.</p>
 <p>由于 V8 是 Native 创建出的实例, 因此 Native 可以监控 V8 里的函数调用, 也能直接调用 V8 中的函数. 因此, 我们可以约定一个全局函数名, 例如 V8CallNative. 当基础库在 V8 中调用该函数时, Native 会暂停 V8 的运行, 然后解析传给 V8CallNative 的参数. 在实践中, 我们规定这个参数一定是 json 形式并有以下结构</p>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> Protocol = &#123;<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// 递增的函数调用id, 作为函数身份标记</span><br>  apiName: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// 实际调用的API名</span><br>  callbackName: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// 处理完成后V8中用于接收结果的回调函数名</span><br>  argvListJson: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Json化后的参数列表</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">type</span> <span class="hljs-title class_">Protocol</span> = &#123;<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// 递增的函数调用id, 作为函数身份标记</span><br>  <span class="hljs-attr">apiName</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// 实际调用的API名</span><br>  <span class="hljs-attr">callbackName</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// 处理完成后V8中用于接收结果的回调函数名</span><br>  <span class="hljs-attr">argvListJson</span>: <span class="hljs-built_in">string</span>; <span class="hljs-comment">// Json化后的参数列表</span><br>&#125;;<br></code></pre></td></tr></table></figure>
 <p>一般情况下, 由于 V8CallNative 函数执行期间 V8 处于暂停状态, 时间长了会影响页面的响应速度. 所以对于大多数请求, Native 拿到参数后就会设置 V8CallNative 函数的返回值并恢复 V8 的运行, 避免影响 V8 业务. 所以这也是小程序内的 API 基本都要靠回调获取结果的原因. 至于为什么接口回调不是 Promise 形式, 这主要要怪微信…出于降低学习成本考虑, 小程序平台 API 一般要和微信的 API 进行对齐, 而由于微信本身是 callback 形式, 导致我们在设计时也只能设计成 callback 形式的 API.</p>
 <pre><code class=" mermaid">graph LR
   Native_2(Native) -- 调用 --&gt; V8_2(NativeCallV8方法) -- V8-基础库 --&gt; V8_3(读取参数, 识别内容)
@@ -475,57 +541,57 @@ Native(转发)-&gt;&gt;V8: 点击事件
 </code></pre>
 <p>很显然, 我们需要两个 render.</p>
 <p>第一个 Render 构建在 V8 内部, 他要实现一个 Container 容器供 Reconciler 调用, 实现一个 VNode 类供 Container 创建 VNode 节点树. Container 中还要有一个 updateCommandQueen 队列, 用于在 Reconciler 调用 Container 的方法时, 记录下节点更新序列. 在一个更新周期完成后(调用了 HostConfig 中规定的<code>resetAfterCommit</code>方法), 将更新队列 JSON 化成字符串, 通过 Native 发送给 webview</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs tsx">// VNode数据结构定义(部分)<br>class VNode &#123;<br>  id: number;<br>  container: Container;<br>  text?: string;<br><br>  removeChild(node: VNode, immediately: boolean);<br>  insertBefore(node: VNode, referenceNode: VNode, immediately: boolean);<br>  update();<br>  toJSON();<br>&#125;<br></code></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs tsx">// 更新指令定义<br>interface TypeSpliceUpdate &#123;<br>  /**<br>   * 操作类型<br>   */<br>  actionType: TypeActionType;<br>  path: string;<br>  start: number;<br>  deleteCount: number;<br>  items: VNode[];<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-comment">// VNode数据结构定义(部分)</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">VNode</span> &#123;<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">container</span>: <span class="hljs-title class_">Container</span>;<br>  text?: <span class="hljs-built_in">string</span>;<br><br>  <span class="hljs-title function_">removeChild</span>(<span class="hljs-attr">node</span>: <span class="hljs-title class_">VNode</span>, <span class="hljs-attr">immediately</span>: <span class="hljs-built_in">boolean</span>);<br>  <span class="hljs-title function_">insertBefore</span>(<span class="hljs-attr">node</span>: <span class="hljs-title class_">VNode</span>, <span class="hljs-attr">referenceNode</span>: <span class="hljs-title class_">VNode</span>, <span class="hljs-attr">immediately</span>: <span class="hljs-built_in">boolean</span>);<br>  <span class="hljs-title function_">update</span>();<br>  <span class="hljs-title function_">toJSON</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-comment">// 更新指令定义</span><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">TypeSpliceUpdate</span> &#123;<br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * 操作类型</span><br><span class="hljs-comment">   */</span><br>  <span class="hljs-attr">actionType</span>: <span class="hljs-title class_">TypeActionType</span>;<br>  <span class="hljs-attr">path</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">start</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">deleteCount</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">items</span>: <span class="hljs-title class_">VNode</span>[];<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>在 webview 中, 我们需要一个简单的 render, 根据更新指令列表, 创建真实的 Dom 元素…就完了?</p>
 <p>还差一步. 但在点出差的那一步之前, 我们先回顾下微壳小程序启动的实际流程.</p>
 <h1>微壳小程序启动的实际流程</h1>
 <ol>
 <li>首先, 小程序构建器会将 app.json 翻译成实际的入口文件</li>
 </ol>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs json">&#123;<br>  <span class="hljs-attr">&quot;pages&quot;</span>: [<span class="hljs-string">&quot;pages/page1/index&quot;</span>, <span class="hljs-string">&quot;pages/page2/index&quot;</span>],<br>  <span class="hljs-attr">&quot;debug&quot;</span>: <span class="hljs-literal">true</span>,<br>  <span class="hljs-attr">&quot;appId&quot;</span>: <span class="hljs-string">&quot;_undefined_&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs tsx">import Entry_048f08fe8 from &quot;F:/www/test/pages/page1/index.tsx&quot;;<br>import Entry_048f08fe8_Config from &quot;F:/www/test/pages/page1/index.json&quot;;<br>import Entry_5924e300d from &quot;F:/www/test/pages/page2/index.tsx&quot;;<br>import Entry_5924e300d_Config from &quot;F:/www/test/pages/page2/index.json&quot;;<br>export default &#123;<br>  // 页面入口<br>  pages: [<br>    &#123;<br>      path: &quot;pages/page1/index&quot;,<br>      entry: Entry_048f08fe8,<br>      config: Entry_048f08fe8_Config,<br>    &#125;,<br>    &#123;<br>      path: &quot;pages/page2/index&quot;,<br>      entry: Entry_5924e300d,<br>      config: Entry_5924e300d_Config,<br>    &#125;,<br>  ],<br>  // 原app.json内容<br>  appJson: &#123;<br>    pages: [&quot;pages/page1/index&quot;, &quot;pages/page2/index&quot;],<br>    debug: true,<br>    appId: &quot;_undefined_&quot;,<br>  &#125;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;pages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;pages/page1/index&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;pages/page2/index&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;debug&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-keyword">true</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;appId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;_undefined_&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Entry</span>_048f08fe8 <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;F:/www/test/pages/page1/index.tsx&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Entry</span>_048f08fe8_Config <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;F:/www/test/pages/page1/index.json&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Entry</span>_5924e300d <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;F:/www/test/pages/page2/index.tsx&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Entry</span>_5924e300d_Config <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;F:/www/test/pages/page2/index.json&quot;</span>;<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  <span class="hljs-comment">// 页面入口</span><br>  <span class="hljs-attr">pages</span>: [<br>    &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;pages/page1/index&quot;</span>,<br>      <span class="hljs-attr">entry</span>: <span class="hljs-title class_">Entry</span>_048f08fe8,<br>      <span class="hljs-attr">config</span>: <span class="hljs-title class_">Entry</span>_048f08fe8_Config,<br>    &#125;,<br>    &#123;<br>      <span class="hljs-attr">path</span>: <span class="hljs-string">&quot;pages/page2/index&quot;</span>,<br>      <span class="hljs-attr">entry</span>: <span class="hljs-title class_">Entry</span>_5924e300d,<br>      <span class="hljs-attr">config</span>: <span class="hljs-title class_">Entry</span>_5924e300d_Config,<br>    &#125;,<br>  ],<br>  <span class="hljs-comment">// 原app.json内容</span><br>  <span class="hljs-attr">appJson</span>: &#123;<br>    <span class="hljs-attr">pages</span>: [<span class="hljs-string">&quot;pages/page1/index&quot;</span>, <span class="hljs-string">&quot;pages/page2/index&quot;</span>],<br>    <span class="hljs-attr">debug</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">appId</span>: <span class="hljs-string">&quot;_undefined_&quot;</span>,<br>  &#125;,<br>&#125;;<br></code></pre></td></tr></table></figure>
 <ol start="2">
 <li>在生成的入口配置文件中, 我们能拿到页面路径和实际 render 函数之间的对应关系, 据此可以生成路由配置.</li>
 <li>小程序启动时, 首先载入的是 app.ts 文件. 文件内容很简单, 就是调用 App 函数</li>
 </ol>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; App &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@ke/miniprogram&quot;</span>;<br><br><span class="hljs-comment">// 初始化项目</span><br>App();<br></code></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">App</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@ke/miniprogram&quot;</span>;<br><br><span class="hljs-comment">// 初始化项目</span><br><span class="hljs-title class_">App</span>();<br></code></pre></td></tr></table></figure>
 <ol start="4">
 <li>在 App 函数只做两件事: 第一, 根据实际入口文件初始化路由, 第二, 调用 Native 方法, 通知小程序 js 启动完毕.</li>
 </ol>
-<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">App</span>(<span class="hljs-params">options?: AppOptions</span>) </span>&#123;<br>  <span class="hljs-keyword">if</span> (initRouter(options)) &#123;<br>    bridge.v8CallNative(&#123;<br>      <span class="hljs-attr">apiName</span>: <span class="hljs-string">&quot;onAppLaunch&quot;</span>,<br>      <span class="hljs-attr">callbackName</span>: <span class="hljs-string">&quot;onAppLaunchCallback&quot;</span>,<br>    &#125;);<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>();<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs jsx"><span class="hljs-keyword">function</span> <span class="hljs-title function_">App</span>(<span class="hljs-params">options?: AppOptions</span>) &#123;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">initRouter</span>(options)) &#123;<br>    bridge.<span class="hljs-title function_">v8CallNative</span>(&#123;<br>      <span class="hljs-attr">apiName</span>: <span class="hljs-string">&quot;onAppLaunch&quot;</span>,<br>      <span class="hljs-attr">callbackName</span>: <span class="hljs-string">&quot;onAppLaunchCallback&quot;</span>,<br>    &#125;);<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-title class_">Error</span>();<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ol>
 <li>Native 收到通知, 得知 V8 中的 js 加载完毕后, 调用 V8 中基础库的 onShow 回调, 同时在回调中传入页面参数, 通知小程序可以开始进行 dom 渲染.</li>
 <li>基础库 在 onShow 回调中拿到路由参数后, 调用<code>NavigateTo</code>开始渲染实际页面</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs tsx">static navigateToCallback(json: object) &#123;<br>  // ...<br>  const callbackObj = json[&#x27;apiName&#x27;];<br>  const params = json[&#x27;params&#x27;];<br>  const parseParams = JSON.parse(decodeURIComponent(params));<br>  createPageContext();<br>  // ...<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">static</span> <span class="hljs-title function_">navigateToCallback</span>(<span class="hljs-params">json: <span class="hljs-built_in">object</span></span>) &#123;<br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-keyword">const</span> callbackObj = json[<span class="hljs-string">&#x27;apiName&#x27;</span>];<br>  <span class="hljs-keyword">const</span> params = json[<span class="hljs-string">&#x27;params&#x27;</span>];<br>  <span class="hljs-keyword">const</span> parseParams = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(<span class="hljs-built_in">decodeURIComponent</span>(params));<br>  <span class="hljs-title function_">createPageContext</span>();<br>  <span class="hljs-comment">// ...</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
 <ol start="7">
 <li>
 <p>具体执行流程如下</p>
 <ol>
 <li>
 <p>创建<code>Container</code>容器实例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs tsx">export default function createPageContext(type: string) &#123;<br>  // ...<br>  const path = result[&quot;path&quot;];<br>  const query = result[&quot;query&quot;];<br>  // 拿到path对应页面的渲染函数<br>  const pageJsx = getPageJsx(path);<br>  // 创建container<br>  const container = new Container();<br>  // 页面实例<br>  const pageInstance = createPageConfig(pageJsx, container);<br>  // 触发load事件, 触发生命周期, 载入组件元素<br>  pageInstance.onLoad(query);<br>  // ...<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createPageContext</span>(<span class="hljs-params"><span class="hljs-keyword">type</span>: <span class="hljs-built_in">string</span></span>) &#123;<br>  <span class="hljs-comment">// ...</span><br>  <span class="hljs-keyword">const</span> path = result[<span class="hljs-string">&quot;path&quot;</span>];<br>  <span class="hljs-keyword">const</span> query = result[<span class="hljs-string">&quot;query&quot;</span>];<br>  <span class="hljs-comment">// 拿到path对应页面的渲染函数</span><br>  <span class="hljs-keyword">const</span> pageJsx = <span class="hljs-title function_">getPageJsx</span>(path);<br>  <span class="hljs-comment">// 创建container</span><br>  <span class="hljs-keyword">const</span> container = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Container</span>();<br>  <span class="hljs-comment">// 页面实例</span><br>  <span class="hljs-keyword">const</span> pageInstance = <span class="hljs-title function_">createPageConfig</span>(pageJsx, container);<br>  <span class="hljs-comment">// 触发load事件, 触发生命周期, 载入组件元素</span><br>  pageInstance.<span class="hljs-title function_">onLoad</span>(query);<br>  <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
 <li>
 <p>执行<code>createPageConfig(Page: React.Component, container: Container)</code>方法, 创建页面实例. Page 参数为路径对应的渲染函数, Container 为第一步创建的容器实例. 一步步跟踪, 可以看到<code>createPageContext</code>-&gt;<code>createPageConfig</code>-&gt;<code>createAppConfig</code>-&gt;<code>render</code>的调用链.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs tsx">// createPageConfig实现示例<br>let app = createAppConfig((&#123; children &#125;) =&gt; children);<br><br>export default function createPageConfig(<br>  Page: React.Component,<br>  container: Container<br>) &#123;<br>  const config: any = &#123;<br>    onLoad(this: any, query: any) &#123;<br>      const PageWrapper = createPageWrapper(Page, query);<br>      this.pageId = generatePageId();<br><br>      this.query = query;<br>      this.container = container;<br>      this.element = createPortal(<br>        React.createElement(PageWrapper, &#123;<br>          page: this,<br>          ref: this.wrapperRef,<br>        &#125;),<br>        this.container,<br>        this.pageId<br>      );<br><br>      app._mount(this);<br>    &#125;,<br>  &#125;;<br><br>  return config;<br>&#125;<br></code></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs tsx">// createAppConfig实现示例<br>export default function createAppConfig(this: any, App: any) &#123;<br>  const createConfig = (<br>    AppComponent: React.ComponentType&lt;any&gt; = DefaultAppComponent<br>  ) =&gt; &#123;<br>    const config: any = &#123;<br>      _container: new Container(this),<br><br>      _pages: [] as any[],<br><br>      _mount(pageInstance: any) &#123;<br>        this._pages.push(pageInstance);<br>        this._render();<br>      &#125;,<br><br>      _render(query) &#123;<br>        const props: any = Object.assign(&#123;&#125;, query);<br><br>        return render(<br>          React.createElement(<br>            AppComponent,<br>            props,<br>            this._pages.map((p: any) =&gt; p.element)<br>          ),<br>          this._container<br>        );<br>      &#125;,<br>    &#125;;<br><br>    return config;<br>  &#125;;<br><br>  return createConfig(App);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-comment">// createPageConfig实现示例</span><br><span class="hljs-keyword">let</span> app = <span class="hljs-title function_">createAppConfig</span>(<span class="hljs-function">(<span class="hljs-params">&#123; children &#125;</span>) =&gt;</span> children);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createPageConfig</span>(<span class="hljs-params"></span><br><span class="hljs-params">  Page: React.Component,</span><br><span class="hljs-params">  container: Container</span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> <span class="hljs-attr">config</span>: <span class="hljs-built_in">any</span> = &#123;<br>    <span class="hljs-title function_">onLoad</span>(<span class="hljs-params"><span class="hljs-variable language_">this</span>: <span class="hljs-built_in">any</span>, query: <span class="hljs-built_in">any</span></span>) &#123;<br>      <span class="hljs-keyword">const</span> <span class="hljs-title class_">PageWrapper</span> = <span class="hljs-title function_">createPageWrapper</span>(<span class="hljs-title class_">Page</span>, query);<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">pageId</span> = <span class="hljs-title function_">generatePageId</span>();<br><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">query</span> = query;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">container</span> = container;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">element</span> = <span class="hljs-title function_">createPortal</span>(<br>        <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createElement</span>(<span class="hljs-title class_">PageWrapper</span>, &#123;<br>          <span class="hljs-attr">page</span>: <span class="hljs-variable language_">this</span>,<br>          <span class="hljs-attr">ref</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">wrapperRef</span>,<br>        &#125;),<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">container</span>,<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">pageId</span><br>      );<br><br>      app.<span class="hljs-title function_">_mount</span>(<span class="hljs-variable language_">this</span>);<br>    &#125;,<br>  &#125;;<br><br>  <span class="hljs-keyword">return</span> config;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-comment">// createAppConfig实现示例</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createAppConfig</span>(<span class="hljs-params"><span class="hljs-variable language_">this</span>: <span class="hljs-built_in">any</span>, App: <span class="hljs-built_in">any</span></span>) &#123;<br>  <span class="hljs-keyword">const</span> <span class="hljs-title function_">createConfig</span> = (<span class="hljs-params"></span><br><span class="hljs-params">    AppComponent: React.ComponentType&lt;<span class="hljs-built_in">any</span>&gt; = DefaultAppComponent</span><br><span class="hljs-params">  </span>) =&gt; &#123;<br>    <span class="hljs-keyword">const</span> <span class="hljs-attr">config</span>: <span class="hljs-built_in">any</span> = &#123;<br>      <span class="hljs-attr">_container</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Container</span>(<span class="hljs-variable language_">this</span>),<br><br>      <span class="hljs-attr">_pages</span>: [] <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>[],<br><br>      <span class="hljs-title function_">_mount</span>(<span class="hljs-params">pageInstance: <span class="hljs-built_in">any</span></span>) &#123;<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-property">_pages</span>.<span class="hljs-title function_">push</span>(pageInstance);<br>        <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">_render</span>();<br>      &#125;,<br><br>      <span class="hljs-title function_">_render</span>(<span class="hljs-params">query</span>) &#123;<br>        <span class="hljs-keyword">const</span> <span class="hljs-attr">props</span>: <span class="hljs-built_in">any</span> = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(&#123;&#125;, query);<br><br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">render</span>(<br>          <span class="hljs-title class_">React</span>.<span class="hljs-title function_">createElement</span>(<br>            <span class="hljs-title class_">AppComponent</span>,<br>            props,<br>            <span class="hljs-variable language_">this</span>.<span class="hljs-property">_pages</span>.<span class="hljs-title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">p: <span class="hljs-built_in">any</span></span>) =&gt;</span> p.<span class="hljs-property">element</span>)<br>          ),<br>          <span class="hljs-variable language_">this</span>.<span class="hljs-property">_container</span><br>        );<br>      &#125;,<br>    &#125;;<br><br>    <span class="hljs-keyword">return</span> config;<br>  &#125;;<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">createConfig</span>(<span class="hljs-title class_">App</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><strong>最终会跟踪到创建调和器 Reconciler 实例部分</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs tsx">// render实现示例<br><br>import ReactReconciler from &quot;react-reconciler&quot;;<br>import hostConfig from &quot;./hostConfig/index&quot;;<br><br>// 创建调和器实例, 创建时需要传入 HostConfig 以调用 Container 中的方法<br>export const ReactReconcilerInst = ReactReconciler(hostConfig as any);<br><br>export default function render(<br>  rootElement: React.ReactElement | null,<br>  container: Container<br>) &#123;<br>  // Create a root Container if it doesnt exist<br>  if (!container._rootContainer) &#123;<br>    container._rootContainer = ReactReconcilerInst.createContainer(<br>      container,<br>      false,<br>      false<br>    );<br>  &#125;<br>  // 开始 react 更新流程. 在更新流程中, 将 setState/reactHooks 的实现替换为`react-reconciler`内部函数, 从而实现对变动的监控<br>  ReactReconcilerInst.updateContainer(<br>    rootElement,<br>    container._rootContainer,<br>    null,<br>    () =&gt; &#123;<br>      // ignore<br>    &#125;<br>  );<br><br>  return getPublicRootInstance(container._rootContainer);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-comment">// render实现示例</span><br><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactReconciler</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-reconciler&quot;</span>;<br><span class="hljs-keyword">import</span> hostConfig <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./hostConfig/index&quot;</span>;<br><br><span class="hljs-comment">// 创建调和器实例, 创建时需要传入 HostConfig 以调用 Container 中的方法</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">ReactReconcilerInst</span> = <span class="hljs-title class_">ReactReconciler</span>(hostConfig <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">render</span>(<span class="hljs-params"></span><br><span class="hljs-params">  rootElement: React.ReactElement | <span class="hljs-literal">null</span>,</span><br><span class="hljs-params">  container: Container</span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// Create a root Container if it doesnt exist</span><br>  <span class="hljs-keyword">if</span> (!container.<span class="hljs-property">_rootContainer</span>) &#123;<br>    container.<span class="hljs-property">_rootContainer</span> = <span class="hljs-title class_">ReactReconcilerInst</span>.<span class="hljs-title function_">createContainer</span>(<br>      container,<br>      <span class="hljs-literal">false</span>,<br>      <span class="hljs-literal">false</span><br>    );<br>  &#125;<br>  <span class="hljs-comment">// 开始 react 更新流程. 在更新流程中, 将 setState/reactHooks 的实现替换为`react-reconciler`内部函数, 从而实现对变动的监控</span><br>  <span class="hljs-title class_">ReactReconcilerInst</span>.<span class="hljs-title function_">updateContainer</span>(<br>    rootElement,<br>    container.<span class="hljs-property">_rootContainer</span>,<br>    <span class="hljs-literal">null</span>,<br>    <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-comment">// ignore</span><br>    &#125;<br>  );<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">getPublicRootInstance</span>(container.<span class="hljs-property">_rootContainer</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>在 ReactReconcilerInst.updateContainer 中, 会对 setState/reactHooks 的实现进行替换. React 中的相关代码如下(基于React@16.7.0)</p>
 <p> </p>
 <p><strong>setState 替换过程追踪</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// [setState实现](https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactBaseClasses.js#L58-L67)</span><br>Component.prototype.setState = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">partialState, callback</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.updater.enqueueSetState(<br>    <span class="hljs-built_in">this</span>,<br>    partialState,<br>    callback,<br>    <span class="hljs-string">&quot;setState&quot;</span><br>  );<br>&#125;;<br></code></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// [updater来源](https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactBaseClasses.js#L21-L29)</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Component</span>(<span class="hljs-params">props, context, updater</span>) </span>&#123;<br>  <span class="hljs-built_in">this</span>.props = props;<br>  <span class="hljs-built_in">this</span>.context = context;<br>  <span class="hljs-comment">// If a component has string refs, we will assign a different object later.</span><br>  <span class="hljs-built_in">this</span>.refs = emptyObject;<br>  <span class="hljs-comment">// We initialize the default updater but the real one gets injected by the</span><br>  <span class="hljs-comment">// renderer.</span><br>  <span class="hljs-built_in">this</span>.updater = updater || ReactNoopUpdateQueue;<br>&#125;<br></code></pre></td></tr></table></figure>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [实例化Component时对updater的替换-1-初始化类实例](https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberClassComponent.js#L567)</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">constructClassInstance</span>(<span class="hljs-params"></span></span><br><span class="hljs-params"><span class="hljs-function">workInProgress: Fiber,</span></span><br><span class="hljs-params"><span class="hljs-function">ctor: <span class="hljs-built_in">any</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">props: <span class="hljs-built_in">any</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">renderExpirationTime: ExpirationTime,</span></span><br><span class="hljs-params"><span class="hljs-function"></span>): <span class="hljs-title">any</span> </span>&#123;<br>...<br><span class="hljs-keyword">const</span> instance = <span class="hljs-keyword">new</span> ctor(props, context);<br><span class="hljs-keyword">const</span> state = (workInProgress.memoizedState =<br>    instance.state !== <span class="hljs-literal">null</span> &amp;&amp; instance.state !== <span class="hljs-literal">undefined</span><br>    ? instance.state<br>    : <span class="hljs-literal">null</span>);<br>adoptClassInstance(workInProgress, instance);<br>&#125;<br></code></pre></td></tr></table></figure>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [实例化Component时对updater的替换-2-替换updater](https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberClassComponent.js#L504)</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">adoptClassInstance</span>(<span class="hljs-params"></span></span><br><span class="hljs-params"><span class="hljs-function">  workInProgress: Fiber,</span></span><br><span class="hljs-params"><span class="hljs-function">  instance: <span class="hljs-built_in">any</span></span></span><br><span class="hljs-params"><span class="hljs-function"></span>): <span class="hljs-title">void</span> </span>&#123;<br>  instance.updater = classComponentUpdater;<br>  workInProgress.stateNode = instance;<br>  <span class="hljs-comment">// The instance needs access to the fiber so that it can schedule updates</span><br>  setInstance(instance, workInProgress);<br>  <span class="hljs-keyword">if</span> (__DEV__) &#123;<br>    instance._reactInternalInstance = fakeInternalInstance;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// [setState实现](https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactBaseClasses.js#L58-L67)</span><br><span class="hljs-title class_">Component</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">setState</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">partialState, callback</span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">updater</span>.<span class="hljs-title function_">enqueueSetState</span>(<br>    <span class="hljs-variable language_">this</span>,<br>    partialState,<br>    callback,<br>    <span class="hljs-string">&quot;setState&quot;</span><br>  );<br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// [updater来源](https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactBaseClasses.js#L21-L29)</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">Component</span>(<span class="hljs-params">props, context, updater</span>) &#123;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">props</span> = props;<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span> = context;<br>  <span class="hljs-comment">// If a component has string refs, we will assign a different object later.</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">refs</span> = emptyObject;<br>  <span class="hljs-comment">// We initialize the default updater but the real one gets injected by the</span><br>  <span class="hljs-comment">// renderer.</span><br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">updater</span> = updater || <span class="hljs-title class_">ReactNoopUpdateQueue</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [实例化Component时对updater的替换-1-初始化类实例](https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberClassComponent.js#L567)</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">constructClassInstance</span>(<span class="hljs-params"></span><br><span class="hljs-params">workInProgress: Fiber,</span><br><span class="hljs-params">ctor: <span class="hljs-built_in">any</span>,</span><br><span class="hljs-params">props: <span class="hljs-built_in">any</span>,</span><br><span class="hljs-params">renderExpirationTime: ExpirationTime,</span><br><span class="hljs-params"></span>): <span class="hljs-built_in">any</span> &#123;<br>...<br><span class="hljs-keyword">const</span> instance = <span class="hljs-keyword">new</span> <span class="hljs-title function_">ctor</span>(props, context);<br><span class="hljs-keyword">const</span> state = (workInProgress.<span class="hljs-property">memoizedState</span> =<br>    instance.<span class="hljs-property">state</span> !== <span class="hljs-literal">null</span> &amp;&amp; instance.<span class="hljs-property">state</span> !== <span class="hljs-literal">undefined</span><br>    ? instance.<span class="hljs-property">state</span><br>    : <span class="hljs-literal">null</span>);<br><span class="hljs-title function_">adoptClassInstance</span>(workInProgress, instance);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [实例化Component时对updater的替换-2-替换updater](https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberClassComponent.js#L504)</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">adoptClassInstance</span>(<span class="hljs-params"></span><br><span class="hljs-params">  workInProgress: Fiber,</span><br><span class="hljs-params">  instance: <span class="hljs-built_in">any</span></span><br><span class="hljs-params"></span>): <span class="hljs-built_in">void</span> &#123;<br>  instance.<span class="hljs-property">updater</span> = classComponentUpdater;<br>  workInProgress.<span class="hljs-property">stateNode</span> = instance;<br>  <span class="hljs-comment">// The instance needs access to the fiber so that it can schedule updates</span><br>  <span class="hljs-title function_">setInstance</span>(instance, workInProgress);<br>  <span class="hljs-keyword">if</span> (__DEV__) &#123;<br>    instance.<span class="hljs-property">_reactInternalInstance</span> = fakeInternalInstance;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><strong>useState(hooks) 替换过程追踪</strong></p>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [useState定义](https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactHooks.js#L54-L57)</span><br><span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">useState</span>&lt;<span class="hljs-title">S</span>&gt;(<span class="hljs-params">initialState: (() =&gt; S) | S</span>) </span>&#123;<br>  <span class="hljs-keyword">const</span> dispatcher = resolveDispatcher();<br>  <span class="hljs-keyword">return</span> dispatcher.useState(initialState);<br>&#125;<br></code></pre></td></tr></table></figure>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [resolveDispatcher定义](https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactHooks.js#L16-L23)</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resolveDispatcher</span>(<span class="hljs-params"></span>) </span>&#123;<br>  <span class="hljs-keyword">const</span> dispatcher = ReactCurrentOwner.currentDispatcher;<br>  invariant(<br>    dispatcher !== <span class="hljs-literal">null</span>,<br>    <span class="hljs-string">&quot;Hooks can only be called inside the body of a function component.&quot;</span><br>  );<br>  <span class="hljs-keyword">return</span> dispatcher;<br>&#125;<br></code></pre></td></tr></table></figure>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [在渲染根节点时完成对currentDispatcher的替换-renderRoot. 对应于架构图详情中的renderRootSync/renderRootConcurrent](https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberScheduler.js#L1211-L1125)</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">renderRoot</span>(<span class="hljs-params">root: FiberRoot, isYieldy: <span class="hljs-built_in">boolean</span></span>): <span class="hljs-title">void</span> </span>&#123;<br>...<br><span class="hljs-keyword">if</span> (enableHooks) &#123;<br>    ReactCurrentOwner.currentDispatcher = Dispatcher;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    ReactCurrentOwner.currentDispatcher = DispatcherWithoutHooks;<br>&#125;<br>...<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [useState定义](https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactHooks.js#L54-L57)</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> useState&lt;S&gt;(<span class="hljs-attr">initialState</span>: (<span class="hljs-function">() =&gt;</span> S) | S) &#123;<br>  <span class="hljs-keyword">const</span> dispatcher = <span class="hljs-title function_">resolveDispatcher</span>();<br>  <span class="hljs-keyword">return</span> dispatcher.<span class="hljs-title function_">useState</span>(initialState);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [resolveDispatcher定义](https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactHooks.js#L16-L23)</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">resolveDispatcher</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> dispatcher = <span class="hljs-title class_">ReactCurrentOwner</span>.<span class="hljs-property">currentDispatcher</span>;<br>  <span class="hljs-title function_">invariant</span>(<br>    dispatcher !== <span class="hljs-literal">null</span>,<br>    <span class="hljs-string">&quot;Hooks can only be called inside the body of a function component.&quot;</span><br>  );<br>  <span class="hljs-keyword">return</span> dispatcher;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [在渲染根节点时完成对currentDispatcher的替换-renderRoot. 对应于架构图详情中的renderRootSync/renderRootConcurrent](https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberScheduler.js#L1211-L1125)</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">renderRoot</span>(<span class="hljs-params">root: FiberRoot, isYieldy: <span class="hljs-built_in">boolean</span></span>): <span class="hljs-built_in">void</span> &#123;<br>...<br><span class="hljs-keyword">if</span> (enableHooks) &#123;<br>    <span class="hljs-title class_">ReactCurrentOwner</span>.<span class="hljs-property">currentDispatcher</span> = <span class="hljs-title class_">Dispatcher</span>;<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-title class_">ReactCurrentOwner</span>.<span class="hljs-property">currentDispatcher</span> = <span class="hljs-title class_">DispatcherWithoutHooks</span>;<br>&#125;<br>...<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><strong>Reconciler 调和器调用组件实例启动 react 渲染流程的代码</strong></p>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [react-conciler调用组件实例生命周期示例](https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberCommitWork.js#L457-L461)</span><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">commitLifeCycles</span>(<span class="hljs-params"></span>)</span>&#123;<br>...<br>instance.componentDidUpdate(<br>    prevProps,<br>    prevState,<br>    instance.__reactInternalSnapshotBeforeUpdate,<br>);<br>...<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// [react-conciler调用组件实例生命周期示例](https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberCommitWork.js#L457-L461)</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">commitLifeCycles</span>(<span class="hljs-params"></span>)&#123;<br>...<br>instance.<span class="hljs-title function_">componentDidUpdate</span>(<br>    prevProps,<br>    prevState,<br>    instance.<span class="hljs-property">__reactInternalSnapshotBeforeUpdate</span>,<br>);<br>...<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
 </ol>
 </li>
@@ -576,26 +642,66 @@ Native(转发)-&gt;&gt;V8: 点击事件
 </ol>
 </section>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
                 
               </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
               
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
-                  
-                </p>
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>微壳小程序技术架构概览</div>
+      <div>https://www.yaozeyuan.online/2021/07/28/2021/07/微壳小程序技术架构概览/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年7月28日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
               
-              
-                <div class="post-prevnext">
+                <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/10/20/2021/10/%E4%BC%81%E5%BE%AE%20h5-jssdk%20%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E8%B0%83%E7%94%A8%E6%8C%87%E5%8D%97/">
+                      <a href="/2021/10/20/2021/10/%E4%BC%81%E5%BE%AE%20h5-jssdk%20%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E8%B0%83%E7%94%A8%E6%8C%87%E5%8D%97/" title="企微 h5-jssdk 本地开发调用指南">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">企微 h5-jssdk 本地开发调用指南</span>
                         <span class="visible-mobile">上一篇</span>
@@ -605,7 +711,7 @@ Native(转发)-&gt;&gt;V8: 点击事件
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/06/28/2021/06/%E5%BC%82%E6%AD%A5%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%84%86%E6%8A%98%E9%A3%8E%E9%99%A9----%E4%BB%8E%E4%B8%80%E6%AC%A1%20Node%20%E6%9C%8D%E5%8A%A1%E6%95%85%E9%9A%9C%E8%B0%88%E8%B5%B7/">
+                      <a href="/2021/06/28/2021/06/%E5%BC%82%E6%AD%A5%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%84%86%E6%8A%98%E9%A3%8E%E9%99%A9----%E4%BB%8E%E4%B8%80%E6%AC%A1%20Node%20%E6%9C%8D%E5%8A%A1%E6%95%85%E9%9A%9C%E8%B0%88%E8%B5%B7/" title="异步模型的脆折风险----从一次 Node 服务故障谈起">
                         <span class="hidden-mobile">异步模型的脆折风险----从一次 Node 服务故障谈起</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -621,19 +727,57 @@ Native(转发)-&gt;&gt;V8: 点击事件
         </div>
       </div>
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
   <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
-      </div>
-    
+
+
+  </aside>
+
+
+    </div>
   </div>
 </div>
 
-<!-- Custom -->
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+  });
+</script>
+
+
+
+
 
 
     
@@ -658,35 +802,37 @@ Native(转发)-&gt;&gt;V8: 点击事件
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
+
     
 
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-  </div>
+  <footer>
+    <div class="footer-inner">
   
-
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
   
-
   
-</footer>
-
-
-  <!-- SCRIPTS -->
   
-  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
   <script>
     NProgress.configure({"showSpinner":false,"trickleSpeed":100})
@@ -697,49 +843,23 @@ Native(转发)-&gt;&gt;V8: 点击事件
   </script>
 
 
-<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
-<!-- Plugins -->
 
-
-  <script  src="/js/local-search.js" ></script>
-
-
-
-
-
-  
-
-
-
-  
-    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
-  
-  
-    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
-  
-
-
-
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
   <script>
     (function (window, document) {
       var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
       
-      typing(title)
+        typing(text);
       
     })(window, document);
   </script>
@@ -750,48 +870,87 @@ Native(转发)-&gt;&gt;V8: 点击事件
 
 
 
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
 
-
-  <script  src="https://cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js" ></script>
-  <script>
-    if (window.mermaid) {
-      mermaid.initialize({"theme":"default"});
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
-  </script>
+  });
+</script>
 
 
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
 
 
   
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
   
-
-  
-
-  
-
-  
-
-  
-
-  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
 
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
-<!-- 主题的启动项 保持在最底部 -->
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
 <script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>

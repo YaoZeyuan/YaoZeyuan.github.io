@@ -15,10 +15,10 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="东风夜放花千树, 山长水阔知何处">
   <meta name="author" content="姚泽源">
   <meta name="keywords" content="">
-  <meta name="description" content="webpack 简明教程----以 vue npm run build 流程为例 webpack 的执行过程 在学习 webpack 配置的时候, 我们会执拗于 webpack 一个个的配置项, 把 webpack 配置搞成了面向运气调参. 但实际上, 如果我们从 webpack 的执行过程开始的话, webpack 其实是很简单的. webpack 的执行过程主要是这么几步:   确定配置参数,">
+  
+    <meta name="description" content="webpack 简明教程----以 vue npm run build 流程为例 webpack 的执行过程 在学习 webpack 配置的时候, 我们会执拗于 webpack 一个个的配置项, 把 webpack 配置搞成了面向运气调参. 但实际上, 如果我们从 webpack 的执行过程开始的话, webpack 其实是很简单的. webpack 的执行过程主要是这么几步:   确定配置参数,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="webpack 简明教程----以vue npm run build流程为例">
 <meta property="og:url" content="https://www.yaozeyuan.online/2018/04/15/2018/04/webpack%20%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B----%E4%BB%A5vue%20npm%20run%20build%E6%B5%81%E7%A8%8B%E4%B8%BA%E4%BE%8B/index.html">
@@ -28,44 +28,46 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/6ff418c7ly1fqcoph40ioj20kx0lf0uj.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/6ff418c7ly1fqcow6xy3fj20dw09lwew.jpg">
 <meta property="article:published_time" content="2018-04-15T09:48:01.000Z">
-<meta property="article:modified_time" content="2022-06-25T02:04:52.249Z">
+<meta property="article:modified_time" content="2022-06-25T02:09:33.760Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/6ff418c7ly1fqcoph40ioj20kx0lf0uj.jpg">
   
+  
+  
   <title>webpack 简明教程----以vue npm run build流程为例 - 代号647</title>
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
-    
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-  
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
 
   
 <link rel="stylesheet" href="/css/customer.css">
@@ -74,16 +76,59 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 
 <body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
       <strong>代号647</strong>
@@ -141,6 +186,7 @@
               &nbsp;<i class="iconfont icon-search"></i>&nbsp;
             </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
@@ -153,57 +199,71 @@
   </div>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('/static/img/banner/background-img.webp') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="webpack 简明教程----以vue npm run build流程为例">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2018-04-15 17:48" pubdate>
-        2018年4月15日 下午
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      12k 字
-    </span>
   
 
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      37 分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background-img.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="webpack 简明教程----以vue npm run build流程为例"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-04-15 17:48" pubdate>
+          2018年4月15日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          100 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
@@ -212,16 +272,22 @@
 
 <div class="container-fluid nopadding-x">
   <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
     <div class="col-lg-8 nopadding-x-md">
       <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
+        <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
             <h1 style="display: none">webpack 简明教程----以vue npm run build流程为例</h1>
             
-            <div class="markdown-body">
-              <h1>webpack 简明教程----以 vue npm run build 流程为例</h1>
+            
+              <div class="markdown-body">
+                
+                <h1>webpack 简明教程----以 vue npm run build 流程为例</h1>
 <h2 id="webpack-的执行过程">webpack 的执行过程</h2>
 <p>在学习 webpack 配置的时候, 我们会执拗于 webpack 一个个的配置项, 把 webpack 配置搞成了面向运气调参. 但实际上, 如果我们从 webpack 的执行过程开始的话, webpack 其实是很简单的.</p>
 <p>webpack 的执行过程主要是这么几步:</p>
@@ -241,7 +307,7 @@
 <p>首先, <code>npm run build</code> 对应的是执行 package.json 里<code>scripts</code>项中配置的命令, 也就是<code>node build/build.js</code></p>
 <p><img src="https://tva1.sinaimg.cn/large/6ff418c7ly1fqcow6xy3fj20dw09lwew.jpg" alt="npm run build"></p>
 <p>命令实际执行的是<code>build/build.js</code>这个文件, 我们来看一下文件的内容</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-meta">&quot;use strict&quot;</span>;<br><span class="hljs-comment">// 检查node &amp; npm版本</span><br><span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./check-versions&quot;</span>)();<br><br><span class="hljs-comment">// 设定环境变量</span><br>process.env.NODE_ENV = <span class="hljs-string">&quot;production&quot;</span>;<br><br><span class="hljs-comment">// 开始导入包</span><br><span class="hljs-keyword">const</span> ora = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;ora&quot;</span>); <span class="hljs-comment">// 进度条, 准确的说是编译的时候来回转的那根竖线</span><br><span class="hljs-keyword">const</span> rm = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;rimraf&quot;</span>); <span class="hljs-comment">// 专业进行删除操作(rm命令)</span><br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>); <span class="hljs-comment">// node内置包, 用于合成文件实际路径</span><br><span class="hljs-keyword">const</span> chalk = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;chalk&quot;</span>); <span class="hljs-comment">// 输出彩色的log</span><br><span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack&quot;</span>); <span class="hljs-comment">// webpack实例</span><br><span class="hljs-keyword">const</span> config = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../config&quot;</span>); <span class="hljs-comment">// 用户配置</span><br><span class="hljs-keyword">const</span> webpackConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./webpack.prod.conf&quot;</span>); <span class="hljs-comment">// webpack打包配置</span><br><br><span class="hljs-comment">// 进度条转起来</span><br><span class="hljs-keyword">const</span> spinner = ora(<span class="hljs-string">&quot;building for production...&quot;</span>);<br>spinner.start();<br><br><span class="hljs-comment">// 清空旧的编译结果</span><br><span class="hljs-comment">// 利用config.build.assetsRoot和config.build.assetsSubDirectory合成输出的静态文件路径</span><br><span class="hljs-comment">// 这里直接将过去输出的的静态文件夹直接删掉, 简单粗暴</span><br>rm(<br>  path.join(config.build.assetsRoot, config.build.assetsSubDirectory),<br>  <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err; <span class="hljs-comment">// 删除失败直接报error</span><br><br>    <span class="hljs-comment">// *******************************</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-comment">// 重点来了 =&gt;</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-comment">// *******************************</span><br>    <span class="hljs-comment">// 执行webpack命令</span><br>    webpack(webpackConfig, <span class="hljs-function">(<span class="hljs-params">err, stats</span>) =&gt;</span> &#123;<br>      <span class="hljs-comment">// webpack打包完毕, 回调该函数</span><br>      spinner.stop(); <span class="hljs-comment">// 停止进度条</span><br>      <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;<br>      <span class="hljs-comment">// 输出打包结果</span><br>      <span class="hljs-comment">//</span><br>      process.stdout.write(<br>        stats.toString(&#123;<br>          <span class="hljs-attr">colors</span>: <span class="hljs-literal">true</span>,<br>          <span class="hljs-attr">modules</span>: <span class="hljs-literal">false</span>,<br>          <span class="hljs-attr">children</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// If you are using ts-loader, setting this to true will make TypeScript errors show up during build.</span><br>          <span class="hljs-attr">chunks</span>: <span class="hljs-literal">false</span>,<br>          <span class="hljs-attr">chunkModules</span>: <span class="hljs-literal">false</span>,<br>        &#125;) + <span class="hljs-string">&quot;\n\n&quot;</span><br>      );<br><br>      <span class="hljs-keyword">if</span> (stats.hasErrors()) &#123;<br>        <span class="hljs-comment">// 打包故障, 输出 **红色的**  Build failed with errors  直接退出</span><br>        <span class="hljs-built_in">console</span>.log(chalk.red(<span class="hljs-string">&quot;  Build failed with errors.\n&quot;</span>));<br>        process.exit(<span class="hljs-number">1</span>);<br>      &#125;<br><br>      <span class="hljs-comment">// 没有问题, 输出**黄色**的 Build complete 字样</span><br>      <span class="hljs-built_in">console</span>.log(chalk.cyan(<span class="hljs-string">&quot;  Build complete.\n&quot;</span>));<br>      <span class="hljs-built_in">console</span>.log(<br>        chalk.yellow(<br>          <span class="hljs-string">&quot;  Tip: built files are meant to be served over an HTTP server.\n&quot;</span> +<br>            <span class="hljs-string">&quot;  Opening index.html over file:// won&#x27;t work.\n&quot;</span><br>        )<br>      );<br>    &#125;);<br>  &#125;<br>);<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-meta">&quot;use strict&quot;</span>;<br><span class="hljs-comment">// 检查node &amp; npm版本</span><br><span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./check-versions&quot;</span>)();<br><br><span class="hljs-comment">// 设定环境变量</span><br>process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> = <span class="hljs-string">&quot;production&quot;</span>;<br><br><span class="hljs-comment">// 开始导入包</span><br><span class="hljs-keyword">const</span> ora = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;ora&quot;</span>); <span class="hljs-comment">// 进度条, 准确的说是编译的时候来回转的那根竖线</span><br><span class="hljs-keyword">const</span> rm = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;rimraf&quot;</span>); <span class="hljs-comment">// 专业进行删除操作(rm命令)</span><br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>); <span class="hljs-comment">// node内置包, 用于合成文件实际路径</span><br><span class="hljs-keyword">const</span> chalk = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;chalk&quot;</span>); <span class="hljs-comment">// 输出彩色的log</span><br><span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack&quot;</span>); <span class="hljs-comment">// webpack实例</span><br><span class="hljs-keyword">const</span> config = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../config&quot;</span>); <span class="hljs-comment">// 用户配置</span><br><span class="hljs-keyword">const</span> webpackConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./webpack.prod.conf&quot;</span>); <span class="hljs-comment">// webpack打包配置</span><br><br><span class="hljs-comment">// 进度条转起来</span><br><span class="hljs-keyword">const</span> spinner = <span class="hljs-title function_">ora</span>(<span class="hljs-string">&quot;building for production...&quot;</span>);<br>spinner.<span class="hljs-title function_">start</span>();<br><br><span class="hljs-comment">// 清空旧的编译结果</span><br><span class="hljs-comment">// 利用config.build.assetsRoot和config.build.assetsSubDirectory合成输出的静态文件路径</span><br><span class="hljs-comment">// 这里直接将过去输出的的静态文件夹直接删掉, 简单粗暴</span><br><span class="hljs-title function_">rm</span>(<br>  path.<span class="hljs-title function_">join</span>(config.<span class="hljs-property">build</span>.<span class="hljs-property">assetsRoot</span>, config.<span class="hljs-property">build</span>.<span class="hljs-property">assetsSubDirectory</span>),<br>  <span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err; <span class="hljs-comment">// 删除失败直接报error</span><br><br>    <span class="hljs-comment">// *******************************</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-comment">// 重点来了 =&gt;</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-comment">// *******************************</span><br>    <span class="hljs-comment">// 执行webpack命令</span><br>    <span class="hljs-title function_">webpack</span>(webpackConfig, <span class="hljs-function">(<span class="hljs-params">err, stats</span>) =&gt;</span> &#123;<br>      <span class="hljs-comment">// webpack打包完毕, 回调该函数</span><br>      spinner.<span class="hljs-title function_">stop</span>(); <span class="hljs-comment">// 停止进度条</span><br>      <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">throw</span> err;<br>      <span class="hljs-comment">// 输出打包结果</span><br>      <span class="hljs-comment">//</span><br>      process.<span class="hljs-property">stdout</span>.<span class="hljs-title function_">write</span>(<br>        stats.<span class="hljs-title function_">toString</span>(&#123;<br>          <span class="hljs-attr">colors</span>: <span class="hljs-literal">true</span>,<br>          <span class="hljs-attr">modules</span>: <span class="hljs-literal">false</span>,<br>          <span class="hljs-attr">children</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// If you are using ts-loader, setting this to true will make TypeScript errors show up during build.</span><br>          <span class="hljs-attr">chunks</span>: <span class="hljs-literal">false</span>,<br>          <span class="hljs-attr">chunkModules</span>: <span class="hljs-literal">false</span>,<br>        &#125;) + <span class="hljs-string">&quot;\n\n&quot;</span><br>      );<br><br>      <span class="hljs-keyword">if</span> (stats.<span class="hljs-title function_">hasErrors</span>()) &#123;<br>        <span class="hljs-comment">// 打包故障, 输出 **红色的**  Build failed with errors  直接退出</span><br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(chalk.<span class="hljs-title function_">red</span>(<span class="hljs-string">&quot;  Build failed with errors.\n&quot;</span>));<br>        process.<span class="hljs-title function_">exit</span>(<span class="hljs-number">1</span>);<br>      &#125;<br><br>      <span class="hljs-comment">// 没有问题, 输出**黄色**的 Build complete 字样</span><br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(chalk.<span class="hljs-title function_">cyan</span>(<span class="hljs-string">&quot;  Build complete.\n&quot;</span>));<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<br>        chalk.<span class="hljs-title function_">yellow</span>(<br>          <span class="hljs-string">&quot;  Tip: built files are meant to be served over an HTTP server.\n&quot;</span> +<br>            <span class="hljs-string">&quot;  Opening index.html over file:// won&#x27;t work.\n&quot;</span><br>        )<br>      );<br>    &#125;);<br>  &#125;<br>);<br></code></pre></td></tr></table></figure>
 <p>从<code>build.js</code>的注释里不难看出, 这个文件只做了两件事:</p>
 <ol>
 <li>删除旧的编译结果</li>
@@ -249,9 +315,9 @@
 </ol>
 <p>编译操作里唯一的变量就是 webpack 配置项. 然后我们来看一下 webpack 的配置文件内容:</p>
 <p><code>webpack.base.conf.js</code> =&gt;</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-meta">&quot;use strict&quot;</span>;<br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> utils = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./utils&quot;</span>);<br><span class="hljs-keyword">const</span> config = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../config&quot;</span>);<br><span class="hljs-keyword">const</span> vueLoaderConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./vue-loader.conf&quot;</span>);<br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resolve</span>(<span class="hljs-params">dir</span>) </span>&#123;<br>  <span class="hljs-keyword">return</span> path.join(__dirname, <span class="hljs-string">&quot;..&quot;</span>, dir);<br>&#125;<br><br><span class="hljs-keyword">const</span> createLintingRule = <span class="hljs-function">() =&gt;</span> (&#123;<br>  <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(js|vue)$/</span>,<br>  loader: <span class="hljs-string">&quot;eslint-loader&quot;</span>,<br>  <span class="hljs-attr">enforce</span>: <span class="hljs-string">&quot;pre&quot;</span>,<br>  <span class="hljs-attr">include</span>: [resolve(<span class="hljs-string">&quot;src&quot;</span>), resolve(<span class="hljs-string">&quot;test&quot;</span>)],<br>  <span class="hljs-attr">options</span>: &#123;<br>    <span class="hljs-attr">formatter</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;eslint-friendly-formatter&quot;</span>),<br>    <span class="hljs-attr">emitWarning</span>: !config.dev.showEslintErrorsInOverlay,<br>  &#125;,<br>&#125;);<br><br><span class="hljs-built_in">module</span>.exports = &#123;<br>  <span class="hljs-comment">// 指定项目根路径</span><br>  <span class="hljs-attr">context</span>: path.resolve(__dirname, <span class="hljs-string">&quot;../&quot;</span>),<br>  <span class="hljs-comment">// 指定Entry入口</span><br>  <span class="hljs-comment">// 如果Entry是一个key =&gt; value对象, 那么key对应输出的文件名(xxx.js), value 对应真实的入口文件地址</span><br>  <span class="hljs-comment">// 这个特性在将脚手架改造成多页面项目时非常有用</span><br>  <span class="hljs-attr">entry</span>: &#123;<br>    <span class="hljs-attr">app</span>: <span class="hljs-string">&quot;./src/main.js&quot;</span>,<br>  &#125;,<br>  <span class="hljs-comment">// 指定输出配置</span><br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-comment">// 本地编译结果输出路径</span><br>    <span class="hljs-attr">path</span>: config.build.assetsRoot,<br>    <span class="hljs-comment">// 输出结果文件名, 支持[name], [id], [hash], [chunkhash]等占位符, 详见&lt;深入浅出webpack · 第二章第二节output&gt;, https://webpack.wuhaolin.cn/2%E9%85%8D%E7%BD%AE/2-2Output.html</span><br>    <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;[name].js&quot;</span>,<br>    <span class="hljs-comment">// 静态文件资源所在的域名. 例如, 配置为https://www.baidu.com, 则项目里的&lt;img src=&#x27;./xxxx.png&#x27;&gt;就会变成 &lt;img src=&#x27;https://www.baidu.com/xxxx.png&#x27;&gt;</span><br>    <span class="hljs-comment">// 同样, 详见&lt;深入浅出webpack · 第二章第二节output&gt;, https://webpack.wuhaolin.cn/2%E9%85%8D%E7%BD%AE/2-2Output.html</span><br>    <span class="hljs-attr">publicPath</span>:<br>      process.env.NODE_ENV === <span class="hljs-string">&quot;production&quot;</span><br>        ? config.build.assetsPublicPath<br>        : config.dev.assetsPublicPath,<br>  &#125;,<br>  <span class="hljs-comment">// 配置解析依赖时的规则</span><br>  <span class="hljs-attr">resolve</span>: &#123;<br>    <span class="hljs-comment">// 只解析以下后缀名的入口文件</span><br>    <span class="hljs-attr">extensions</span>: [<span class="hljs-string">&quot;.js&quot;</span>, <span class="hljs-string">&quot;.vue&quot;</span>, <span class="hljs-string">&quot;.json&quot;</span>],<br>    <span class="hljs-comment">// 路径别名, 避免import 的时候写一长串路径</span><br>    <span class="hljs-attr">alias</span>: &#123;<br>      <span class="hljs-attr">vue$</span>: <span class="hljs-string">&quot;vue/dist/vue.esm.js&quot;</span>,<br>      <span class="hljs-string">&quot;@&quot;</span>: resolve(<span class="hljs-string">&quot;src&quot;</span>),<br>    &#125;,<br>  &#125;,<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-comment">// *******************************</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-comment">// 重要 =&gt;</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-comment">// *******************************</span><br>    <span class="hljs-comment">// loader配置</span><br>    <span class="hljs-attr">rules</span>: [<br>      ...(config.dev.useEslint ? [createLintingRule()] : []),<br>      &#123;<br>        <span class="hljs-comment">// 调用该loader 对文件名符合正则规则的文件进行处理</span><br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.vue$/</span>,<br>        <span class="hljs-comment">// loader名, 需要提前npm install好</span><br>        loader: <span class="hljs-string">&quot;vue-loader&quot;</span>,<br>        <span class="hljs-comment">// loader配置</span><br>        <span class="hljs-attr">options</span>: vueLoaderConfig,<br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js$/</span>,<br>        loader: <span class="hljs-string">&quot;babel-loader&quot;</span>,<br>        <span class="hljs-attr">include</span>: [<br>          resolve(<span class="hljs-string">&quot;src&quot;</span>),<br>          resolve(<span class="hljs-string">&quot;test&quot;</span>),<br>          resolve(<span class="hljs-string">&quot;node_modules/webpack-dev-server/client&quot;</span>),<br>        ],<br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(png|jpe?g|gif|svg)(\?.*)?$/</span>,<br>        loader: <span class="hljs-string">&quot;url-loader&quot;</span>,<br>        <span class="hljs-attr">options</span>: &#123;<br>          <span class="hljs-comment">// loader配置, 对与10000b以下的文件, 直接转成base64</span><br>          <span class="hljs-attr">limit</span>: <span class="hljs-number">10000</span>,<br>          <span class="hljs-comment">// 10000b以上的文件, 以下列指定格式输出到对应路径下</span><br>          <span class="hljs-attr">name</span>: utils.assetsPath(<span class="hljs-string">&quot;img/[name].[hash:7].[ext]&quot;</span>),<br>        &#125;,<br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/</span>,<br>        loader: <span class="hljs-string">&quot;url-loader&quot;</span>,<br>        <span class="hljs-attr">options</span>: &#123;<br>          <span class="hljs-attr">limit</span>: <span class="hljs-number">10000</span>,<br>          <span class="hljs-attr">name</span>: utils.assetsPath(<span class="hljs-string">&quot;media/[name].[hash:7].[ext]&quot;</span>),<br>        &#125;,<br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(woff2?|eot|ttf|otf)(\?.*)?$/</span>,<br>        loader: <span class="hljs-string">&quot;url-loader&quot;</span>,<br>        <span class="hljs-attr">options</span>: &#123;<br>          <span class="hljs-attr">limit</span>: <span class="hljs-number">10000</span>,<br>          <span class="hljs-attr">name</span>: utils.assetsPath(<span class="hljs-string">&quot;fonts/[name].[hash:7].[ext]&quot;</span>),<br>        &#125;,<br>      &#125;,<br>    ],<br>  &#125;,<br>  <span class="hljs-comment">// node配置, 不用管</span><br>  <span class="hljs-attr">node</span>: &#123;<br>    <span class="hljs-comment">// prevent webpack from injecting useless setImmediate polyfill because Vue</span><br>    <span class="hljs-comment">// source contains it (although only uses it if it&#x27;s native).</span><br>    <span class="hljs-attr">setImmediate</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-comment">// prevent webpack from injecting mocks to Node native modules</span><br>    <span class="hljs-comment">// that does not make sense for the client</span><br>    <span class="hljs-attr">dgram</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>    <span class="hljs-attr">fs</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>    <span class="hljs-attr">net</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>    <span class="hljs-attr">tls</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>    <span class="hljs-attr">child_process</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>  &#125;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-meta">&quot;use strict&quot;</span>;<br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> utils = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./utils&quot;</span>);<br><span class="hljs-keyword">const</span> config = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../config&quot;</span>);<br><span class="hljs-keyword">const</span> vueLoaderConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./vue-loader.conf&quot;</span>);<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">resolve</span>(<span class="hljs-params">dir</span>) &#123;<br>  <span class="hljs-keyword">return</span> path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&quot;..&quot;</span>, dir);<br>&#125;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">createLintingRule</span> = (<span class="hljs-params"></span>) =&gt; (&#123;<br>  <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(js|vue)$/</span>,<br>  <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;eslint-loader&quot;</span>,<br>  <span class="hljs-attr">enforce</span>: <span class="hljs-string">&quot;pre&quot;</span>,<br>  <span class="hljs-attr">include</span>: [<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;src&quot;</span>), <span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;test&quot;</span>)],<br>  <span class="hljs-attr">options</span>: &#123;<br>    <span class="hljs-attr">formatter</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;eslint-friendly-formatter&quot;</span>),<br>    <span class="hljs-attr">emitWarning</span>: !config.<span class="hljs-property">dev</span>.<span class="hljs-property">showEslintErrorsInOverlay</span>,<br>  &#125;,<br>&#125;);<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = &#123;<br>  <span class="hljs-comment">// 指定项目根路径</span><br>  <span class="hljs-attr">context</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;../&quot;</span>),<br>  <span class="hljs-comment">// 指定Entry入口</span><br>  <span class="hljs-comment">// 如果Entry是一个key =&gt; value对象, 那么key对应输出的文件名(xxx.js), value 对应真实的入口文件地址</span><br>  <span class="hljs-comment">// 这个特性在将脚手架改造成多页面项目时非常有用</span><br>  <span class="hljs-attr">entry</span>: &#123;<br>    <span class="hljs-attr">app</span>: <span class="hljs-string">&quot;./src/main.js&quot;</span>,<br>  &#125;,<br>  <span class="hljs-comment">// 指定输出配置</span><br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-comment">// 本地编译结果输出路径</span><br>    <span class="hljs-attr">path</span>: config.<span class="hljs-property">build</span>.<span class="hljs-property">assetsRoot</span>,<br>    <span class="hljs-comment">// 输出结果文件名, 支持[name], [id], [hash], [chunkhash]等占位符, 详见&lt;深入浅出webpack · 第二章第二节output&gt;, https://webpack.wuhaolin.cn/2%E9%85%8D%E7%BD%AE/2-2Output.html</span><br>    <span class="hljs-attr">filename</span>: <span class="hljs-string">&quot;[name].js&quot;</span>,<br>    <span class="hljs-comment">// 静态文件资源所在的域名. 例如, 配置为https://www.baidu.com, 则项目里的&lt;img src=&#x27;./xxxx.png&#x27;&gt;就会变成 &lt;img src=&#x27;https://www.baidu.com/xxxx.png&#x27;&gt;</span><br>    <span class="hljs-comment">// 同样, 详见&lt;深入浅出webpack · 第二章第二节output&gt;, https://webpack.wuhaolin.cn/2%E9%85%8D%E7%BD%AE/2-2Output.html</span><br>    <span class="hljs-attr">publicPath</span>:<br>      process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&quot;production&quot;</span><br>        ? config.<span class="hljs-property">build</span>.<span class="hljs-property">assetsPublicPath</span><br>        : config.<span class="hljs-property">dev</span>.<span class="hljs-property">assetsPublicPath</span>,<br>  &#125;,<br>  <span class="hljs-comment">// 配置解析依赖时的规则</span><br>  <span class="hljs-attr">resolve</span>: &#123;<br>    <span class="hljs-comment">// 只解析以下后缀名的入口文件</span><br>    <span class="hljs-attr">extensions</span>: [<span class="hljs-string">&quot;.js&quot;</span>, <span class="hljs-string">&quot;.vue&quot;</span>, <span class="hljs-string">&quot;.json&quot;</span>],<br>    <span class="hljs-comment">// 路径别名, 避免import 的时候写一长串路径</span><br>    <span class="hljs-attr">alias</span>: &#123;<br>      <span class="hljs-attr">vue$</span>: <span class="hljs-string">&quot;vue/dist/vue.esm.js&quot;</span>,<br>      <span class="hljs-string">&quot;@&quot;</span>: <span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;src&quot;</span>),<br>    &#125;,<br>  &#125;,<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-comment">// *******************************</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-comment">// 重要 =&gt;</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-comment">// *******************************</span><br>    <span class="hljs-comment">// loader配置</span><br>    <span class="hljs-attr">rules</span>: [<br>      ...(config.<span class="hljs-property">dev</span>.<span class="hljs-property">useEslint</span> ? [<span class="hljs-title function_">createLintingRule</span>()] : []),<br>      &#123;<br>        <span class="hljs-comment">// 调用该loader 对文件名符合正则规则的文件进行处理</span><br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.vue$/</span>,<br>        <span class="hljs-comment">// loader名, 需要提前npm install好</span><br>        <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;vue-loader&quot;</span>,<br>        <span class="hljs-comment">// loader配置</span><br>        <span class="hljs-attr">options</span>: vueLoaderConfig,<br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js$/</span>,<br>        <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;babel-loader&quot;</span>,<br>        <span class="hljs-attr">include</span>: [<br>          <span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;src&quot;</span>),<br>          <span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;test&quot;</span>),<br>          <span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;node_modules/webpack-dev-server/client&quot;</span>),<br>        ],<br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(png|jpe?g|gif|svg)(\?.*)?$/</span>,<br>        <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;url-loader&quot;</span>,<br>        <span class="hljs-attr">options</span>: &#123;<br>          <span class="hljs-comment">// loader配置, 对与10000b以下的文件, 直接转成base64</span><br>          <span class="hljs-attr">limit</span>: <span class="hljs-number">10000</span>,<br>          <span class="hljs-comment">// 10000b以上的文件, 以下列指定格式输出到对应路径下</span><br>          <span class="hljs-attr">name</span>: utils.<span class="hljs-title function_">assetsPath</span>(<span class="hljs-string">&quot;img/[name].[hash:7].[ext]&quot;</span>),<br>        &#125;,<br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/</span>,<br>        <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;url-loader&quot;</span>,<br>        <span class="hljs-attr">options</span>: &#123;<br>          <span class="hljs-attr">limit</span>: <span class="hljs-number">10000</span>,<br>          <span class="hljs-attr">name</span>: utils.<span class="hljs-title function_">assetsPath</span>(<span class="hljs-string">&quot;media/[name].[hash:7].[ext]&quot;</span>),<br>        &#125;,<br>      &#125;,<br>      &#123;<br>        <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(woff2?|eot|ttf|otf)(\?.*)?$/</span>,<br>        <span class="hljs-attr">loader</span>: <span class="hljs-string">&quot;url-loader&quot;</span>,<br>        <span class="hljs-attr">options</span>: &#123;<br>          <span class="hljs-attr">limit</span>: <span class="hljs-number">10000</span>,<br>          <span class="hljs-attr">name</span>: utils.<span class="hljs-title function_">assetsPath</span>(<span class="hljs-string">&quot;fonts/[name].[hash:7].[ext]&quot;</span>),<br>        &#125;,<br>      &#125;,<br>    ],<br>  &#125;,<br>  <span class="hljs-comment">// node配置, 不用管</span><br>  <span class="hljs-attr">node</span>: &#123;<br>    <span class="hljs-comment">// prevent webpack from injecting useless setImmediate polyfill because Vue</span><br>    <span class="hljs-comment">// source contains it (although only uses it if it&#x27;s native).</span><br>    <span class="hljs-attr">setImmediate</span>: <span class="hljs-literal">false</span>,<br>    <span class="hljs-comment">// prevent webpack from injecting mocks to Node native modules</span><br>    <span class="hljs-comment">// that does not make sense for the client</span><br>    <span class="hljs-attr">dgram</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>    <span class="hljs-attr">fs</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>    <span class="hljs-attr">net</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>    <span class="hljs-attr">tls</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>    <span class="hljs-attr">child_process</span>: <span class="hljs-string">&quot;empty&quot;</span>,<br>  &#125;,<br>&#125;;<br></code></pre></td></tr></table></figure>
 <p><code>webpack.prod.conf.js</code> =&gt;</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-meta">&quot;use strict&quot;</span>;<br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> utils = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./utils&quot;</span>);<br><span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack&quot;</span>);<br><span class="hljs-keyword">const</span> config = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../config&quot;</span>);<br><span class="hljs-keyword">const</span> merge = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack-merge&quot;</span>);<br><span class="hljs-keyword">const</span> baseWebpackConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./webpack.base.conf&quot;</span>);<br><span class="hljs-keyword">const</span> CopyWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;copy-webpack-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> HtmlWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;html-webpack-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> ExtractTextPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;extract-text-webpack-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> OptimizeCSSPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;optimize-css-assets-webpack-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> UglifyJsPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;uglifyjs-webpack-plugin&quot;</span>);<br><br><span class="hljs-keyword">const</span> env = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../config/prod.env&quot;</span>);<br><br><span class="hljs-comment">// 合并base配置和prod配置,</span><br><span class="hljs-keyword">const</span> webpackConfig = merge(baseWebpackConfig, &#123;<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-comment">// prod环境下多加一个css处理器</span><br>    <span class="hljs-attr">rules</span>: utils.styleLoaders(&#123;<br>      <span class="hljs-attr">sourceMap</span>: config.build.productionSourceMap,<br>      <span class="hljs-attr">extract</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">usePostCSS</span>: <span class="hljs-literal">true</span>,<br>    &#125;),<br>  &#125;,<br>  <span class="hljs-comment">// source map生成的方式.webpack打包出来的是一整个js文件, debug的时候很不方便, 因此需要额外输出一份source-map来帮助浏览器正确展示js内容, 一般来说, 线上使用false , 测试环境使用 `#cheap-module-source-map`</span><br>  <span class="hljs-attr">devtool</span>: config.build.productionSourceMap ? config.build.devtool : <span class="hljs-literal">false</span>,<br>  <span class="hljs-comment">// 覆盖base里的output配置</span><br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">path</span>: config.build.assetsRoot,<br>    <span class="hljs-attr">filename</span>: utils.assetsPath(<span class="hljs-string">&quot;js/[name].[chunkhash].js&quot;</span>),<br>    <span class="hljs-attr">chunkFilename</span>: utils.assetsPath(<span class="hljs-string">&quot;js/[id].[chunkhash].js&quot;</span>),<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-comment">// 定义环境</span><br>    <span class="hljs-comment">// https://vuejs.github.io/vue-loader/en/workflow/production.html</span><br>    <span class="hljs-keyword">new</span> webpack.DefinePlugin(&#123;<br>      <span class="hljs-string">&quot;process.env&quot;</span>: env,<br>    &#125;),<br>    <span class="hljs-comment">// 压缩js代码</span><br>    <span class="hljs-keyword">new</span> UglifyJsPlugin(&#123;<br>      <span class="hljs-attr">uglifyOptions</span>: &#123;<br>        <span class="hljs-attr">compress</span>: &#123;<br>          <span class="hljs-attr">warnings</span>: <span class="hljs-literal">false</span>,<br>        &#125;,<br>      &#125;,<br>      <span class="hljs-attr">sourceMap</span>: config.build.productionSourceMap,<br>      <span class="hljs-attr">parallel</span>: <span class="hljs-literal">true</span>,<br>    &#125;),<br>    <span class="hljs-comment">// 将css独立出来</span><br>    <span class="hljs-comment">// extract css into its own file</span><br>    <span class="hljs-keyword">new</span> ExtractTextPlugin(&#123;<br>      <span class="hljs-attr">filename</span>: utils.assetsPath(<span class="hljs-string">&quot;css/[name].[contenthash].css&quot;</span>),<br>      <span class="hljs-comment">// Setting the following option to `false` will not extract CSS from codesplit chunks.</span><br>      <span class="hljs-comment">// Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.</span><br>      <span class="hljs-comment">// It&#x27;s currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it&#x27;s `false`,</span><br>      <span class="hljs-comment">// increasing file size: https://github.com/vuejs-templates/webpack/issues/1110</span><br>      <span class="hljs-attr">allChunks</span>: <span class="hljs-literal">true</span>,<br>    &#125;),<br>    <span class="hljs-comment">// 压缩css</span><br>    <span class="hljs-comment">// Compress extracted CSS. We are using this plugin so that possible</span><br>    <span class="hljs-comment">// duplicated CSS from different components can be deduped.</span><br>    <span class="hljs-keyword">new</span> OptimizeCSSPlugin(&#123;<br>      <span class="hljs-attr">cssProcessorOptions</span>: config.build.productionSourceMap<br>        ? &#123; <span class="hljs-attr">safe</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">map</span>: &#123; <span class="hljs-attr">inline</span>: <span class="hljs-literal">false</span> &#125; &#125;<br>        : &#123; <span class="hljs-attr">safe</span>: <span class="hljs-literal">true</span> &#125;,<br>    &#125;),<br>    <span class="hljs-comment">// 输出html模板, 方便调试(似乎很多公司直接就把这个文件当入口地址用了= =)</span><br>    <span class="hljs-comment">// generate dist index.html with correct asset hash for caching.</span><br>    <span class="hljs-comment">// you can customize output by editing /index.html</span><br>    <span class="hljs-comment">// see https://github.com/ampedandwired/html-webpack-plugin</span><br>    <span class="hljs-keyword">new</span> HtmlWebpackPlugin(&#123;<br>      <span class="hljs-attr">filename</span>: config.build.index,<br>      <span class="hljs-attr">template</span>: <span class="hljs-string">&quot;index.html&quot;</span>,<br>      <span class="hljs-attr">inject</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">minify</span>: &#123;<br>        <span class="hljs-attr">removeComments</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">collapseWhitespace</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">removeAttributeQuotes</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-comment">// more options:</span><br>        <span class="hljs-comment">// https://github.com/kangax/html-minifier#options-quick-reference</span><br>      &#125;,<br>      <span class="hljs-comment">// necessary to consistently work with multiple chunks via CommonsChunkPlugin</span><br>      <span class="hljs-attr">chunksSortMode</span>: <span class="hljs-string">&quot;dependency&quot;</span>,<br>    &#125;),<br>    <span class="hljs-comment">// keep module.id stable when vendor modules does not change</span><br>    <span class="hljs-keyword">new</span> webpack.HashedModuleIdsPlugin(),<br>    <span class="hljs-comment">// enable scope hoisting</span><br>    <span class="hljs-keyword">new</span> webpack.optimize.ModuleConcatenationPlugin(),<br>    <span class="hljs-comment">// 提取多个入口的公共部分</span><br>    <span class="hljs-comment">// split vendor js into its own file</span><br>    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;vendor&quot;</span>,<br>      <span class="hljs-function"><span class="hljs-title">minChunks</span>(<span class="hljs-params"><span class="hljs-built_in">module</span></span>)</span> &#123;<br>        <span class="hljs-comment">// any required modules inside node_modules are extracted to vendor</span><br>        <span class="hljs-keyword">return</span> (<br>          <span class="hljs-built_in">module</span>.resource &amp;&amp;<br>          <span class="hljs-regexp">/\.js$/</span>.test(<span class="hljs-built_in">module</span>.resource) &amp;&amp;<br>          <span class="hljs-built_in">module</span>.resource.indexOf(path.join(__dirname, <span class="hljs-string">&quot;../node_modules&quot;</span>)) === <span class="hljs-number">0</span><br>        );<br>      &#125;,<br>    &#125;),<br>    <span class="hljs-comment">// extract webpack runtime and module manifest to its own file in order to</span><br>    <span class="hljs-comment">// prevent vendor hash from being updated whenever app bundle is updated</span><br>    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;manifest&quot;</span>,<br>      <span class="hljs-attr">minChunks</span>: <span class="hljs-literal">Infinity</span>,<br>    &#125;),<br>    <span class="hljs-comment">// This instance extracts shared chunks from code splitted chunks and bundles them</span><br>    <span class="hljs-comment">// in a separate chunk, similar to the vendor chunk</span><br>    <span class="hljs-comment">// see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk</span><br>    <span class="hljs-keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;app&quot;</span>,<br>      <span class="hljs-attr">async</span>: <span class="hljs-string">&quot;vendor-async&quot;</span>,<br>      <span class="hljs-attr">children</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">minChunks</span>: <span class="hljs-number">3</span>,<br>    &#125;),<br><br>    <span class="hljs-comment">// 处理不需要参与编译的静态文件(比如百度统计, 谷歌统计的js代码)</span><br>    <span class="hljs-comment">// 执行方式很粗暴, 直接把from路径下的文件直接拷贝到to里, 搞定</span><br>    <span class="hljs-comment">// copy custom static assets</span><br>    <span class="hljs-keyword">new</span> CopyWebpackPlugin([<br>      &#123;<br>        <span class="hljs-attr">from</span>: path.resolve(__dirname, <span class="hljs-string">&quot;../static&quot;</span>),<br>        <span class="hljs-attr">to</span>: config.build.assetsSubDirectory,<br>        <span class="hljs-attr">ignore</span>: [<span class="hljs-string">&quot;.*&quot;</span>],<br>      &#125;,<br>    ]),<br>  ],<br>&#125;);<br><br><span class="hljs-comment">// 如果在配置里指定需要gzip一下的话, 在这里执行压缩操作</span><br><span class="hljs-comment">// 不过我司一般都是把压缩的工作直接交给CDN完事←_←</span><br><span class="hljs-keyword">if</span> (config.build.productionGzip) &#123;<br>  <span class="hljs-keyword">const</span> CompressionWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;compression-webpack-plugin&quot;</span>);<br><br>  webpackConfig.plugins.push(<br>    <span class="hljs-keyword">new</span> CompressionWebpackPlugin(&#123;<br>      <span class="hljs-attr">asset</span>: <span class="hljs-string">&quot;[path].gz[query]&quot;</span>,<br>      <span class="hljs-attr">algorithm</span>: <span class="hljs-string">&quot;gzip&quot;</span>,<br>      <span class="hljs-attr">test</span>: <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<br>        <span class="hljs-string">&quot;\\.(&quot;</span> + config.build.productionGzipExtensions.join(<span class="hljs-string">&quot;|&quot;</span>) + <span class="hljs-string">&quot;)$&quot;</span><br>      ),<br>      <span class="hljs-attr">threshold</span>: <span class="hljs-number">10240</span>,<br>      <span class="hljs-attr">minRatio</span>: <span class="hljs-number">0.8</span>,<br>    &#125;)<br>  );<br>&#125;<br><br><span class="hljs-comment">// 如果编译的时候加上了 --report参数, 会打开一个可视化的模块体积分析页面, 展示各个模块在最终打包结果中所占的体积大小</span><br><span class="hljs-keyword">if</span> (config.build.bundleAnalyzerReport) &#123;<br>  <span class="hljs-keyword">const</span> BundleAnalyzerPlugin =<br>    <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack-bundle-analyzer&quot;</span>).BundleAnalyzerPlugin;<br>  webpackConfig.plugins.push(<span class="hljs-keyword">new</span> BundleAnalyzerPlugin());<br>&#125;<br><br><span class="hljs-built_in">module</span>.exports = webpackConfig;<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-meta">&quot;use strict&quot;</span>;<br><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">const</span> utils = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./utils&quot;</span>);<br><span class="hljs-keyword">const</span> webpack = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack&quot;</span>);<br><span class="hljs-keyword">const</span> config = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../config&quot;</span>);<br><span class="hljs-keyword">const</span> merge = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack-merge&quot;</span>);<br><span class="hljs-keyword">const</span> baseWebpackConfig = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;./webpack.base.conf&quot;</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">CopyWebpackPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;copy-webpack-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">HtmlWebpackPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;html-webpack-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">ExtractTextPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;extract-text-webpack-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">OptimizeCSSPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;optimize-css-assets-webpack-plugin&quot;</span>);<br><span class="hljs-keyword">const</span> <span class="hljs-title class_">UglifyJsPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;uglifyjs-webpack-plugin&quot;</span>);<br><br><span class="hljs-keyword">const</span> env = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;../config/prod.env&quot;</span>);<br><br><span class="hljs-comment">// 合并base配置和prod配置,</span><br><span class="hljs-keyword">const</span> webpackConfig = <span class="hljs-title function_">merge</span>(baseWebpackConfig, &#123;<br>  <span class="hljs-attr">module</span>: &#123;<br>    <span class="hljs-comment">// prod环境下多加一个css处理器</span><br>    <span class="hljs-attr">rules</span>: utils.<span class="hljs-title function_">styleLoaders</span>(&#123;<br>      <span class="hljs-attr">sourceMap</span>: config.<span class="hljs-property">build</span>.<span class="hljs-property">productionSourceMap</span>,<br>      <span class="hljs-attr">extract</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">usePostCSS</span>: <span class="hljs-literal">true</span>,<br>    &#125;),<br>  &#125;,<br>  <span class="hljs-comment">// source map生成的方式.webpack打包出来的是一整个js文件, debug的时候很不方便, 因此需要额外输出一份source-map来帮助浏览器正确展示js内容, 一般来说, 线上使用false , 测试环境使用 `#cheap-module-source-map`</span><br>  <span class="hljs-attr">devtool</span>: config.<span class="hljs-property">build</span>.<span class="hljs-property">productionSourceMap</span> ? config.<span class="hljs-property">build</span>.<span class="hljs-property">devtool</span> : <span class="hljs-literal">false</span>,<br>  <span class="hljs-comment">// 覆盖base里的output配置</span><br>  <span class="hljs-attr">output</span>: &#123;<br>    <span class="hljs-attr">path</span>: config.<span class="hljs-property">build</span>.<span class="hljs-property">assetsRoot</span>,<br>    <span class="hljs-attr">filename</span>: utils.<span class="hljs-title function_">assetsPath</span>(<span class="hljs-string">&quot;js/[name].[chunkhash].js&quot;</span>),<br>    <span class="hljs-attr">chunkFilename</span>: utils.<span class="hljs-title function_">assetsPath</span>(<span class="hljs-string">&quot;js/[id].[chunkhash].js&quot;</span>),<br>  &#125;,<br>  <span class="hljs-attr">plugins</span>: [<br>    <span class="hljs-comment">// 定义环境</span><br>    <span class="hljs-comment">// https://vuejs.github.io/vue-loader/en/workflow/production.html</span><br>    <span class="hljs-keyword">new</span> webpack.<span class="hljs-title class_">DefinePlugin</span>(&#123;<br>      <span class="hljs-string">&quot;process.env&quot;</span>: env,<br>    &#125;),<br>    <span class="hljs-comment">// 压缩js代码</span><br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">UglifyJsPlugin</span>(&#123;<br>      <span class="hljs-attr">uglifyOptions</span>: &#123;<br>        <span class="hljs-attr">compress</span>: &#123;<br>          <span class="hljs-attr">warnings</span>: <span class="hljs-literal">false</span>,<br>        &#125;,<br>      &#125;,<br>      <span class="hljs-attr">sourceMap</span>: config.<span class="hljs-property">build</span>.<span class="hljs-property">productionSourceMap</span>,<br>      <span class="hljs-attr">parallel</span>: <span class="hljs-literal">true</span>,<br>    &#125;),<br>    <span class="hljs-comment">// 将css独立出来</span><br>    <span class="hljs-comment">// extract css into its own file</span><br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">ExtractTextPlugin</span>(&#123;<br>      <span class="hljs-attr">filename</span>: utils.<span class="hljs-title function_">assetsPath</span>(<span class="hljs-string">&quot;css/[name].[contenthash].css&quot;</span>),<br>      <span class="hljs-comment">// Setting the following option to `false` will not extract CSS from codesplit chunks.</span><br>      <span class="hljs-comment">// Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.</span><br>      <span class="hljs-comment">// It&#x27;s currently set to `true` because we are seeing that sourcemaps are included in the codesplit bundle as well when it&#x27;s `false`,</span><br>      <span class="hljs-comment">// increasing file size: https://github.com/vuejs-templates/webpack/issues/1110</span><br>      <span class="hljs-attr">allChunks</span>: <span class="hljs-literal">true</span>,<br>    &#125;),<br>    <span class="hljs-comment">// 压缩css</span><br>    <span class="hljs-comment">// Compress extracted CSS. We are using this plugin so that possible</span><br>    <span class="hljs-comment">// duplicated CSS from different components can be deduped.</span><br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">OptimizeCSSPlugin</span>(&#123;<br>      <span class="hljs-attr">cssProcessorOptions</span>: config.<span class="hljs-property">build</span>.<span class="hljs-property">productionSourceMap</span><br>        ? &#123; <span class="hljs-attr">safe</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">map</span>: &#123; <span class="hljs-attr">inline</span>: <span class="hljs-literal">false</span> &#125; &#125;<br>        : &#123; <span class="hljs-attr">safe</span>: <span class="hljs-literal">true</span> &#125;,<br>    &#125;),<br>    <span class="hljs-comment">// 输出html模板, 方便调试(似乎很多公司直接就把这个文件当入口地址用了= =)</span><br>    <span class="hljs-comment">// generate dist index.html with correct asset hash for caching.</span><br>    <span class="hljs-comment">// you can customize output by editing /index.html</span><br>    <span class="hljs-comment">// see https://github.com/ampedandwired/html-webpack-plugin</span><br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">HtmlWebpackPlugin</span>(&#123;<br>      <span class="hljs-attr">filename</span>: config.<span class="hljs-property">build</span>.<span class="hljs-property">index</span>,<br>      <span class="hljs-attr">template</span>: <span class="hljs-string">&quot;index.html&quot;</span>,<br>      <span class="hljs-attr">inject</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">minify</span>: &#123;<br>        <span class="hljs-attr">removeComments</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">collapseWhitespace</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-attr">removeAttributeQuotes</span>: <span class="hljs-literal">true</span>,<br>        <span class="hljs-comment">// more options:</span><br>        <span class="hljs-comment">// https://github.com/kangax/html-minifier#options-quick-reference</span><br>      &#125;,<br>      <span class="hljs-comment">// necessary to consistently work with multiple chunks via CommonsChunkPlugin</span><br>      <span class="hljs-attr">chunksSortMode</span>: <span class="hljs-string">&quot;dependency&quot;</span>,<br>    &#125;),<br>    <span class="hljs-comment">// keep module.id stable when vendor modules does not change</span><br>    <span class="hljs-keyword">new</span> webpack.<span class="hljs-title class_">HashedModuleIdsPlugin</span>(),<br>    <span class="hljs-comment">// enable scope hoisting</span><br>    <span class="hljs-keyword">new</span> webpack.<span class="hljs-property">optimize</span>.<span class="hljs-title class_">ModuleConcatenationPlugin</span>(),<br>    <span class="hljs-comment">// 提取多个入口的公共部分</span><br>    <span class="hljs-comment">// split vendor js into its own file</span><br>    <span class="hljs-keyword">new</span> webpack.<span class="hljs-property">optimize</span>.<span class="hljs-title class_">CommonsChunkPlugin</span>(&#123;<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;vendor&quot;</span>,<br>      <span class="hljs-title function_">minChunks</span>(<span class="hljs-params"><span class="hljs-variable language_">module</span></span>) &#123;<br>        <span class="hljs-comment">// any required modules inside node_modules are extracted to vendor</span><br>        <span class="hljs-keyword">return</span> (<br>          <span class="hljs-variable language_">module</span>.<span class="hljs-property">resource</span> &amp;&amp;<br>          <span class="hljs-regexp">/\.js$/</span>.<span class="hljs-title function_">test</span>(<span class="hljs-variable language_">module</span>.<span class="hljs-property">resource</span>) &amp;&amp;<br>          <span class="hljs-variable language_">module</span>.<span class="hljs-property">resource</span>.<span class="hljs-title function_">indexOf</span>(path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">&quot;../node_modules&quot;</span>)) === <span class="hljs-number">0</span><br>        );<br>      &#125;,<br>    &#125;),<br>    <span class="hljs-comment">// extract webpack runtime and module manifest to its own file in order to</span><br>    <span class="hljs-comment">// prevent vendor hash from being updated whenever app bundle is updated</span><br>    <span class="hljs-keyword">new</span> webpack.<span class="hljs-property">optimize</span>.<span class="hljs-title class_">CommonsChunkPlugin</span>(&#123;<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;manifest&quot;</span>,<br>      <span class="hljs-attr">minChunks</span>: <span class="hljs-title class_">Infinity</span>,<br>    &#125;),<br>    <span class="hljs-comment">// This instance extracts shared chunks from code splitted chunks and bundles them</span><br>    <span class="hljs-comment">// in a separate chunk, similar to the vendor chunk</span><br>    <span class="hljs-comment">// see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk</span><br>    <span class="hljs-keyword">new</span> webpack.<span class="hljs-property">optimize</span>.<span class="hljs-title class_">CommonsChunkPlugin</span>(&#123;<br>      <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;app&quot;</span>,<br>      <span class="hljs-attr">async</span>: <span class="hljs-string">&quot;vendor-async&quot;</span>,<br>      <span class="hljs-attr">children</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">minChunks</span>: <span class="hljs-number">3</span>,<br>    &#125;),<br><br>    <span class="hljs-comment">// 处理不需要参与编译的静态文件(比如百度统计, 谷歌统计的js代码)</span><br>    <span class="hljs-comment">// 执行方式很粗暴, 直接把from路径下的文件直接拷贝到to里, 搞定</span><br>    <span class="hljs-comment">// copy custom static assets</span><br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">CopyWebpackPlugin</span>([<br>      &#123;<br>        <span class="hljs-attr">from</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">&quot;../static&quot;</span>),<br>        <span class="hljs-attr">to</span>: config.<span class="hljs-property">build</span>.<span class="hljs-property">assetsSubDirectory</span>,<br>        <span class="hljs-attr">ignore</span>: [<span class="hljs-string">&quot;.*&quot;</span>],<br>      &#125;,<br>    ]),<br>  ],<br>&#125;);<br><br><span class="hljs-comment">// 如果在配置里指定需要gzip一下的话, 在这里执行压缩操作</span><br><span class="hljs-comment">// 不过我司一般都是把压缩的工作直接交给CDN完事←_←</span><br><span class="hljs-keyword">if</span> (config.<span class="hljs-property">build</span>.<span class="hljs-property">productionGzip</span>) &#123;<br>  <span class="hljs-keyword">const</span> <span class="hljs-title class_">CompressionWebpackPlugin</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;compression-webpack-plugin&quot;</span>);<br><br>  webpackConfig.<span class="hljs-property">plugins</span>.<span class="hljs-title function_">push</span>(<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">CompressionWebpackPlugin</span>(&#123;<br>      <span class="hljs-attr">asset</span>: <span class="hljs-string">&quot;[path].gz[query]&quot;</span>,<br>      <span class="hljs-attr">algorithm</span>: <span class="hljs-string">&quot;gzip&quot;</span>,<br>      <span class="hljs-attr">test</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">RegExp</span>(<br>        <span class="hljs-string">&quot;\\.(&quot;</span> + config.<span class="hljs-property">build</span>.<span class="hljs-property">productionGzipExtensions</span>.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;|&quot;</span>) + <span class="hljs-string">&quot;)$&quot;</span><br>      ),<br>      <span class="hljs-attr">threshold</span>: <span class="hljs-number">10240</span>,<br>      <span class="hljs-attr">minRatio</span>: <span class="hljs-number">0.8</span>,<br>    &#125;)<br>  );<br>&#125;<br><br><span class="hljs-comment">// 如果编译的时候加上了 --report参数, 会打开一个可视化的模块体积分析页面, 展示各个模块在最终打包结果中所占的体积大小</span><br><span class="hljs-keyword">if</span> (config.<span class="hljs-property">build</span>.<span class="hljs-property">bundleAnalyzerReport</span>) &#123;<br>  <span class="hljs-keyword">const</span> <span class="hljs-title class_">BundleAnalyzerPlugin</span> =<br>    <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;webpack-bundle-analyzer&quot;</span>).<span class="hljs-property">BundleAnalyzerPlugin</span>;<br>  webpackConfig.<span class="hljs-property">plugins</span>.<span class="hljs-title function_">push</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BundleAnalyzerPlugin</span>());<br>&#125;<br><br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = webpackConfig;<br></code></pre></td></tr></table></figure>
 <p>结束. webpack 的打包其实就这些东西. 在下一篇文章里, 我们会借助修改配置文件, 为脚手架添加以下功能</p>
 <ol>
 <li>添加 vue 多页面支持, 支持编译输出多个项目
@@ -274,26 +340,66 @@
 <li><a target="_blank" rel="noopener" href="https://github.com/YaoZeyuan/vue-multi-page">vue 多页面</a>, 笔者在 vue 脚手架的基础上, 通过修改 webpack 配置实现的多页面版的 vue 项目</li>
 </ol>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
                 
               </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
               
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
-                  
-                </p>
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>webpack 简明教程----以vue npm run build流程为例</div>
+      <div>https://www.yaozeyuan.online/2018/04/15/2018/04/webpack 简明教程----以vue npm run build流程为例/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2018年4月15日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
               
-              
-                <div class="post-prevnext">
+                <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2018/04/29/2018/04/%E5%B0%8F%E7%B1%B36x%E5%AE%89%E8%A3%85%E8%B0%B7%E6%AD%8C%E5%9B%9B%E4%BB%B6%E5%A5%97/">
+                      <a href="/2018/04/29/2018/04/%E5%B0%8F%E7%B1%B36x%E5%AE%89%E8%A3%85%E8%B0%B7%E6%AD%8C%E5%9B%9B%E4%BB%B6%E5%A5%97/" title="小米6x安装谷歌服务框架">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">小米6x安装谷歌服务框架</span>
                         <span class="visible-mobile">上一篇</span>
@@ -303,7 +409,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2018/04/01/2018/04/Ubuntu16.04%E5%AE%89%E8%A3%85PHP7.2/">
+                      <a href="/2018/04/01/2018/04/Ubuntu16.04%E5%AE%89%E8%A3%85PHP7.2/" title="Ubuntu16.04安装PHP7.2">
                         <span class="hidden-mobile">Ubuntu16.04安装PHP7.2</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -319,19 +425,50 @@
         </div>
       </div>
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
   <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
-      </div>
-    
+
+
+  </aside>
+
+
+    </div>
   </div>
 </div>
 
-<!-- Custom -->
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
 
 
     
@@ -356,35 +493,37 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
+
     
 
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-  </div>
+  <footer>
+    <div class="footer-inner">
   
-
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
   
-
   
-</footer>
-
-
-  <!-- SCRIPTS -->
   
-  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
   <script>
     NProgress.configure({"showSpinner":false,"trickleSpeed":100})
@@ -395,49 +534,23 @@
   </script>
 
 
-<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
-<!-- Plugins -->
 
-
-  <script  src="/js/local-search.js" ></script>
-
-
-
-
-
-  
-
-
-
-  
-    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
-  
-  
-    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
-  
-
-
-
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
   <script>
     (function (window, document) {
       var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
       
-      typing(title)
+        typing(text);
       
     })(window, document);
   </script>
@@ -448,41 +561,87 @@
 
 
 
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
 
 
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
+  <script>Fluid.plugins.codeWidget();</script>
 
 
   
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
   
-
-  
-
-  
-
-  
-
-  
-
-  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
 
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
-<!-- 主题的启动项 保持在最底部 -->
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
 <script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>

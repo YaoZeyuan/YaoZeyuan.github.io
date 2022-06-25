@@ -15,10 +15,10 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="东风夜放花千树, 山长水阔知何处">
   <meta name="author" content="姚泽源">
   <meta name="keywords" content="">
-  <meta name="description" content="当抵达 Node 服务的请求数达到理论最高吞吐量时, 单个请求的响应时间和所有请求平均响应时间会是什么关系? 答: 所有请求平均响应时间一切如常, 单个请求响应时间突然飞涨 为什么是这样?  周末接到三次报警, 线上 Node 服务突然出现大量接口 30 秒超时. 但每次都是刚连上 vpn, 报警就消失. 期间没有上线操作, 流量不大且平稳, 报错的是普通接口逻辑流程正常, 99.5%的请求响应">
+  
+    <meta name="description" content="当抵达 Node 服务的请求数达到理论最高吞吐量时, 单个请求的响应时间和所有请求平均响应时间会是什么关系? 答: 所有请求平均响应时间一切如常, 单个请求响应时间突然飞涨 为什么是这样?  周末接到三次报警, 线上 Node 服务突然出现大量接口 30 秒超时. 但每次都是刚连上 vpn, 报警就消失. 期间没有上线操作, 流量不大且平稳, 报错的是普通接口逻辑流程正常, 99.5%的请求响应">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异步模型的脆折风险----从一次 Node 服务故障谈起">
 <meta property="og:url" content="https://www.yaozeyuan.online/2021/06/28/2021/06/%E5%BC%82%E6%AD%A5%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%84%86%E6%8A%98%E9%A3%8E%E9%99%A9----%E4%BB%8E%E4%B8%80%E6%AC%A1%20Node%20%E6%9C%8D%E5%8A%A1%E6%95%85%E9%9A%9C%E8%B0%88%E8%B5%B7/index.html">
@@ -43,44 +43,46 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/06/./img/%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C/io%E5%AF%86%E9%9B%86%E5%9E%8B-%E5%B9%B6%E5%8F%91400.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/06/./img/%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C/io%E5%AF%86%E9%9B%86%E5%9E%8B-%E5%B9%B6%E5%8F%911000.png">
 <meta property="article:published_time" content="2021-06-28T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-25T02:04:52.289Z">
+<meta property="article:modified_time" content="2022-06-25T02:09:33.800Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/06/./img/%E6%8A%96%E5%8A%A8%E6%9C%9F%E9%97%B4QPS+%E6%8E%A5%E5%8F%A3%E5%93%8D%E5%BA%94%E6%97%B6%E9%95%BF%E5%90%88%E5%B9%B6%E6%95%B0%E6%8D%AE.jpg">
   
+  
+  
   <title>异步模型的脆折风险----从一次 Node 服务故障谈起 - 代号647</title>
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
-    
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-  
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
 
   
 <link rel="stylesheet" href="/css/customer.css">
@@ -89,16 +91,59 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
 
 
 <body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
       <strong>代号647</strong>
@@ -156,6 +201,7 @@
               &nbsp;<i class="iconfont icon-search"></i>&nbsp;
             </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
@@ -168,57 +214,71 @@
   </div>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('/static/img/banner/background-img.webp') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="异步模型的脆折风险----从一次 Node 服务故障谈起">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-06-28 08:00" pubdate>
-        2021年6月28日 早上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      9.6k 字
-    </span>
   
 
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      30 分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background-img.webp') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="异步模型的脆折风险----从一次 Node 服务故障谈起"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-06-28 08:00" pubdate>
+          2021年6月28日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          9.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          80 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
       </div>
+
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
@@ -227,16 +287,22 @@
 
 <div class="container-fluid nopadding-x">
   <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
     <div class="col-lg-8 nopadding-x-md">
       <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
+        <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
             <h1 style="display: none">异步模型的脆折风险----从一次 Node 服务故障谈起</h1>
             
-            <div class="markdown-body">
-              <blockquote>
+            
+              <div class="markdown-body">
+                
+                <blockquote>
 <p>当抵达 Node 服务的请求数达到理论最高吞吐量时, 单个请求的响应时间和所有请求平均响应时间会是什么关系?</p>
 <p>答: 所有请求平均响应时间一切如常, 单个请求响应时间突然飞涨</p>
 <p>为什么是这样?</p>
@@ -367,7 +433,7 @@
 <h1>实践验证</h1>
 <p>说了这么多, 实际测试一下.</p>
 <p>压测框架使用 koa, 分别用<code>asyncSetTimeoutSleep</code>和<code>asyncCPUSleep</code>模拟 io 密集型和计算密集型请求, 压测工具使用 ApacheBench, 测试命令为<code>ab -c 1/10/100/400 -n 10000 -k 'http://127.0.0.1:3000/'</code>, <code>-n</code>指测试总数, 取 10000, <code>-c</code>指每轮测试并发请求数, 分别取 1/10/100/400 进行测试, 测试代码&amp;实验结果如下</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 测试代码</span><br><span class="hljs-keyword">const</span> Koa = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;koa&quot;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Koa();<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">asyncSetTimeoutSleep</span>(<span class="hljs-params">ms = <span class="hljs-number">0</span></span>) </span>&#123;<br>  <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">reslove, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      reslove(<span class="hljs-literal">true</span>);<br>    &#125;, ms);<br>  &#125;);<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">asyncCPUSleep</span>(<span class="hljs-params">ms = <span class="hljs-number">0</span></span>) </span>&#123;<br>  <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">reslove, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 这里必须使用setTimeout模拟sleep, 否则Node会由于没有调度机会,只能按先后顺序处理请求</span><br>    <span class="hljs-comment">// (接受请求1-&gt;处理请求1-&gt;响应请求1-&gt;接受请求2-&gt;处理请求2-&gt;响应请求2-&gt;...)</span><br>    <span class="hljs-comment">// 此时异步模式降级为串行模式, 失去比较意义</span><br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-comment">// 运算150000次在我的机器上正好是1ms, 单纯用来模拟CPU密集型操作, 没有特别意义</span><br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1500000</span> * ms; i++) &#123;&#125;<br>      reslove(<span class="hljs-literal">true</span>);<br>    &#125;, <span class="hljs-number">0</span>);<br>  &#125;);<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br><br>app.use(<span class="hljs-keyword">async</span> (ctx) =&gt; &#123;<br>  <span class="hljs-comment">// await asyncCPUSleep(10);</span><br>  <span class="hljs-keyword">await</span> asyncSetTimeoutSleep(<span class="hljs-number">10</span>);<br>  ctx.body = <span class="hljs-string">&quot;Hello Koa&quot;</span>;<br>&#125;);<br><br>app.listen(<span class="hljs-number">3000</span>);<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 测试代码</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">Koa</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;koa&quot;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Koa</span>();<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">asyncSetTimeoutSleep</span>(<span class="hljs-params">ms = <span class="hljs-number">0</span></span>) &#123;<br>  <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">reslove, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-title function_">reslove</span>(<span class="hljs-literal">true</span>);<br>    &#125;, ms);<br>  &#125;);<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">asyncCPUSleep</span>(<span class="hljs-params">ms = <span class="hljs-number">0</span></span>) &#123;<br>  <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">reslove, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 这里必须使用setTimeout模拟sleep, 否则Node会由于没有调度机会,只能按先后顺序处理请求</span><br>    <span class="hljs-comment">// (接受请求1-&gt;处理请求1-&gt;响应请求1-&gt;接受请求2-&gt;处理请求2-&gt;响应请求2-&gt;...)</span><br>    <span class="hljs-comment">// 此时异步模式降级为串行模式, 失去比较意义</span><br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-comment">// 运算150000次在我的机器上正好是1ms, 单纯用来模拟CPU密集型操作, 没有特别意义</span><br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1500000</span> * ms; i++) &#123;&#125;<br>      <span class="hljs-title function_">reslove</span>(<span class="hljs-literal">true</span>);<br>    &#125;, <span class="hljs-number">0</span>);<br>  &#125;);<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br><br>app.<span class="hljs-title function_">use</span>(<span class="hljs-keyword">async</span> (ctx) =&gt; &#123;<br>  <span class="hljs-comment">// await asyncCPUSleep(10);</span><br>  <span class="hljs-keyword">await</span> <span class="hljs-title function_">asyncSetTimeoutSleep</span>(<span class="hljs-number">10</span>);<br>  ctx.<span class="hljs-property">body</span> = <span class="hljs-string">&quot;Hello Koa&quot;</span>;<br>&#125;);<br><br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>);<br></code></pre></td></tr></table></figure>
 <p>计算密集型</p>
 <!-- ![计算密集型_表格](https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/06/./img/计算密集型_表格.png) -->
 <table>
@@ -519,11 +585,11 @@
 <p>顺带提一句, 处理计算密集型请求时还有一个特殊情况:</p>
 <p>如果 CPU 运算为整块代码, 期间没有 await 形成时间片供 Node 调度, 那么会 Node 处理模型劣化为串行模式, 执行过程变为<code>接收请求1</code>-&gt;<code>处理响应请求1</code>-&gt;<code>接收请求2</code>-&gt;<code>处理响应请求2</code>-&gt;<code>接收请求3</code>-&gt;<code>处理响应请求3</code>…</p>
 <p>由于所有请求同时发出, 串行处理, 所以请求响应时长会呈递增关系, 如下所示</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 示例代码</span><br><span class="hljs-keyword">const</span> Koa = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;koa&quot;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Koa();<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">asyncCPUSleep</span>(<span class="hljs-params">ms = <span class="hljs-number">0</span></span>) </span>&#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1500000</span> * ms; i++) &#123;&#125;<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br><br><span class="hljs-comment">// response</span><br>app.use(<span class="hljs-keyword">async</span> (ctx) =&gt; &#123;<br>  <span class="hljs-comment">// 由于没有promise返回, 这里的await是无效的, 不会形成时间片</span><br>  <span class="hljs-comment">// 阻塞式休眠1秒</span><br>  <span class="hljs-keyword">await</span> asyncCPUSleep(<span class="hljs-number">1000</span>);<br>  ctx.body = <span class="hljs-string">&quot;Hello Koa&quot;</span>;<br>&#125;);<br><br>app.listen(<span class="hljs-number">3000</span>);<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 示例代码</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">Koa</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;koa&quot;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Koa</span>();<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">asyncCPUSleep</span>(<span class="hljs-params">ms = <span class="hljs-number">0</span></span>) &#123;<br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1500000</span> * ms; i++) &#123;&#125;<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br><br><span class="hljs-comment">// response</span><br>app.<span class="hljs-title function_">use</span>(<span class="hljs-keyword">async</span> (ctx) =&gt; &#123;<br>  <span class="hljs-comment">// 由于没有promise返回, 这里的await是无效的, 不会形成时间片</span><br>  <span class="hljs-comment">// 阻塞式休眠1秒</span><br>  <span class="hljs-keyword">await</span> <span class="hljs-title function_">asyncCPUSleep</span>(<span class="hljs-number">1000</span>);<br>  ctx.<span class="hljs-property">body</span> = <span class="hljs-string">&quot;Hello Koa&quot;</span>;<br>&#125;);<br><br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>);<br></code></pre></td></tr></table></figure>
 <hr>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 串行模式对应日志</span><br>第<span class="hljs-number">0</span>条请求完成, 耗时<span class="hljs-number">842</span>毫秒<br>第<span class="hljs-number">1</span>条请求完成, 耗时<span class="hljs-number">1573</span>毫秒<br>第<span class="hljs-number">2</span>条请求完成, 耗时<span class="hljs-number">2275</span>毫秒<br>第<span class="hljs-number">3</span>条请求完成, 耗时<span class="hljs-number">2987</span>毫秒<br>第<span class="hljs-number">4</span>条请求完成, 耗时<span class="hljs-number">3683</span>毫秒<br>第<span class="hljs-number">5</span>条请求完成, 耗时<span class="hljs-number">4396</span>毫秒<br>第<span class="hljs-number">7</span>条请求完成, 耗时<span class="hljs-number">5085</span>毫秒<br>第<span class="hljs-number">6</span>条请求完成, 耗时<span class="hljs-number">5821</span>毫秒<br>第<span class="hljs-number">9</span>条请求完成, 耗时<span class="hljs-number">6535</span>毫秒<br>第<span class="hljs-number">11</span>条请求完成, 耗时<span class="hljs-number">7247</span>毫秒<br>第<span class="hljs-number">8</span>条请求完成, 耗时<span class="hljs-number">7963</span>毫秒<br>第<span class="hljs-number">10</span>条请求完成, 耗时<span class="hljs-number">8671</span>毫秒<br>第<span class="hljs-number">12</span>条请求完成, 耗时<span class="hljs-number">9381</span>毫秒<br>第<span class="hljs-number">13</span>条请求完成, 耗时<span class="hljs-number">10151</span>毫秒<br>第<span class="hljs-number">14</span>条请求完成, 耗时<span class="hljs-number">10852</span>毫秒<br>第<span class="hljs-number">15</span>条请求完成, 耗时<span class="hljs-number">11555</span>毫秒<br>第<span class="hljs-number">16</span>条请求完成, 耗时<span class="hljs-number">12225</span>毫秒<br>第<span class="hljs-number">24</span>条请求完成, 耗时<span class="hljs-number">12996</span>毫秒<br>第<span class="hljs-number">23</span>条请求完成, 耗时<span class="hljs-number">13723</span>毫秒<br>第<span class="hljs-number">25</span>条请求完成, 耗时<span class="hljs-number">14531</span>毫秒<br>第<span class="hljs-number">28</span>条请求完成, 耗时<span class="hljs-number">15235</span>毫秒<br>第<span class="hljs-number">22</span>条请求完成, 耗时<span class="hljs-number">15954</span>毫秒<br>第<span class="hljs-number">18</span>条请求完成, 耗时<span class="hljs-number">16860</span>毫秒<br>第<span class="hljs-number">29</span>条请求完成, 耗时<span class="hljs-number">17906</span>毫秒<br>第<span class="hljs-number">21</span>条请求完成, 耗时<span class="hljs-number">18595</span>毫秒<br>第<span class="hljs-number">26</span>条请求完成, 耗时<span class="hljs-number">19400</span>毫秒<br>第<span class="hljs-number">27</span>条请求完成, 耗时<span class="hljs-number">20333</span>毫秒<br>第<span class="hljs-number">17</span>条请求完成, 耗时<span class="hljs-number">21199</span>毫秒<br>第<span class="hljs-number">20</span>条请求完成, 耗时<span class="hljs-number">22080</span>毫秒<br>第<span class="hljs-number">19</span>条请求完成, 耗时<span class="hljs-number">23064</span>毫秒<br></code></pre></td></tr></table></figure>
 <p>但如果在处理过程中不断有 await 形成时间片, 可供 Node 调度. 则 Node 服务仍然遵循异步模型规律, 所有请求一起返回(一起超时)</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> Koa = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;koa&quot;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> Koa();<br><br><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">asyncCPUSleep</span>(<span class="hljs-params">ms = <span class="hljs-number">0</span></span>) </span>&#123;<br>  <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">reslove, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1500000</span> * ms; i++) &#123;&#125;<br>      reslove(<span class="hljs-literal">true</span>);<br>    &#125;, <span class="hljs-number">0</span>);<br>  &#125;);<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br><br>app.use(<span class="hljs-keyword">async</span> (ctx) =&gt; &#123;<br>  <span class="hljs-comment">// 切片式休眠1秒</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>    <span class="hljs-keyword">await</span> asyncCPUSleep(<span class="hljs-number">10</span>);<br>  &#125;<br>  ctx.body = <span class="hljs-string">&quot;Hello Koa&quot;</span>;<br>&#125;);<br><br>app.listen(<span class="hljs-number">3000</span>);<br></code></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">Koa</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;koa&quot;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Koa</span>();<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">asyncCPUSleep</span>(<span class="hljs-params">ms = <span class="hljs-number">0</span></span>) &#123;<br>  <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">reslove, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1500000</span> * ms; i++) &#123;&#125;<br>      <span class="hljs-title function_">reslove</span>(<span class="hljs-literal">true</span>);<br>    &#125;, <span class="hljs-number">0</span>);<br>  &#125;);<br>  <span class="hljs-keyword">return</span>;<br>&#125;<br><br>app.<span class="hljs-title function_">use</span>(<span class="hljs-keyword">async</span> (ctx) =&gt; &#123;<br>  <span class="hljs-comment">// 切片式休眠1秒</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;<br>    <span class="hljs-keyword">await</span> <span class="hljs-title function_">asyncCPUSleep</span>(<span class="hljs-number">10</span>);<br>  &#125;<br>  ctx.<span class="hljs-property">body</span> = <span class="hljs-string">&quot;Hello Koa&quot;</span>;<br>&#125;);<br><br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>);<br></code></pre></td></tr></table></figure>
 <hr>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 异步模式对应日志</span><br>第<span class="hljs-number">0</span>条请求完成, 耗时<span class="hljs-number">27696</span>毫秒<br>第<span class="hljs-number">1</span>条请求完成, 耗时<span class="hljs-number">27701</span>毫秒<br>第<span class="hljs-number">2</span>条请求完成, 耗时<span class="hljs-number">27711</span>毫秒<br>第<span class="hljs-number">3</span>条请求完成, 耗时<span class="hljs-number">27721</span>毫秒<br>第<span class="hljs-number">4</span>条请求完成, 耗时<span class="hljs-number">27731</span>毫秒<br>第<span class="hljs-number">5</span>条请求完成, 耗时<span class="hljs-number">27741</span>毫秒<br>第<span class="hljs-number">6</span>条请求完成, 耗时<span class="hljs-number">27751</span>毫秒<br>第<span class="hljs-number">7</span>条请求完成, 耗时<span class="hljs-number">27760</span>毫秒<br>第<span class="hljs-number">8</span>条请求完成, 耗时<span class="hljs-number">27770</span>毫秒<br>第<span class="hljs-number">9</span>条请求完成, 耗时<span class="hljs-number">27780</span>毫秒<br>第<span class="hljs-number">10</span>条请求完成, 耗时<span class="hljs-number">27790</span>毫秒<br>第<span class="hljs-number">11</span>条请求完成, 耗时<span class="hljs-number">27799</span>毫秒<br>第<span class="hljs-number">12</span>条请求完成, 耗时<span class="hljs-number">27808</span>毫秒<br>第<span class="hljs-number">13</span>条请求完成, 耗时<span class="hljs-number">27818</span>毫秒<br>第<span class="hljs-number">14</span>条请求完成, 耗时<span class="hljs-number">27827</span>毫秒<br>第<span class="hljs-number">15</span>条请求完成, 耗时<span class="hljs-number">27837</span>毫秒<br>第<span class="hljs-number">16</span>条请求完成, 耗时<span class="hljs-number">27847</span>毫秒<br>第<span class="hljs-number">17</span>条请求完成, 耗时<span class="hljs-number">27857</span>毫秒<br>第<span class="hljs-number">18</span>条请求完成, 耗时<span class="hljs-number">27866</span>毫秒<br>第<span class="hljs-number">19</span>条请求完成, 耗时<span class="hljs-number">27875</span>毫秒<br>第<span class="hljs-number">20</span>条请求完成, 耗时<span class="hljs-number">27885</span>毫秒<br>第<span class="hljs-number">21</span>条请求完成, 耗时<span class="hljs-number">27895</span>毫秒<br>第<span class="hljs-number">22</span>条请求完成, 耗时<span class="hljs-number">27905</span>毫秒<br>第<span class="hljs-number">23</span>条请求完成, 耗时<span class="hljs-number">27917</span>毫秒<br>第<span class="hljs-number">24</span>条请求完成, 耗时<span class="hljs-number">27927</span>毫秒<br>第<span class="hljs-number">25</span>条请求完成, 耗时<span class="hljs-number">27937</span>毫秒<br>第<span class="hljs-number">26</span>条请求完成, 耗时<span class="hljs-number">27946</span>毫秒<br>第<span class="hljs-number">27</span>条请求完成, 耗时<span class="hljs-number">27957</span>毫秒<br>第<span class="hljs-number">28</span>条请求完成, 耗时<span class="hljs-number">27963</span>毫秒<br>第<span class="hljs-number">29</span>条请求完成, 耗时<span class="hljs-number">27973</span>毫秒<br></code></pre></td></tr></table></figure>
 <p>一般而言, 由于 web 接口中总有需要 await 的地方(动态文件路由/远程接口调用/MySQL 查询/中间件处理/接口返回/etc), 所以不会出现纯计算密集型的现象, 基本上是…一起超时, 一起报警.</p>
@@ -610,26 +676,66 @@
 <h1>参考文章</h1>
 <p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039165643">深入理解 nodejs 的 HTTP 处理流程</a></p>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
                 
               </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
               
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
-                  
-                </p>
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>异步模型的脆折风险----从一次 Node 服务故障谈起</div>
+      <div>https://www.yaozeyuan.online/2021/06/28/2021/06/异步模型的脆折风险----从一次 Node 服务故障谈起/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年6月28日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
               
-              
-                <div class="post-prevnext">
+                <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/07/28/2021/07/%E5%BE%AE%E5%A3%B3%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%A6%82%E8%A7%88/">
+                      <a href="/2021/07/28/2021/07/%E5%BE%AE%E5%A3%B3%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E6%A6%82%E8%A7%88/" title="微壳小程序技术架构概览">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">微壳小程序技术架构概览</span>
                         <span class="visible-mobile">上一篇</span>
@@ -639,7 +745,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/02/04/2021/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AD%A6%E7%94%9F%E4%B8%8D%E5%96%9C%E6%AC%A2%E4%B8%8A%E5%AD%A6/">
+                      <a href="/2021/02/04/2021/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AD%A6%E7%94%9F%E4%B8%8D%E5%96%9C%E6%AC%A2%E4%B8%8A%E5%AD%A6/" title="读书分享:为什么学生不喜欢上学">
                         <span class="hidden-mobile">读书分享:为什么学生不喜欢上学</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -655,19 +761,50 @@
         </div>
       </div>
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
   <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
-      </div>
-    
+
+
+  </aside>
+
+
+    </div>
   </div>
 </div>
 
-<!-- Custom -->
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
 
 
     
@@ -692,35 +829,37 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
+
     
 
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-  </div>
+  <footer>
+    <div class="footer-inner">
   
-
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
   
-
   
-</footer>
-
-
-  <!-- SCRIPTS -->
   
-  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
   <script>
     NProgress.configure({"showSpinner":false,"trickleSpeed":100})
@@ -731,49 +870,23 @@
   </script>
 
 
-<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
-<!-- Plugins -->
 
-
-  <script  src="/js/local-search.js" ></script>
-
-
-
-
-
-  
-
-
-
-  
-    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
-  
-  
-    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
-  
-
-
-
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
   <script>
     (function (window, document) {
       var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
       
-      typing(title)
+        typing(text);
       
     })(window, document);
   </script>
@@ -784,41 +897,87 @@
 
 
 
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
 
 
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
 
+  <script>Fluid.plugins.codeWidget();</script>
 
 
   
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
   
-
-  
-
-  
-
-  
-
-  
-
-  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
 
 
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
-<!-- 主题的启动项 保持在最底部 -->
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
 <script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>
