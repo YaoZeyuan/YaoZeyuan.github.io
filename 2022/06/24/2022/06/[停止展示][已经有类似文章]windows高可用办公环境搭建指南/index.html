@@ -21,7 +21,7 @@
     <meta name="description" content="文章目标    文章假设 说明     目标人群 非 IT 专业人士, 包括不限于科研&#x2F;财务&#x2F;医生&#x2F;律师等以 windows 为办公环境, 但没有编程经验的人群   任务目标 通过且仅通过阅读文章, 完成高可用 windows 办公环境的构建   完成效果 1. 假设 D 日 12:00 电脑丢失, 且本人在国内其他城市出差, 身边无任何资料备份(但当地网络情况良好, 资料总体积不大于 300G)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="windows 高可用办公环境搭建指南">
-<meta property="og:url" content="https://www.yaozeyuan.online/2022/06/24/2022/06/windows%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8A%9E%E5%85%AC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:url" content="https://www.yaozeyuan.online/2022/06/24/2022/06/[%E5%81%9C%E6%AD%A2%E5%B1%95%E7%A4%BA][%E5%B7%B2%E7%BB%8F%E6%9C%89%E7%B1%BB%E4%BC%BC%E6%96%87%E7%AB%A0]windows%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8A%9E%E5%85%AC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/index.html">
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="文章目标    文章假设 说明     目标人群 非 IT 专业人士, 包括不限于科研&#x2F;财务&#x2F;医生&#x2F;律师等以 windows 为办公环境, 但没有编程经验的人群   任务目标 通过且仅通过阅读文章, 完成高可用 windows 办公环境的构建   完成效果 1. 假设 D 日 12:00 电脑丢失, 且本人在国内其他城市出差, 身边无任何资料备份(但当地网络情况良好, 资料总体积不大于 300G)">
 <meta property="og:locale" content="zh_CN">
@@ -49,7 +49,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8ly1h3jn3ubizsj20hk0lljuw.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8ly1h3jnj1d2ddj20t60tuk6a.jpg">
 <meta property="article:published_time" content="2022-06-24T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-25T12:07:24.680Z">
+<meta property="article:modified_time" content="2022-06-27T03:19:53.512Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="科普">
 <meta name="twitter:card" content="summary_large_image">
@@ -484,10 +484,10 @@
 <li>安装任何需要同步的应用程序时, 不选择安装位置, 而是一路下一步, 使用默认配置(微信/企业微信/QQ 需要额外操作, 后边会说明)</li>
 </ol>
 <p>解释一下原理:</p>
-<h4 id="跨设备文件同步原理">跨设备文件同步原理</h4>
+<h4 id="跨设备文件同步原理-2">跨设备文件同步原理</h4>
 <p>对于所有需要同步的文件统一放在<code>文档</code>目录下, 这个原因比较简单: 因为<code>文档</code>文件夹会被 OneDrive 自动同步, 因此文件夹内的<code>需同步文件</code>自然也会被同步.</p>
 <p>又因为各个设备上 OneDrive 本地文件夹所在的路径一样(都是<code>D:/</code>盘下的<code>onedrive</code>文件夹), 所以不管哪台电脑, 都可以按相同路径找到对应文件</p>
-<h4 id="跨设备应用程序同步原理">跨设备应用程序同步原理</h4>
+<h4 id="跨设备应用程序同步原理-2">跨设备应用程序同步原理</h4>
 <p>应用程序分为两个部分:</p>
 <ol>
 <li><code>程序本体</code></li>
@@ -497,7 +497,7 @@
 <p>而一路<code>下一步</code>安装时, 由于我们走的是默认安装流程, 所以<code>配置文件</code>/<code>数据库文件</code>也会被放在默认的位置下, 也就是<code>文档</code>文件夹中</p>
 <p>而我们又已经配置了<code>文档</code>文件夹的自动同步功能</p>
 <p>所以, 即使重装了系统, 我们也只要重新安装一遍应用程序, 把<code>程序本体</code>补上, 程序启动后发现<code>文档</code>下已经有了(之前备份好了的)<code>配置文件</code>, 会直接基于(根据备份还原出的)<code>配置文件</code>启动, 其表现自然也和备份时一样.</p>
-<h4 id="跨设备同步应用程序配置时需要注意的事">跨设备同步应用程序配置时需要注意的事</h4>
+<h4 id="跨设备同步应用程序配置时需要注意的事-2">跨设备同步应用程序配置时需要注意的事</h4>
 <p>这个太重要以至于需要单拉出来说一下:</p>
 <p>跨设备同步应用程序配置对于绝大多数应用都可以使用, 但个别应用例外:</p>
 <ol>
@@ -612,7 +612,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>windows 高可用办公环境搭建指南</div>
-      <div>https://www.yaozeyuan.online/2022/06/24/2022/06/windows高可用办公环境搭建指南/</div>
+      <div>https://www.yaozeyuan.online/2022/06/24/2022/06/[停止展示][已经有类似文章]windows高可用办公环境搭建指南/</div>
     </div>
     <div class="license-meta">
       
@@ -653,6 +653,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/06/25/2022/06/30%E5%88%86%E9%92%9F%E6%90%9E%E5%AE%9A%E4%B8%AA%E4%BA%BA%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD/" title="30分钟搞定个人数据备份">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">30分钟搞定个人数据备份</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
