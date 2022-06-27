@@ -26,7 +26,7 @@
 <meta property="og:description" content="记录一些我认为比较有意思的CSS使用方法  属性选择器 众所周知，CSS说白了就是对各种选择器的排列组合。子代（tr &gt; td，只选择tr的直接子元素td） ， 后代（tr  td选择tr下的所有td元素）， 相邻元素(tr + tbody, 紧接着tr元素的tbody元素)， 以及地球人都会用的 元素、类、伪类、ID选择器，略过不提。 跟上边这些被各种w3cSchool讲烂了的选择器相比">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-06-24T09:48:01.000Z">
-<meta property="article:modified_time" content="2022-06-27T03:21:56.186Z">
+<meta property="article:modified_time" content="2022-06-27T04:09:06.896Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -429,6 +429,30 @@
             </div>
 
             
+  <article id="comments">
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.7.2/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: '09c5c4c6ec56ffa8167b2dd15b73498b'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
           </article>
         </div>
       </div>
@@ -642,6 +666,8 @@
 
   
 <script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
 
 
 

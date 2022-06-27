@@ -55,7 +55,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8ly1h3jn3ubizsj20hk0lljuw.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8ly1h3jnj1d2ddj20t60tuk6a.jpg">
 <meta property="article:published_time" content="2022-06-25T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-27T03:21:56.246Z">
+<meta property="article:modified_time" content="2022-06-27T04:09:06.952Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="科普">
 <meta name="twitter:card" content="summary_large_image">
@@ -272,7 +272,7 @@
         
         
           <!-- compatible with older versions-->
-          39 分钟
+          38 分钟
         
       </span>
     
@@ -319,14 +319,14 @@
 <p>版本 v1.0.0(2022-6-25)<br>
 作者: <a href="https://www.yaozeyuan.online">姚泽源</a></p>
 </blockquote>
-<h1>本文目标</h1>
+<h2 id="本文目标">本文目标</h2>
 <p>30 分钟内让你了解下边三件事:</p>
 <ol>
 <li>数据备份体系配置完成后, 可以达到什么效果</li>
 <li>成本是多少</li>
 <li>配置备份体系的具体步骤</li>
 </ol>
-<h1>预期效果</h1>
+<h2 id="预期效果">预期效果</h2>
 <p>得益于现代操作系统的飞速进步, 对于任意以 win10 及以上系统为日常工作平台的用户, 都可以通过本文, 在 30 分钟以内实现以下(近似于魔法)的效果:</p>
 <p>在备份体系部署完成后, 假设从北京出差去广州, 即使忘带电脑/电脑丢失, 只要买台新电脑且可以上网:</p>
 <ol>
@@ -341,7 +341,7 @@
 </ol>
 <p>问题来了</p>
 <p><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h3m2u9v2p9j30er0buwic.jpg" alt="那么, 在哪里可以买得到呢"></p>
-<h1>成本</h1>
+<h2 id="成本">成本</h2>
 <p>备份系统依赖微软内置的 OneDrive 实现, 主要成本分为这么几块:</p>
 <ol>
 <li>需要注册一个微软账号, 以便登录系统, 实现同步</li>
@@ -355,7 +355,7 @@
 </li>
 </ol>
 <p>仅此而已.</p>
-<h1>[本节可略过]任务目标与实现原理</h1>
+<h2 id="任务目标与实现原理">任务目标与实现原理</h2>
 <p><code>基本问题: 为什么数据丢失会造成损失</code></p>
 <p>数据丢失损失大是因为数据本身没有备份导致. 如果数据有备份, 那么丢失后只要从备份中恢复即可.</p>
 <p><code>进阶: 假设需要备份, 应该备份到哪里?</code></p>
@@ -401,11 +401,11 @@
 </ol>
 </li>
 </ol>
-<h1>具体步骤</h1>
-<h2 id="1-注册微软账号-并购买一年的-ofice-365-服务">1. 注册微软账号, 并购买一年的 ofice 365 服务</h2>
+<h2 id="具体步骤">具体步骤</h2>
+<h3 id="1-注册微软账号-并购买一年的-ofice-365-服务">1. 注册微软账号, 并购买一年的 ofice 365 服务</h3>
 <p>这一步相对简单, 在<a target="_blank" rel="noopener" href="https://www.microsoft.com/zh-cn/microsoft-365/buy/compare-all-microsoft-365-products?=&amp;activetab=tab:primaryr1&amp;rtc=1">Office 官网</a>上点击立即购买即可</p>
 <p><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h3mlr52yo4j31z412w4k2.jpg" alt="购买office 365服务"></p>
-<h2 id="2-在操作系统中登录账号">2. 在操作系统中登录账号</h2>
+<h3 id="2-在操作系统中登录账号">2. 在操作系统中登录账号</h3>
 <p>这一步的目的是将当前机器和微软账号相关联, 实现系统配置和剪切板的自动同步</p>
 <ul>
 <li>进入<code>设置</code>界面, 选择<code>账户</code>
@@ -451,7 +451,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="3-登录-OneDrive-云盘账号">3. 登录 OneDrive 云盘账号</h2>
+<h3 id="3-登录-OneDrive-云盘账号">3. 登录 OneDrive 云盘账号</h3>
 <p>这一步的目的是登录微软内置的云盘服务, 并启用数据备份</p>
 <ul>
 <li>打开开始菜单, 直接输入 OneDrive, 可以找到内置的 OneDrive 应用. 点击应用
@@ -502,12 +502,12 @@
 </ul>
 </li>
 </ul>
-<h2 id="4-配置桌面-图片-文档的自动同步">4. 配置桌面/图片/文档的自动同步</h2>
+<h3 id="4-配置桌面-图片-文档的自动同步">4. 配置桌面/图片/文档的自动同步</h3>
 <p>登录完成后如果本地已有 OneDrive 文件夹, OneDrive 会自动在后台进行比较, 作为同步中的状态, icon 为<code>云+小圆圈</code>的样式, 让其在后台进行自动对比即可</p>
 <p><img src="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jdtnw94qj20f60ry40e.jpg" alt="OneDrive自动对比更改"></p>
 <p>然后是重头戏 =&gt; 实现需求 5: 数据还原后, 电脑体验和原设备一模一样, 如果有多台设备, 只要登录同一账号, 不同设备间的体验也一模一样.</p>
 <p>先说实现方法, 然后再介绍原理:</p>
-<h3 id="4-1-多设备保持体验一致的实现方法">4.1 多设备保持体验一致的实现方法</h3>
+<h4 id="4-1-多设备保持体验一致的实现方法">4.1 多设备保持体验一致的实现方法</h4>
 <ul>
 <li>打开 OneDrive 设置界面
 <ul>
@@ -536,10 +536,10 @@
 <li>安装任何需要同步的应用程序时, 不选择安装位置, 而是一路下一步, 使用默认配置(微信/企业微信/QQ 需要额外操作, 后边会说明)</li>
 </ol>
 <p>解释一下原理:</p>
-<h4 id="跨设备文件同步原理">跨设备文件同步原理</h4>
+<h5 id="跨设备文件同步原理">跨设备文件同步原理</h5>
 <p>对于所有需要同步的文件统一放在<code>文档</code>目录下, 这个原因比较简单: 因为<code>文档</code>文件夹会被 OneDrive 自动同步, 因此文件夹内的<code>需同步文件</code>自然也会被同步.</p>
 <p>又因为各个设备上 OneDrive 本地文件夹所在的路径一样(都是<code>D:/</code>盘下的<code>onedrive</code>文件夹), 所以不管哪台电脑, 都可以按相同路径找到对应文件</p>
-<h4 id="跨设备应用程序同步原理">跨设备应用程序同步原理</h4>
+<h5 id="跨设备应用程序同步原理">跨设备应用程序同步原理</h5>
 <p>应用程序分为两个部分:</p>
 <ol>
 <li><code>程序本体</code></li>
@@ -549,7 +549,7 @@
 <p>而一路<code>下一步</code>安装时, 由于我们走的是默认安装流程, 所以<code>配置文件</code>/<code>数据库文件</code>也会被放在默认的位置下, 也就是<code>文档</code>文件夹中</p>
 <p>而我们又已经配置了<code>文档</code>文件夹的自动同步功能</p>
 <p>所以, 即使重装了系统, 我们也只要重新安装一遍应用程序, 把<code>程序本体</code>补上, 程序启动后发现<code>文档</code>下已经有了(之前备份好了的)<code>配置文件</code>, 会直接基于(根据备份还原出的)<code>配置文件</code>启动, 其表现自然也和备份时一样.</p>
-<h4 id="跨设备同步应用程序配置时需要注意的事">跨设备同步应用程序配置时需要注意的事</h4>
+<h5 id="跨设备同步应用程序配置时需要注意的事">跨设备同步应用程序配置时需要注意的事</h5>
 <p>这个太重要以至于需要单拉出来说一下:</p>
 <p>跨设备同步应用程序配置对于绝大多数应用都可以使用, 但个别应用例外:</p>
 <ol>
@@ -587,12 +587,12 @@
 </ol>
 </li>
 </ol>
-<h3 id="4-2-渐进式数据还原-数据还原期间保持电脑可用的方案">4.2 渐进式数据还原----数据还原期间保持电脑可用的方案</h3>
+<h4 id="4-2-渐进式数据还原-数据还原期间保持电脑可用的方案">4.2 渐进式数据还原----数据还原期间保持电脑可用的方案</h4>
 <p>目前除 4 以外的所有要求均已实现, 只剩下这一个需求, 怎么处理呢? 答案是勾选 OneDrive 上的一个选型</p>
 <p><img src="http://tva1.sinaimg.cn/large/6671cfa8ly1h3jn3ubizsj20hk0lljuw.jpg" alt="按需同步"></p>
 <p>当勾选按需同步时, OneDrive 只会创建文件占位符, 不会真实下载文件. 该功能主要在第一次恢复数据时使用, 或者当硬盘容量不够时使用(通过不同步照片/视频的方式节约硬盘空间). 勾选该选项后, 默认不会下载源文件, 只有当用户真实访问文件时才会去下载.</p>
 <p>建议是紧急情况下再使用, 正常来说, 300G 的内容, 一晚上也足够全同步下来了.</p>
-<h1>5. 其他</h1>
+<h3 id="5-其他">5. 其他</h3>
 <p>除了系统文件, 还有一些其他的数据需要同步. 我使用的是下边的方案, 仅供参考:</p>
 <ol>
 <li>剪切板同步<br>
@@ -724,6 +724,30 @@
             </div>
 
             
+  <article id="comments">
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.7.2/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: 'a3fa758873afd472e5e7d119a8b902e9'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
           </article>
         </div>
       </div>
@@ -937,6 +961,8 @@
 
   
 <script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
 
 
 

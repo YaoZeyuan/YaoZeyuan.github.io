@@ -26,7 +26,7 @@
 <meta property="og:description" content="adminer是一个非常好用的数据库管理软件, 但是在我把网络服务器从apache换成ngnix之后，它的记住账号密码的功能突然不能用了。 每次重启完电脑，再点左边的登录记录，总是提示说『Master password expired. Implement permanentLogin() method to make it permanent.』 这个问题困扰了我很长时间，一开始认为是sessi">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-10-11T09:48:01.000Z">
-<meta property="article:modified_time" content="2022-06-27T03:21:56.186Z">
+<meta property="article:modified_time" content="2022-06-27T04:09:06.896Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -376,6 +376,30 @@ cookie(&quot;adminer_key&quot;, ($_COOKIE[&quot;adminer_key&quot;] ? $_COOKIE[&q
             </div>
 
             
+  <article id="comments">
+    
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.7.2/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: 'b6c2b5d266ecc43013541e1f1af549d4'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+  </article>
+
+
           </article>
         </div>
       </div>
@@ -589,6 +613,8 @@ cookie(&quot;adminer_key&quot;, ($_COOKIE[&quot;adminer_key&quot;] ? $_COOKIE[&q
 
   
 <script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
 
 
 
