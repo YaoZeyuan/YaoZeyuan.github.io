@@ -18,21 +18,22 @@
   <meta name="author" content="姚泽源">
   <meta name="keywords" content="">
   
-    <meta name="description" content="概括下书里我认为有用的部分: 优秀架构的标准  可预测  优秀的软件架构可以对软件的工作方式和结构做出准确的假设, 新成员可以通过架构直接知道  组件的功能是什么 某一段代码在何处 新代码应该添加到哪里     可扩展  好的软件架构在其上添加新功能很容易, 而且不需要做大的结构性变化.   可维护  可维护性指: 当你修改一处代码时, 没必要大规模改动其他代码. 因此, 在好的架构上, 修改现有">
+    <meta name="description" content="记录下自学《人工智能：一种现代的方法(第 3 版)》的笔记 第一部分 第一章: 绪论 1.1 人工智能是什么 四象限: 像人一样(思考&#x2F;行动) 合理的(思考&#x2F;行动)    是否像人 是否合理     像人一样思考 合理的思考   像人一样行动 合理的一样行动     像人一样行动: 图灵测试  自然语言处理 知识表示 自动推理 机器学习 进阶: 完全的图灵测试  机器人视觉: 以感知物体 机器人学">
 <meta property="og:type" content="article">
-<meta property="og:title" content="不再重要的CSS调优:读 CSS重构:样式表性能调优">
-<meta property="og:url" content="https://www.yaozeyuan.online/2018/06/17/2018/06/%E4%B8%8D%E5%86%8D%E9%87%8D%E8%A6%81%E7%9A%84CSS%E8%B0%83%E4%BC%98_%E8%AF%BB_CSS%E9%87%8D%E6%9E%84_%E6%A0%B7%E5%BC%8F%E8%A1%A8%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/index.html">
+<meta property="og:title" content="&lt;&lt;人工智能&gt;&gt;笔记">
+<meta property="og:url" content="https://www.yaozeyuan.online/2022/07/11/2022/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%95%99%E6%9D%90%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="代号647">
-<meta property="og:description" content="概括下书里我认为有用的部分: 优秀架构的标准  可预测  优秀的软件架构可以对软件的工作方式和结构做出准确的假设, 新成员可以通过架构直接知道  组件的功能是什么 某一段代码在何处 新代码应该添加到哪里     可扩展  好的软件架构在其上添加新功能很容易, 而且不需要做大的结构性变化.   可维护  可维护性指: 当你修改一处代码时, 没必要大规模改动其他代码. 因此, 在好的架构上, 修改现有">
+<meta property="og:description" content="记录下自学《人工智能：一种现代的方法(第 3 版)》的笔记 第一部分 第一章: 绪论 1.1 人工智能是什么 四象限: 像人一样(思考&#x2F;行动) 合理的(思考&#x2F;行动)    是否像人 是否合理     像人一样思考 合理的思考   像人一样行动 合理的一样行动     像人一样行动: 图灵测试  自然语言处理 知识表示 自动推理 机器学习 进阶: 完全的图灵测试  机器人视觉: 以感知物体 机器人学">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-06-17T09:48:01.000Z">
-<meta property="article:modified_time" content="2022-07-10T16:39:20.456Z">
+<meta property="article:published_time" content="2022-07-11T05:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-10T16:39:20.508Z">
 <meta property="article:author" content="姚泽源">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>不再重要的CSS调优:读 CSS重构:样式表性能调优 - 代号647</title>
+  <title>&lt;&lt;人工智能&gt;&gt;笔记 - 代号647</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -205,7 +206,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="不再重要的CSS调优:读 CSS重构:样式表性能调优"></span>
+            <span id="subtitle" data-typed-text="&lt;&lt;人工智能&gt;&gt;笔记"></span>
           
         </div>
 
@@ -216,8 +217,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2018-06-17 17:48" pubdate>
-          2018年6月17日 下午
+        <time datetime="2022-07-11 13:00" pubdate>
+          2022年7月11日 下午
         </time>
       </span>
     
@@ -229,7 +230,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.6k 字
+          852 字
         
       </span>
     
@@ -241,7 +242,7 @@
         
         
           <!-- compatible with older versions-->
-          14 分钟
+          8 分钟
         
       </span>
     
@@ -279,82 +280,99 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">不再重要的CSS调优:读 CSS重构:样式表性能调优</h1>
+            <h1 style="display: none">&lt;&lt;人工智能&gt;&gt;笔记</h1>
             
             
               <div class="markdown-body">
                 
-                <p>概括下书里我认为有用的部分:</p>
-<h2 id="优秀架构的标准">优秀架构的标准</h2>
-<ol>
-<li>可预测
+                <p>记录下自学《人工智能：一种现代的方法(第 3 版)》的笔记</p>
+<h1>第一部分</h1>
+<h2 id="第一章-绪论">第一章: 绪论</h2>
+<h3 id="1-1-人工智能是什么">1.1 人工智能是什么</h3>
+<p>四象限:</p>
+<p>像人一样(思考/行动)<br>
+合理的(思考/行动)</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">是否像人</th>
+<th style="text-align:left">是否合理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">像人一样思考</td>
+<td style="text-align:left">合理的思考</td>
+</tr>
+<tr>
+<td style="text-align:left">像人一样行动</td>
+<td style="text-align:left">合理的一样行动</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>优秀的软件架构可以对软件的工作方式和结构做出准确的假设, 新成员可以通过架构直接知道
+<li>像人一样行动: 图灵测试
+<ul>
+<li>自然语言处理</li>
+<li>知识表示</li>
+<li>自动推理</li>
+<li>机器学习</li>
+<li>进阶: 完全的图灵测试
+<ul>
+<li>机器人视觉: 以感知物体</li>
+<li>机器人学: 以操纵和移动对象</li>
+</ul>
+</li>
+<li>然而通过图灵测试并不是计算机科学家追求的目标
+<ul>
+<li>
+<blockquote>
+<p>只有在莱特兄弟停止模仿鸟并开始使用风洞且开始了解空气动力学后后，对『人工飞行』的追求才获得成功。航空工程的教材不会把其领域目标定义为制造『能完全像鸽子一样飞行的机器，以致他们可以骗过其他真鸽子』</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>像人一样思考: 认知建模
+<ul>
+<li>认知科学: 通过将来自 AI 的计算机模型和来自心理学的实验技术结合, 试图构建出一种精确且可测试的人类思维理论</li>
+</ul>
+</li>
+<li>合理的思考: &quot;思维法则&quot;的途径
+<ul>
+<li>亚里士多德首先试图严格定义&quot;正确思考&quot; =&gt; <code>三段论</code>可以在给定正确前提时总产生正确结论</li>
+<li><code>逻辑主义</code>流派试图依靠这样的程序来创建智能系统</li>
+<li>存在的障碍:
 <ol>
-<li>组件的功能是什么</li>
-<li>某一段代码在何处</li>
-<li>新代码应该添加到哪里</li>
+<li>将非形式的知识进行形式化定义并不容易, 特别是当知识并不能完全肯定时(例如预测股票涨跌)</li>
+<li>&quot;原则上&quot;可解和实际上可解存在巨大的鸿沟. 求解几百条事实规则形成的状态爆炸可以耗尽任何计算资源----除非推理过程中有更高层次的指导(例如: 启发函数)</li>
 </ol>
 </li>
 </ul>
 </li>
-<li>可扩展
+<li>合理的行动
 <ul>
-<li>好的软件架构在其上添加新功能很容易, 而且不需要做大的结构性变化.</li>
+<li>Agent 指能够行动的某种东西</li>
+<li>合理途径和其他途径相比有两个优点:
+<ol>
+<li>比&quot;思维法则&quot;更一般化 =&gt; 因为正确的推理只是实现合理性的几种可能机制之一(例如, 当信息不足时, 面向运气式穿迷宫相比暴力搜集信息也可能会有更好的结果)</li>
+<li>比其他基于人类行为/人类思维途径更经得起科学的检验 =&gt; <code>合理</code>可以在数学上予以明确定义并完全通用</li>
+</ol>
+</li>
+<li>完美的合理性在复杂环境中并不可行, 但完美合理性分析是一个良好出发点.
+<ul>
+<li>实践中可以考虑<code>有限合理性</code></li>
 </ul>
 </li>
-<li>可维护
-<ul>
-<li>可维护性指: 当你修改一处代码时, 没必要大规模改动其他代码. 因此, 在好的架构上, 修改现有功能是一件比较容易地事</li>
 </ul>
 </li>
-<li>可提升代码复用性</li>
-</ol>
-<h2 id="选择器优先级">选择器优先级</h2>
-<pre><code class="hljs">优先级就是分配给指定的CSS声明的一个权重，它由 匹配的选择器中的 每一种选择器类型的 数值 决定。
-
-而当优先级与多个CSS声明中任意一个声明的优先级相等的时候，CSS中最后的那个声明将会被应用到元素上。
-
-当同一个元素有多个声明的时候，优先级才会有意义。因为每一个直接作用于元素的CSS规则总是会接管/覆盖（take over）该元素从祖先元素继承而来的规则。
-</code></pre>
-<p>via <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Specificity">MDN:优先级</a></p>
-<p>优先级其实是一个元组(A, B, C, D, E), 具体计算规则如下</p>
-<ol>
-<li>A/B/C/D/E 默认值为0, 每一项权重值单独计算, 不会进位</li>
-<li>如果有!important, A +1</li>
-<li>如果是内联样式, B + 1</li>
-<li>每有一个 id选择器, C + 1</li>
-<li>每有一个下列选择器, D + 1
-<ol>
-<li>类选择器（class selectors） (例如,.example)，</li>
-<li>属性选择器（attributes selectors）（例如, [type=“radio”]），</li>
-<li>伪类（pseudo-classes）（例如, :hover）</li>
-</ol>
-</li>
-<li>每有一个下列选择器, E + 1
-<ol>
-<li>类型选择器（type selectors）（例如, h1）</li>
-<li>伪元素（pseudo-elements）（例如, ::before）</li>
-</ol>
-</li>
-<li>每有一个下列选择器, E + 0
-<ol>
-<li>通配选择符（universal selector）(*),</li>
-<li>关系选择符（combinators） (+, &gt;, ~, ’ ')</li>
-<li>否定伪类（negation pseudo-class）(:not())</li>
-</ol>
-</li>
-<li>否定伪类:not() 内部声明的选择器, 按 2~6 的规则为当前选择器增加优先级</li>
-<li>浏览器自带样式和继承样式的优先级为<strong>无</strong>, 因此优先级为(0,0,0,0,0)的选择器可以覆盖浏览器自带样式(例如 *{box-sizing: border-box;})</li>
-</ol>
-<p>示例 =&gt;</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs CSS">*                                   <span class="hljs-comment">/* (0, 0, 0, 0, 0) */</span><br><span class="hljs-selector-tag">li</span>                                  <span class="hljs-comment">/* (0, 0, 0, 0, 1) */</span><br><span class="hljs-selector-tag">li</span>!important                        <span class="hljs-comment">/* (1, 0, 0, 0, 1) */</span><br><span class="hljs-selector-tag">ul</span> <span class="hljs-selector-tag">li</span>                               <span class="hljs-comment">/* (0, 0, 0, 0, 2) */</span><br><span class="hljs-selector-tag">ul</span> <span class="hljs-selector-tag">ol</span>+<span class="hljs-selector-tag">li</span>                            <span class="hljs-comment">/* (0, 0, 0, 0, 3) */</span><br><span class="hljs-selector-tag">ul</span> <span class="hljs-selector-tag">ol</span>+<span class="hljs-selector-tag">li</span>                            <span class="hljs-comment">/* (0, 0, 0, 0, 3) */</span><br><span class="hljs-selector-tag">h1</span> + *<span class="hljs-selector-attr">[REL=up]</span>                      <span class="hljs-comment">/* (0, 0, 0, 1, 1) */</span><br><span class="hljs-selector-tag">ul</span> <span class="hljs-selector-tag">ol</span> <span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.red</span>                        <span class="hljs-comment">/* (0, 0, 0, 1, 3) */</span><br><span class="hljs-selector-tag">li</span><span class="hljs-selector-class">.red</span><span class="hljs-selector-class">.level</span>                        <span class="hljs-comment">/* (0, 0, 0, 2, 1) */</span><br>a1<span class="hljs-selector-class">.a2</span><span class="hljs-selector-class">.a3</span><span class="hljs-selector-class">.a4</span><span class="hljs-selector-class">.a5</span><span class="hljs-selector-class">.a6</span><span class="hljs-selector-class">.a7</span><span class="hljs-selector-class">.a8</span><span class="hljs-selector-class">.a9</span><span class="hljs-selector-class">.a10</span><span class="hljs-selector-class">.a11</span>  <span class="hljs-comment">/* (0, 0, 0, 11,0) */</span><br><span class="hljs-selector-id">#x34y</span>                               <span class="hljs-comment">/* (0, 0, 1, 0, 0) */</span><br><span class="hljs-selector-id">#s12</span><span class="hljs-selector-pseudo">:not</span>(FOO)                       <span class="hljs-comment">/* (0, 0, 1, 0, 1) */</span><br><span class="hljs-selector-class">.foo</span> :<span class="hljs-built_in">matches</span>(.bar, #baz)           <span class="hljs-comment">/* (0, 0, 1, 1, 0) 或  (0, 0, 0, 2, 0), 取决于元素具体匹配到了哪个选择器 */</span><br></code></pre></td></tr></table></figure>
-<h2 id="然后">然后</h2>
-<p>没了…</p>
-<p>浏览器盒子模型, constent-box和border-box的差别虽然比较重要, 但几乎所有的css类库中都会有一句<code>*&#123;box-sizing: border-box;&#125;</code>, 所以不需要掌握</p>
-<p>css选择器性能由于Chrome的一个<a target="_blank" rel="noopener" href="https://stackoverflow.com/a/19431833">优化</a>, 导致性能问题不复存在, Chrome30里直接把开发者工具里的CSS性能分析器给<a target="_blank" rel="noopener" href="https://bugs.chromium.org/p/chromium/issues/detail?id=265486">删了</a></p>
-<p>关于视觉测试, 书里建议使用<a target="_blank" rel="noopener" href="https://gemini-testing.github.io/">Gemini</a> + PhantomJS, 这个我没有用过, 留作参考吧. 不过目前来看国内前端团队的UI测试基本靠设计手工看, antd也有UI自动化测试, 不过他们是用<a target="_blank" rel="noopener" href="https://facebook.github.io/jest/docs/en/puppeteer.html">jest+puppeteer</a>实现的, 或许也可以考虑下.</p>
-<p>剩下的就没啥了, 在这个组件化的时代, CSS优化, 已经不重要了</p>
+</ul>
+<h3 id="1-2-人工智能的基础">1.2 人工智能的基础</h3>
+<p>@todo</p>
+<h2 id="第二章-智能-Agent">第二章: 智能 Agent</h2>
+<h1>第二部分: 问题求解</h1>
+<h2 id="第三章-通过搜索进行问题求解">第三章: 通过搜索进行问题求解</h2>
 
                 
               </div>
@@ -364,6 +382,13 @@
               <div class="post-metas my-3">
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AC%94%E8%AE%B0/">#笔记</a>
+      
+    </div>
+  
 </div>
 
 
@@ -372,8 +397,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>不再重要的CSS调优:读 CSS重构:样式表性能调优</div>
-      <div>https://www.yaozeyuan.online/2018/06/17/2018/06/不再重要的CSS调优_读_CSS重构_样式表性能调优/</div>
+      <div>&lt;&lt;人工智能&gt;&gt;笔记</div>
+      <div>https://www.yaozeyuan.online/2022/07/11/2022/07/人工智能教材笔记/</div>
     </div>
     <div class="license-meta">
       
@@ -385,7 +410,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2018年6月17日</div>
+          <div>2022年7月11日</div>
         </div>
       
       
@@ -415,18 +440,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/07/23/2020/07/Windows%E7%B3%BB%E7%BB%9F%E9%87%8D%E8%A3%85%E6%8C%87%E5%8D%97/" title="Windows系统重装指南">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Windows系统重装指南</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2018/06/17/2018/07/Windows%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="Windows开发环境搭建最佳实践">
-                        <span class="hidden-mobile">Windows开发环境搭建最佳实践</span>
+                      <a href="/2022/06/25/what-read-today/%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3/" title="今日阅读-工作相关内容">
+                        <span class="hidden-mobile">今日阅读-工作相关内容</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -447,7 +466,7 @@
         var options = Object.assign(
           {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
           {
-            id: '2c56286419fca64b3fd29d3f1a9994f2'
+            id: '55553749662a6707ce561c5b9c39e79f'
           }
         )
         var gitalk = new Gitalk(options);
