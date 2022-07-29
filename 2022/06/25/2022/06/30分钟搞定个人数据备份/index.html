@@ -18,17 +18,18 @@
   <meta name="author" content="姚泽源">
   <meta name="keywords" content="">
   
-    <meta name="description" content="版本 v1.0.0(2022-6-25) 作者: 姚泽源  本文目标 30 分钟内让你了解下边三件事:  数据备份体系配置完成后, 可以达到什么效果 成本是多少 配置备份体系的具体步骤  预期效果 得益于现代操作系统的飞速进步, 对于任意以 win10 及以上系统为日常工作平台的用户, 都可以通过本文, 在 30 分钟以内实现以下(近似于魔法)的效果: 在备份体系部署完成后, 假设从北京出差去广">
+    <meta name="description" content="版本更新日志 作者: 姚泽源  2022 年 7 月 29 日  添加 win11 切换云账号登录截图 添加 OneDrive 登录失败说明   2022 年 6 月 25 日  初始化文章     本文目标 30 分钟内让你了解下边三件事:  数据备份体系配置完成后, 可以达到什么效果 成本是多少 配置备份体系的具体步骤  预期效果 得益于现代操作系统的飞速进步, 对于任意以 win10 及以">
 <meta property="og:type" content="article">
 <meta property="og:title" content="30分钟搞定个人数据备份">
 <meta property="og:url" content="https://www.yaozeyuan.online/2022/06/25/2022/06/30%E5%88%86%E9%92%9F%E6%90%9E%E5%AE%9A%E4%B8%AA%E4%BA%BA%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD/index.html">
 <meta property="og:site_name" content="代号647">
-<meta property="og:description" content="版本 v1.0.0(2022-6-25) 作者: 姚泽源  本文目标 30 分钟内让你了解下边三件事:  数据备份体系配置完成后, 可以达到什么效果 成本是多少 配置备份体系的具体步骤  预期效果 得益于现代操作系统的飞速进步, 对于任意以 win10 及以上系统为日常工作平台的用户, 都可以通过本文, 在 30 分钟以内实现以下(近似于魔法)的效果: 在备份体系部署完成后, 假设从北京出差去广">
+<meta property="og:description" content="版本更新日志 作者: 姚泽源  2022 年 7 月 29 日  添加 win11 切换云账号登录截图 添加 OneDrive 登录失败说明   2022 年 6 月 25 日  初始化文章     本文目标 30 分钟内让你了解下边三件事:  数据备份体系配置完成后, 可以达到什么效果 成本是多少 配置备份体系的具体步骤  预期效果 得益于现代操作系统的飞速进步, 对于任意以 win10 及以">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h3m2u9v2p9j30er0buwic.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h3mlr52yo4j31z412w4k2.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jd271zfkj20x60pt0vo.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jd3co4mjj20x60pt46u.jpg">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h4ng3y2ns3j31e412xdnr.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h3mmj9gdxlj30yc0qb46k.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h3mmlr5m88j30x60pt77i.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h3mmo2gbgaj30x6140h20.jpg">
@@ -39,6 +40,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jdiad9scj213r0mcn7e.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jditd8aej20om0n6af9.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jdk0k9zfj20op0n742z.jpg">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h4ngi3a77yj30p90nk40p.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jdo7yo2xj20oq0nbagp.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jdpk0qrhj20om0n9n0z.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jdtnw94qj20f60ry40e.jpg">
@@ -55,7 +57,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8ly1h3jn3ubizsj20hk0lljuw.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/6671cfa8ly1h3jnj1d2ddj20t60tuk6a.jpg">
 <meta property="article:published_time" content="2022-06-25T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-22T08:50:05.355Z">
+<meta property="article:modified_time" content="2022-07-29T00:02:10.000Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="科普">
 <meta name="twitter:card" content="summary_large_image">
@@ -260,7 +262,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.6k 字
+          4.7k 字
         
       </span>
     
@@ -272,7 +274,7 @@
         
         
           <!-- compatible with older versions-->
-          38 分钟
+          40 分钟
         
       </span>
     
@@ -316,8 +318,21 @@
               <div class="markdown-body">
                 
                 <blockquote>
-<p>版本 v1.0.0(2022-6-25)<br>
-作者: <a href="https://www.yaozeyuan.online">姚泽源</a></p>
+<p>版本更新日志</p>
+<p>作者: <a href="https://www.yaozeyuan.online">姚泽源</a></p>
+<ul>
+<li>2022 年 7 月 29 日
+<ul>
+<li>添加 win11 切换云账号登录截图</li>
+<li>添加 OneDrive 登录失败说明</li>
+</ul>
+</li>
+<li>2022 年 6 月 25 日
+<ul>
+<li>初始化文章</li>
+</ul>
+</li>
+</ul>
 </blockquote>
 <h2 id="本文目标">本文目标</h2>
 <p>30 分钟内让你了解下边三件事:</p>
@@ -418,6 +433,11 @@
 <li><img src="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jd3co4mjj20x60pt46u.jpg" alt="登录"></li>
 </ul>
 </li>
+<li>win11 用户切换界面长这样
+<ul>
+<li><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h4ng3y2ns3j31e412xdnr.jpg" alt="win11 用户切换界面"></li>
+</ul>
+</li>
 </ul>
 </li>
 <li>同步配置
@@ -485,6 +505,16 @@
 <li>最终结果
 <ul>
 <li><img src="http://tva1.sinaimg.cn/large/6671cfa8gy1h3jdk0k9zfj20op0n742z.jpg" alt="最终结果"></li>
+<li><strong>注意</strong>
+<ul>
+<li>配置 OneDrive 储存地址为关键步骤, 如果没有出现<code>更改位置</code>字段, 可以退出 OneDrive 账号后重登一遍</li>
+<li>如果出现<code>连接到OneDrive时出现问题</code>, 说明网络不佳, 多试几次即可
+<ul>
+<li><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h4ngi3a77yj30p90nk40p.jpg" alt="连接到OneDrive时出现问题"></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -595,8 +625,6 @@
 <h3 id="5-其他">5. 其他</h3>
 <p>除了系统文件, 还有一些其他的数据需要同步. 我使用的是下边的方案, 仅供参考:</p>
 <ol>
-<li>剪切板同步<br>
-1.</li>
 <li>浏览器使用 chrome, 并登录 Google 账号. 这样所有的<code>收藏夹</code>/<code>访问记录</code>/<code>浏览器插件</code>都会被保存在谷歌服务器上. 可以自动同步
 <ol>
 <li>对于普通用户而言, 需要同步浏览器数据可以使用两种方案
@@ -708,9 +736,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/06/25/what-read-today/%E7%94%9F%E6%B4%BB%E7%9B%B8%E5%85%B3/" title="今日阅读-生活相关内容">
+                      <a href="/2022/06/25/what-read-today/%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3/" title="今日阅读-工作相关内容">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">今日阅读-生活相关内容</span>
+                        <span class="hidden-mobile">今日阅读-工作相关内容</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -718,8 +746,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/06/25/what-read-today/%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3/" title="今日阅读-工作相关内容">
-                        <span class="hidden-mobile">今日阅读-工作相关内容</span>
+                      <a href="/2022/06/13/2022/06/%E5%8F%AF%E9%80%89%E5%85%AC%E5%8F%B8%E8%81%8C%E4%BD%8D%E8%A1%A8/" title="可选公司职位表">
+                        <span class="hidden-mobile">可选公司职位表</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
