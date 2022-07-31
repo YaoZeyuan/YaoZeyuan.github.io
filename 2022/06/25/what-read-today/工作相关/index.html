@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h3ld7is0dlj30kk0zjtph.jpg">
 <meta property="og:image" content="https://img.shields.io/badge/dynamic/json?label=citationCount&amp;query=citationCount&amp;url=https%3A%2F%2Fapi.semanticscholar.org%2Fgraph%2Fv1%2Fpaper%2Fabd1c342495432171beb7ca8fd9551ef13cbd0ff%3Ffields%3DcitationCount">
 <meta property="article:published_time" content="2022-06-25T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-31T18:19:18.036Z">
+<meta property="article:modified_time" content="2022-07-31T18:19:41.311Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="what-read-today">
 <meta name="twitter:card" content="summary_large_image">
@@ -237,7 +237,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          7.7k 字
+          8k 字
         
       </span>
     
@@ -249,7 +249,7 @@
         
         
           <!-- compatible with older versions-->
-          64 分钟
+          67 分钟
         
       </span>
     
@@ -301,6 +301,19 @@
 长期更新</p>
 </blockquote>
 <ul>
+<li>
+<p>2022 年 8 月 1 日</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/microsoft/WSL/issues/3974">WSL 导入系统后, 更改默认进入的 uid</a>
+<ul>
+<li><code>神奇技巧</code></li>
+<li>目前 WSL 官方没有提供直接配置入口, 想在输入 wsl 后直接以某身份进入(而非默认的 root), 需要修改注册表实现</li>
+<li><code>wsl -d &lt;DistroName&gt; -u &lt;UserName&gt; -e id -u</code>可以拿到 导入 wsl 的系统中目标账户的 uid, 为十进制值(一般为 1000)</li>
+<li>进入注册表, 修改<code>Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Lxss\&#123;系统uuid&#125;</code>下, <code>DefaultUid</code>项对应的值即可</li>
+</ul>
+</li>
+</ul>
+</li>
 <li>
 <p>2022 年 7 月 29 日</p>
 <ul>
