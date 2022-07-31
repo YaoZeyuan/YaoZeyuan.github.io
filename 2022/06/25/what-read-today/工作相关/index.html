@@ -25,14 +25,18 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="缘起 虽然看过很多好文章, 但一直没找到整理的地方, 后续再找时也不方便. 最近翻 github 时看到了陶文整理的今日阅读文件, 记录每天看到的优秀文章, 贴下链接, 附一两句简单的评论, 感觉是一个不错的方案 一方面, 阅读经历本身不涉及关键隐私, 分享好文可以创造信息. 另一方面, 也可以作为外人了解我们的途径. 没有明显坏处但成本低有收益的事, 是可以做一做的. 故有此页面  记录日常读到">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h4nmgpuratj30u00kj45m.jpg">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h4nmi2ftnij30u00grgpc.jpg">
+<meta property="og:image" content="http://3/tva1.sinaimg.cn/large/007Yq4pTgy1h4mp6taxogj317w0pk77p.jpg">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h4msu45remj30z40og471.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h3ld7is0dlj30kk0zjtph.jpg">
 <meta property="og:image" content="https://img.shields.io/badge/dynamic/json?label=citationCount&amp;query=citationCount&amp;url=https%3A%2F%2Fapi.semanticscholar.org%2Fgraph%2Fv1%2Fpaper%2Fabd1c342495432171beb7ca8fd9551ef13cbd0ff%3Ffields%3DcitationCount">
 <meta property="article:published_time" content="2022-06-25T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-29T00:51:33.748Z">
+<meta property="article:modified_time" content="2022-07-31T05:09:08.321Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="what-read-today">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h3ld7is0dlj30kk0zjtph.jpg">
+<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h4nmgpuratj30u00kj45m.jpg">
   
   
   
@@ -233,7 +237,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          6.6k 字
+          7.5k 字
         
       </span>
     
@@ -245,7 +249,7 @@
         
         
           <!-- compatible with older versions-->
-          56 分钟
+          63 分钟
         
       </span>
     
@@ -297,6 +301,85 @@
 长期更新</p>
 </blockquote>
 <ul>
+<li>
+<p>2022 年 7 月 29 日</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/266728471">体验度量专题｜易用度在企业级中后台产品的探索和实践</a>
+<ul>
+<li><code>产品设计</code></li>
+<li>出处: 阿里<a target="_blank" rel="noopener" href="https://ant.design/docs/resources-cn#%E6%96%87%E7%AB%A0">antd 主页-资源-文章-2020-设计部分</a></li>
+<li>思路: 通过<code>易用度</code>考核技术类产品的效果</li>
+<li>易用度：使用<strong>产品完成</strong>工作的容易程度。
+<ul>
+<li><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h4nmgpuratj30u00kj45m.jpg" alt="易用度量表"></li>
+</ul>
+</li>
+<li>易用度-满意度-尖叫度-推荐度衡量维度对比
+<ul>
+<li><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h4nmi2ftnij30u00grgpc.jpg" alt="易用度-满意度-尖叫度-推荐度衡量维度对比"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://web.dev/metrics/">谷歌出品: 前端性能监控指标介绍</a>
+<ul>
+<li><code>仓鼠向</code></li>
+<li>对常见前端页面性能指标的介绍. 做性能又花钱可以用一下
+<ul>
+<li>Time to First Byte (TTFB)</li>
+<li>First Contentful Paint 首次内容绘制 (FCP)</li>
+<li>Largest Contentful Paint 最大内容绘制 (LCP)</li>
+<li>First Input Delay 首次输入延迟 (FID)</li>
+<li>Time to Interactive 可交互时间 (TTI)</li>
+<li>Total Blocking Time 总阻塞时间 (TBT)</li>
+<li>Cumulative Layout Shift 累积布局偏移 (CLS)</li>
+<li>Interaction to Next Paint (INP)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>2022 年 7 月 28 日</p>
+<ul>
+<li>消息搜索技术调研
+<ol>
+<li><code>端内消息搜索</code></li>
+<li>基本思路为: 如何在本地消息数据库中, 尽快找到和关键词匹配的前 n 条消息</li>
+<li>那么, 数据库方案有 sqlite(FTS, Full Text Search, v3/v4/v5)/CLucene(和 ES 是一个底层)/Lucy 多种方案可选</li>
+<li>此外, 还需要执行
+<ol>
+<li>分词器优化</li>
+<li>引擎层优化</li>
+</ol>
+</li>
+<li>对应: Telegram 搜索似乎是在服务端进行</li>
+<li>参考资料
+<ol>
+<li>微信 2013 年方案：<a target="_blank" rel="noopener" href="http://www.52im.net/forum.php?mod=viewthread&amp;tid=1132">http://www.52im.net/forum.php?mod=viewthread&amp;tid=1132</a></li>
+<li>网易云信方案：<a target="_blank" rel="noopener" href="http://www.52im.net/forum.php?mod=viewthread&amp;tid=3651">http://www.52im.net/forum.php?mod=viewthread&amp;tid=3651</a></li>
+<li>微信最新方案：<a target="_blank" rel="noopener" href="http://www.52im.net/forum.php?mod=viewthread&amp;tid=3839">http://www.52im.net/forum.php?mod=viewthread&amp;tid=3839</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>js 事件循环机制示例图
+<ul>
+<li><code>仓鼠向</code></li>
+<li><img src="http:/3/tva1.sinaimg.cn/large/007Yq4pTgy1h4mp6taxogj317w0pk77p.jpg" alt="js 事件循环机制示例图"></li>
+</ul>
+</li>
+<li>调度算法评价指标
+<ul>
+<li><code>仓鼠向</code></li>
+<li>调度算法评价指标本身是操作系统里的基础知识, 业内也有非常完善的研究. 但调度系统模型可以和很多实际业务匹配起来, 例如: 当任务量过大时, im-sdk 如何执行任务舍弃逻辑, 以追求更好的体验</li>
+<li>进一步, 如何定义更好的体验, 在这时, 调度算法指标里的周转时间, 或者 P90 周转时间显然就是很好的指标</li>
+<li><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h4msu45remj30z40og471.jpg" alt="调度算法评价指标"></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>
 <p>2022 年 7 月 22 日</p>
 <ul>
