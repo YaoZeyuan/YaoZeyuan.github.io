@@ -235,6 +235,46 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/11/08/2021/11/04-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8A)-%E6%BA%90%E7%A0%81%E7%BA%A7%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E4%B8%8EReact-Reconciler%E7%9B%91%E6%8E%A7%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%9E%E7%8E%B0/04-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8A)-%E6%BA%90%E7%A0%81%E7%BA%A7%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E4%B8%8EReact-Reconciler%E7%9B%91%E6%8E%A7%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_self">
+          小程序架构指南(四):源码详解小程序启动原理(上)
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2021/11/08/2021/11/04-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8A)-%E6%BA%90%E7%A0%81%E7%BA%A7%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E4%B8%8EReact-Reconciler%E7%9B%91%E6%8E%A7%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%9E%E7%8E%B0/04-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8A)-%E6%BA%90%E7%A0%81%E7%BA%A7%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E4%B8%8EReact-Reconciler%E7%9B%91%E6%8E%A7%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_self">
+        <div>
+          上回说到, 借助 React Fiber 架构提供的能力, 我们可以基于 React 完成小程序架构. 但由于篇幅所限, 我们只概要描述了下思路而略过了核心原理和实现方案. 在这篇文章中, 我们会以基于同样构建思路的remax@2.15.0为例, 分析类小程序项目中项目的具体启动过程. 通过之前的文章我们知道, 小程序的基本启动模型是:  解析 app.json, 获取其中注册的JSX对象和对应
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-11-08 11:00" pubdate>
+              2021-11-08
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E6%8C%87%E5%8D%97/">#小程序架构指南</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/11/08/2021/11/03-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/03-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" target="_self">
           小程序架构指南(三):小程序架构实现中的关键问题及解决方案
         </a>
@@ -538,39 +578,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2021-01-10 08:00" pubdate>
               2021-01-10
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/08/15/2020/08/%E4%B8%9A%E5%86%85%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/" target="_self">
-          业内小程序编辑器实现方案分析
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2020/08/15/2020/08/%E4%B8%9A%E5%86%85%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88%E5%88%86%E6%9E%90/" target="_self">
-        <div>
-          当前, 实现小程序编辑器有以下方案 方案一: 基于 MonacoEditor, 封装文本编辑器在 Electron 中使用 方案一: 启动本地 VS Code 服务器, Electron 中通过 iframe 嵌入网页实现编辑器功能 方案二: 基于 VS Code 完成编辑器功能, 预览功能通过编写 VS Code 插件实现 方案三: 基于 VS Code &#x2F; Theia 源代码, 定制 IDE(
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-15 08:00" pubdate>
-              2020-08-15
             </time>
           </div>
         
