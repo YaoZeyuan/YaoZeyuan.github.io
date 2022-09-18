@@ -25,19 +25,19 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="微壳小程序运行原理概览 大家好, 我是前端架构组的姚泽源, 今天分享下微壳小程序的运行原理概览. 这次分享的由三部分构成. 首先是小程序的基本运行模式和作为配套的平台整体架构. 然后会回答一个大家可能都想过的问题: 为什么我们要开发小程序平台, 为什么不直接用 H5 最后会具体介绍小程序的启动原理. 这一块涉及到自定义渲染器和 React 项目启动流程探索, 相信大家会比较感兴趣. 时间不多, 我">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/im广场.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/小程序基础架构.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/%E7%BE%A4%E9%AD%94%E4%B9%B1%E8%88%9E%E7%9A%84%E5%88%86%E4%BA%AB%E9%A1%B5.jpeg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/%E6%8B%BC%E5%A4%9A%E5%A4%9A_%E9%A6%96%E9%A1%B5.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/微信做小程序只办三件事.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/%E8%83%BD%E4%B8%8D%E8%83%BD%E5%86%8D%E7%BB%99%E5%8A%9B%E7%82%B9%E5%95%8A%E8%80%81%E5%B8%88.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/im%E5%B9%BF%E5%9C%BA.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/%E7%BE%A4%E9%AD%94%E4%B9%B1%E8%88%9E%E7%9A%84%E5%88%86%E4%BA%AB%E9%A1%B5.jpeg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/%E6%8B%BC%E5%A4%9A%E5%A4%9A_%E9%A6%96%E9%A1%B5.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/%E5%BE%AE%E4%BF%A1%E5%81%9A%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%8F%AA%E5%8A%9E%E4%B8%89%E4%BB%B6%E4%BA%8B.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/%E8%83%BD%E4%B8%8D%E8%83%BD%E5%86%8D%E7%BB%99%E5%8A%9B%E7%82%B9%E5%95%8A%E8%80%81%E5%B8%88.jpg">
 <meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/784c51422e7646a190c9d3deefbaeab8~tplv-k3u1fbpfcp-zoom-1.image">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/reconciler_hostconfig_renderer.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/reconciler_hostconfig_renderer.jpg">
 <meta property="article:published_time" content="2021-07-28T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-28T15:57:26.671Z">
+<meta property="article:modified_time" content="2022-09-18T16:20:41.154Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/im广场.jpg">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/im%E5%B9%BF%E5%9C%BA.jpg">
   
   
   
@@ -83,7 +83,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -124,7 +124,7 @@
 
 
   
-<meta name="generator" content="Hexo 6.2.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -250,7 +250,7 @@
         
         
           <!-- compatible with older versions-->
-          133 分钟
+          132 分钟
         
       </span>
     
@@ -675,21 +675,23 @@ Native(转发)-&gt;&gt;V8: 点击事件
         </div>
       
       
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
             
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
             
-              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-          
+          </div>
         </div>
-      </div>
+      
     </div>
     <div class="license-icon iconfont"></div>
   </div>
@@ -729,7 +731,7 @@ Native(转发)-&gt;&gt;V8: 点击事件
   <script type="text/javascript">
     Fluid.utils.loadComments('#gitalk-container', function() {
       Fluid.utils.createCssLink('/css/gitalk.css')
-      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.7.2/gitalk.min.js', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
         var options = Object.assign(
           {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
           {
@@ -796,6 +798,12 @@ Native(转发)-&gt;&gt;V8: 点击事件
   <script>
   Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
     mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
   });
 </script>
 
@@ -902,27 +910,39 @@ Native(转发)-&gt;&gt;V8: 点击事件
     var boardCtn = jQuery('#board-ctn');
     var boardTop = boardCtn.offset().top;
 
-    window.tocbot.init({
+    window.tocbot.init(Object.assign({
       tocSelector     : '#toc-body',
       contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
       linkClass       : 'tocbot-link',
       activeLinkClass : 'tocbot-active-link',
       listClass       : 'tocbot-list',
       isCollapsedClass: 'tocbot-is-collapsed',
       collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
       scrollSmooth    : true,
-      headingsOffset  : -boardTop
-    });
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
     if (toc.find('.toc-list-item').length > 0) {
       toc.css('visibility', 'visible');
     }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
   });
 </script>
 
 
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
 
   <script>Fluid.plugins.codeWidget();</script>
 
@@ -946,6 +966,21 @@ Native(转发)-&gt;&gt;V8: 点击事件
       window.anchors.options.class = 'anchorjs-link-left';
     }
     window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
   });
 </script>
 

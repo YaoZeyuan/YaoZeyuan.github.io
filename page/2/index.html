@@ -66,7 +66,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -107,7 +107,7 @@
 
 
   
-<meta name="generator" content="Hexo 6.2.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -235,6 +235,46 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/03/28/2022/03/%E4%B8%80%E6%AC%A1%E7%89%B9%E5%88%AB%E7%9A%84%E4%BC%81%E5%BE%AE%E7%BD%91%E9%A1%B5bug%E8%B0%83%E8%AF%95%E8%AE%B0%E5%BD%95/" target="_self">
+          一次特别的企微网页 bug 调试记录
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/03/28/2022/03/%E4%B8%80%E6%AC%A1%E7%89%B9%E5%88%AB%E7%9A%84%E4%BC%81%E5%BE%AE%E7%BD%91%E9%A1%B5bug%E8%B0%83%E8%AF%95%E8%AE%B0%E5%BD%95/" target="_self">
+        <div>
+          工作中遇到了一个比较奇特的 bug, 花了三整天才处理完, 挺有意思, 记录下处理过程. 故障表现 手机端打开 https://wx-work.ke.com, 由于是未登录状态, 因此自动跳转到https://wx-auth.ke.com上进行登录. 但回退到https://wx-work.ke.com后仍提示未登录, 自动跳转https://wx-auth.ke.com…陷入循环, 100%复现
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-03-28 13:00" pubdate>
+              2022-03-28
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%A5%9E%E5%A5%87bug/">#神奇bug</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/11/08/2021/11/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/" target="_self">
           小程序架构指南(五):源码详解小程序启动原理(下)
         </a>
@@ -323,7 +363,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2021/11/08/2021/11/03-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/03-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" target="_self">
         <div>
-          上回说到, 小程序架构中存在两个关键问题, 不解决则小程序项目就无从谈起. 在这篇文章中, 我们会尝试解决这两个问题. 在逻辑进程和渲染进程中, js 如何与 Native 通信 如果 js 只在逻辑进程中运行, 不能和外部通信, 那么它既不能使用原生能力, 也不能在渲染进程中构建出实际页面, 小程序架构也就无从谈起. 因此, 小程序基础库首先需要解决的就是 js 如何和 Native&#x2F;渲染进程通
+          上回说到, 小程序架构中存在两个关键问题, 不解决则小程序项目就无从谈起. 在这篇文章中, 我们会尝试解决这两个问题. 在逻辑进程和渲染进程中, js 如何与 Native 通信 如果 js 只在逻辑进程中运行, 不能和外部通信, 那么它既不能使用原生能力, 也不能在渲染进程中构建出实际页面, 小程序架构也就无从谈起. 因此, 小程序基础库首先需要解决的就是 js 如何和 Native/渲染进程通
         </div>
       </a>
 
@@ -443,7 +483,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2021/10/30/2021/10/node%E6%8E%A5%E5%8F%A3%E8%BD%AC%E5%8F%91%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" target="_self">
         <div>
-          前端开发过程中经常遇到接口跨域问题, 很难处理. 因此有了本地起一个 koa, 通过转发接口绕过跨域限制的方案. 这个方案具体实现步骤如下 处理同一服务的不同接口 假设本地开发的请求需要转移到 a1.ke.com 项目上, 那么我们需要做这么几件事  添加中间件, 捕获以指定字符串开始的请求, 以便后续转移   首先配置服务地址, 区分本地&#x2F;dev&#x2F;测试&#x2F;预览&#x2F;线上环境  123456789101
+          前端开发过程中经常遇到接口跨域问题, 很难处理. 因此有了本地起一个 koa, 通过转发接口绕过跨域限制的方案. 这个方案具体实现步骤如下 处理同一服务的不同接口 假设本地开发的请求需要转移到 a1.ke.com 项目上, 那么我们需要做这么几件事  添加中间件, 捕获以指定字符串开始的请求, 以便后续转移   首先配置服务地址, 区分本地/dev/测试/预览/线上环境  123456789101
         </div>
       </a>
 
@@ -552,39 +592,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2021-06-28 08:00" pubdate>
               2021-06-28
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/02/04/2021/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AD%A6%E7%94%9F%E4%B8%8D%E5%96%9C%E6%AC%A2%E4%B8%8A%E5%AD%A6/" target="_self">
-          读书分享:为什么学生不喜欢上学
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2021/02/04/2021/02/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AD%A6%E7%94%9F%E4%B8%8D%E5%96%9C%E6%AC%A2%E4%B8%8A%E5%AD%A6/" target="_self">
-        <div>
-          大家好, 今天分享一本书, &lt;&lt;为什么学生不喜欢上学&gt;&gt;. 这是本写给教师的认知心理学方面的科普, 目前豆瓣热门教育学排名第一. 这本书主要是介绍思考的工作原理, 以及根据这些原理制定合适自学和育儿策略.  让我们先从第一个事实开始:『人类的大脑并不擅长思考』. 实际上, 我们的大脑能做很多事, 擅长做一些事, 但是思考能力和其他能力比起来, 明显不是大脑的长项.  举个
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-02-04 08:00" pubdate>
-              2021-02-04
             </time>
           </div>
         
