@@ -25,6 +25,8 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="记录日常读到的和工作相关的文章&#x2F;链接 长期更新  缘起 虽然看过很多好文章, 但一直没找到整理的地方, 后续再找时也不方便. 最近翻 github 时看到了陶文整理的今日阅读文件, 记录每天看到的优秀文章, 贴下链接, 附一两句简单的评论, 感觉是一个不错的方案 一方面, 阅读经历本身不涉及关键隐私, 分享好文可以创造信息. 另一方面, 也可以作为外人了解我们的途径. 没有明显坏处但成本低有收益">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h80a55u6q9j31v117q16t.jpg">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h80aa3o8nvj31l417qn7t.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h5ziq5tgznj30hj08kq4m.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h52lykonxyj30eo0inwij.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h534vxoqnvj30dw0dbac6.jpg">
@@ -41,11 +43,11 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h3ld7is0dlj30kk0zjtph.jpg">
 <meta property="og:image" content="https://img.shields.io/badge/dynamic/json?label=citationCount&amp;query=citationCount&amp;url=https%3A%2F%2Fapi.semanticscholar.org%2Fgraph%2Fv1%2Fpaper%2Fabd1c342495432171beb7ca8fd9551ef13cbd0ff%3Ffields%3DcitationCount">
 <meta property="article:published_time" content="2022-06-25T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-10-30T14:03:02.536Z">
+<meta property="article:modified_time" content="2022-11-13T12:21:51.826Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="what-read-today">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h5ziq5tgznj30hj08kq4m.jpg">
+<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h80a55u6q9j31v117q16t.jpg">
   
   
   
@@ -250,7 +252,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          24k 字
+          27k 字
         
       </span>
     
@@ -262,7 +264,7 @@
         
         
           <!-- compatible with older versions-->
-          204 分钟
+          228 分钟
         
       </span>
     
@@ -314,6 +316,202 @@
 <p>一方面, 阅读经历本身不涉及关键隐私, 分享好文可以创造信息. 另一方面, 也可以作为外人了解我们的途径. 没有明显坏处但成本低有收益的事, 是可以做一做的.</p>
 <p>故有此页面</p>
 <ul>
+<li>
+<p>2022 年 11 月 10 日</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.nginx-cn.net/blog/">Nginx 团队博客(官方中文版)</a>
+<ul>
+<li><code>Nginx</code></li>
+<li>官方出品的 Nginx 指南</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42093488/article/details/95593491">通过配置 errorPage 在触发限流后返回指定内容</a>
+<ul>
+<li><code>Nginx</code></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://mobile.twitter.com/BenWAGMI/status/1590213710332981248">梅克尔树储备证明</a>
+<ul>
+<li><code>加密证明</code></li>
+<li>通过加密数据结构证明交易所未挪用任何用户资金
+<ul>
+<li><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h80a55u6q9j31v117q16t.jpg" alt="梅克尔树-数据结构">
+<ul>
+<li>梅克尔树，它是一种数据结构。如图我们有 4 份数据，每份数据为用户的 ID 和余额。将 4 个数据分别哈希就构成了梅克尔树的树叶，再将两个叶子的哈希值合并起来再进行哈希，如此迭代我们将得到一颗完整的梅克尔树。最上面的节点叫做树根。任何一个数据节点有更改，都会导致树根的哈希值发生变化</li>
+</ul>
+</li>
+<li><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h80aa3o8nvj31l417qn7t.jpg" alt="验证方式">
+<ul>
+<li>当我们需要证明某一用户确实在树上，如证明 User1 及其余额，我们只需要提供如图中的蓝色节点的值。User1 只需要知道自己的用户 ID 和余额，以及 Hash2 和 Hash34（这两个 hash 由交易所提供），就可以验证自己是否在树根上。显然，只给出这几个节点就足够一路哈希算到树根，只需要验证树根的值是否吻合即可。</li>
+</ul>
+</li>
+<li>梅克尔储备金证明实现的形式可有多种，我们先以http://Gate.io 的方案看看。 其实现思路是：
+<ol>
+<li>公开梅克尔树根。</li>
+<li>有能力向任何用户证明其余额和 UID 在树上。</li>
+<li>第三方审计公司来审核树上所有用户的余额加总。</li>
+<li>第三方审计公司来审核交易所所有钱包地址的余额加总。</li>
+</ol>
+</li>
+<li>1 和 2 是一种来自数学和社会的动态威慑：不论是对用户还是对审计公司，他们都无法确定这个梅克尔树根是否能对应 Gate 的所有用户。但由于每个人都可以验证自己是否在树上（显然出于隐私问题普通用户不可能去验证其他用户），一旦有一个人提供了我不在树上的证据，那 Gate 造假无疑。</li>
+<li>在没人声称 Gate 有诈时，我们都默认树根是正确的，审计公司也可以基于此去审计树里的每个节点并加总出用户的余额。</li>
+<li>3 和 4 是基于第三方的信任。这里可能会遭到诟病，但对于 CEX 来说，找到免信任的方法几乎不太可能，我们只需要注意这里可能出现的问题即可。</li>
+</ul>
+</li>
+<li>潜在的问题有：
+<ol>
+<li>树根的更新频率问题。CEX 每秒有大量的交易，每一笔交易就去更新树根这个不现实。大概率你看到的树根不会是最新的，也即了解的情况不是最新的。更新频率是保障这套系统有效性的一个关键参数。</li>
+<li>前端欺诈问题。用户基本是打开交易所的前端页面对自己在不在树上进行验证，这个页面可以返回假的结果，可能需要一些第三方的开源软件解决这个信任问题。</li>
+<li>第三方审计的信用问题。传统金融中暴雷的很多公司也是经过层层审计的，有审计并不意味着万无一失。</li>
+<li>吹哨人可用性问题。即使某个用户发现树根有假，他是否能意识到自己应该做什么，是否能有效地证明自己说的是对的，并传播这一事实？</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>2022 年 11 月 9 日</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://tengine.taobao.org/nginx_docs/cn/docs/http/request_processing.html">Nginx 中文文档</a></li>
+<li><code>Nginx</code></li>
+<li>淘宝团队翻译的</li>
+</ul>
+</li>
+<li>
+<p>2022 年 11 月 7 日</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7049327365318508575">老板的视角是如何看待故障的</a></li>
+</ul>
+</li>
+<li>
+<p>2022 年 11 月 3 日</p>
+<ul>
+<li>知乎 v3 版反爬策略解析
+<ul>
+<li><code>反爬虫策略</code></li>
+<li>jsvmp 是用匡开圆-2018 年提出的前端保护方案. 基本思路是基于 js 实现一个虚拟机, 运行加密代码, 进行签名计算. 利用虚拟机本身难以破解的特点, 配合加密代码内进行环境校验, 保护签名计算逻辑</li>
+<li>原始论文: <a target="_blank" rel="noopener" href="https://wap.cnki.net/touch/web/Dissertation/Article/10697-1018118675.nh.html">基于 WebAssembly 的 JavaScript 代码虚拟化保护方法研究与实现</a>
+<ul>
+<li>论文本身对截止至 18 年 js 的混淆/反混淆有很好的总结</li>
+<li>作者后来入职了深信服, 作为技术骨干出现在了深信服股权授予名单中</li>
+</ul>
+</li>
+<li>知乎的签名计算逻辑中用到了随机数, 保证每次计算出的签名不一致</li>
+<li>事实上 jsvmp 的破解也只有两种策略
+<ul>
+<li>环境模拟
+<ul>
+<li>如果没有平台专属代码, 可在拿到加密模块后, 通过 node.js 直接执行 js 代码获取运行结果</li>
+<li>如果只是简单添加了环境监测, 可以手工补全检测到的环境变量, hack 掉检测过程
+<ul>
+<li>一般用到 jsvmp 肯定都做了环境监测, 运行的又是字节码, 很难确认具体执行了哪些检测</li>
+<li>如果确实想知道的话, 可以对常见全局变量配置 Proxy 代理, 通过拦截对属性的访问请求跟踪环境检测过程</li>
+</ul>
+</li>
+<li>如果添加了反跟踪机制, 例如通过随机数方法保证每次生成的加密结果都不一样, 可以尝试 mock 掉系统自带的常见随机函数<code>Math.random = ()=&gt; 0.5</code> &amp; <code>Date.now = () =&gt; 0</code>移除随机因子
+<ul>
+<li>防御方法为
+<ul>
+<li>通过<code>Math.random.toString()</code>, 看返回结果是否为<code>function random() &#123; [native code] &#125;</code>检测随机函数是否发生过修改
+<ul>
+<li>风险点: 需要考虑各平台返回值不一样的情况</li>
+</ul>
+</li>
+<li>手工编写随机函数. 例如在虚拟机字节码中内置一个长度为 1000 位的随机数表</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>通过 js-rpc, 在浏览器中实际执行代码获取结果
+<ul>
+<li>基本思路: 利用 Electron 提供的<a target="_blank" rel="noopener" href="https://www.electronjs.org/zh/docs/latest/tutorial/ipc#%E6%A8%A1%E5%BC%8F-3%E4%B8%BB%E8%BF%9B%E7%A8%8B%E5%88%B0%E6%B8%B2%E6%9F%93%E5%99%A8%E8%BF%9B%E7%A8%8B">进程间通信-模式 3：主进程到渲染器进程</a>方法进行破解. Electron 本身是标准 Chrome 运行环境, 因此可以通过新起一个 webview 的方式, 提供 js 运行环境</li>
+<li>防御方法
+<ul>
+<li>添加 Electron 环境校验方法, 检测 Electron 中常见的特征: 例如 process 变量, ua 字段, canvas 特征</li>
+<li>反防御方法
+<ul>
+<li>移除 Electron 特征, 或直接用 CDP 协议驱动本机 Chrome 提供环境模拟</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>反混淆
+<ul>
+<li>插桩法, 通过暴力打断点, 跟踪虚拟机字节码执行流程, 推测出实际执行的算法</li>
+<li>由于每次发起请求都要进行签名, 字节码又通过虚拟机执行, 对性能损耗很大. 因此要求签名算法不能过于复杂, 所以有机会通过人工进行反混淆</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>相关博文
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/zjq592767809/article/details/126512798">【JS 逆向系列】某乎 x96 参数 3.0 版本与 jsvmp 进阶 - 漁滒</a>
+<ul>
+<li>这篇文章的作者对知乎 jsvmp 内执行的代码进行了反解, 逆向出了 python 版的签名计算函数</li>
+<li>我自己的话考虑用 Electron 起一个 webview, 利用 rpc 通信从 webview 直接运行 js 得了…</li>
+<li>作者在看雪论坛上也发了<a target="_blank" rel="noopener" href="https://www.52pojie.cn/forum.php?mod=viewthread&amp;tid=1686683">一份</a></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://chenxs.site/2022/09/12/%E7%9F%A5%E4%B9%8E%E6%96%B0%E7%89%88x96%E9%80%86%E5%90%91%E5%88%86%E6%9E%90/">知乎新版 x96 逆向分析</a>
+<ul>
+<li>界面交互很好</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://mrxiuxing.com/posts/d7c81aca.html">moumouhu x-zse-96 加密逆向 V3.0 算法还原</a></li>
+</ul>
+</li>
+<li>专利文本:<a target="_blank" rel="noopener" href="https://zhuanli.tianyancha.com/3aeedd919212181d7d73ddd211460f1b">一种基于前端字节码技术的 JavaScript 虚拟化保护方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>2022 年 11 月 2 日</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/560361174/answer/2722078269">如何编写工作日志</a>
+<ul>
+<li><code>工作习惯</code></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/azure/search/query-lucene-syntax">Lucene 查询语法</a>
+<ul>
+<li><code>Grafana面板编写</code></li>
+<li>编写 Grafana 面板时会用到, 对应于使用 ES 作为数据源时,在 query 字段中的语法</li>
+<li>如果变量为文本且携带特殊符号(例如<code>-</code>), 可以使用双引号包裹的方式<code>&quot;$变量名&quot;</code>, 避免筛选参数失效</li>
+</ul>
+</li>
+<li>Grafana 面板从 ES 中查询变量
+<ul>
+<li><code>Grafana面板编写</code></li>
+<li>使用该语法从 ES 数据源中查询变量可选值列表, 提供给用户进行筛选</li>
+<li><code>&#123;&quot;find&quot;:&quot;terms&quot;, &quot;field&quot;:&quot;serviceName.keyword&quot;&#125;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>2022 年 11 月 1 日</p>
+<ul>
+<li>Nginx log_format 中可用变量列表
+<ul>
+<li><code>nginx</code></li>
+<li>Nginx 官方说明: <a target="_blank" rel="noopener" href="http://nginx.org/en/docs/varindex.html">http://nginx.org/en/docs/varindex.html</a></li>
+<li>stackoverflow 上也有一个列表&amp;变量说明, 按字母序排列, 更方便查找 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/37437153/dictionary-variable-in-log-format-nginx">https://stackoverflow.com/questions/37437153/dictionary-variable-in-log-format-nginx</a></li>
+</ul>
+</li>
+<li>Nginx 变量规则
+<ul>
+<li><code>nginx</code></li>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/_83bFalgPnngTX2PfPqtrQ">顺风详解 Nginx 系列—Ngx 中的变量</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li>
 <p>2022 年 10 月 28 日</p>
 <ul>
