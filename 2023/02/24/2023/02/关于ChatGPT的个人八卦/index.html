@@ -18,22 +18,38 @@
   <meta name="author" content="姚泽源">
   <meta name="keywords" content="">
   
-    <meta name="description" content="低代码业内资料综述    低代码平台 特征     云凤蝶 界面美观大方, 组件属性编辑器设计优雅. (缺点: 已停止运行, 无法参考)   API Cloud 提供拖拉拽集成环境(IDE), 2021 年被用友 1.5 亿元收购   钉钉-宜搭 基于低代码引擎协议实现的项目.    建议先阅读 ☞ 国内低代码平台汇总-陶文, 了解前人经验, 然后再考虑低代码项目具体发展方案. 太长不看版: 直接">
+    <meta name="description" content="专业吃瓜  看完了邱锡鹏教授的讲座, 难以按捺自己的吃瓜之情, 这里按讲座顺序八卦下. 免责声明: 笔者专业不是人工智能方向, 对这块所知了了, 本文仅为吃瓜八卦, 不保证内容正确性.  严肃讨论出门左转知网&#x2F;arxiv.org&#x2F;list&#x2F;cs.AI谢谢 严肃讨论出门左转知网&#x2F;arxiv.org&#x2F;list&#x2F;cs.AI谢谢 严肃讨论出门左转知网&#x2F;arxiv.org&#x2F;list&#x2F;cs.AI谢谢  1.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="低代码业内资料综述">
-<meta property="og:url" content="https://www.yaozeyuan.online/2022/05/17/2022/05/%E9%9D%A2%E8%AF%95%E6%95%B4%E7%90%86/%E4%BD%8E%E4%BB%A3%E7%A0%81/%E4%BD%8E%E4%BB%A3%E7%A0%81%E4%B8%9A%E5%86%85%E8%B5%84%E6%96%99%E7%BB%BC%E8%BF%B0/index.html">
+<meta property="og:title" content="关于ChatGPT的个人八卦">
+<meta property="og:url" content="https://www.yaozeyuan.online/2023/02/24/2023/02/%E5%85%B3%E4%BA%8EChatGPT%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%85%AB%E5%8D%A6/index.html">
 <meta property="og:site_name" content="代号647">
-<meta property="og:description" content="低代码业内资料综述    低代码平台 特征     云凤蝶 界面美观大方, 组件属性编辑器设计优雅. (缺点: 已停止运行, 无法参考)   API Cloud 提供拖拉拽集成环境(IDE), 2021 年被用友 1.5 亿元收购   钉钉-宜搭 基于低代码引擎协议实现的项目.    建议先阅读 ☞ 国内低代码平台汇总-陶文, 了解前人经验, 然后再考虑低代码项目具体发展方案. 太长不看版: 直接">
+<meta property="og:description" content="专业吃瓜  看完了邱锡鹏教授的讲座, 难以按捺自己的吃瓜之情, 这里按讲座顺序八卦下. 免责声明: 笔者专业不是人工智能方向, 对这块所知了了, 本文仅为吃瓜八卦, 不保证内容正确性.  严肃讨论出门左转知网&#x2F;arxiv.org&#x2F;list&#x2F;cs.AI谢谢 严肃讨论出门左转知网&#x2F;arxiv.org&#x2F;list&#x2F;cs.AI谢谢 严肃讨论出门左转知网&#x2F;arxiv.org&#x2F;list&#x2F;cs.AI谢谢  1.">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-05-17T04:00:00.000Z">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/8114581b4c0ded3ee308d099cffef64f3767de72.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/2fe1af3d2bac5c16957a379c7288f2985bd79de7.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/7b1de153827b2acc840655c6fca690cd410bbe9e.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/0c7b881ed16088763c744f7a3f2a9b76ef111e5f.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/497a88eed147da020ca460c6218bd3f0c7868ee6.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/eede2374f8ca9c536f9068ec134ea3e4e389825b.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/bd764f573759cf89d85be25d31b872ca82b1b164.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/56c14eff30dbcbe58329d43d1fc33559420df25d.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/25082b024f382909346871701dd2f01c18e9fe11.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/43404b09d2e305cf692a80b701291f6850d4758f.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/024d483a43c0847f2d06b8b48eeabdc9ecd67f84.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/44fad1a0236232a0b1a3e6ce337ceaf6bfe25a02.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/86d4447054074cc90eadeb20c52f2d2c12dc5918.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/1faea9c5acab3d6a719feab23d0daa65962da25d.png">
+<meta property="og:image" content="http://article.biliimg.com/bfs/article/60fea0071901377af773a63991b0223dae09a563.png">
+<meta property="article:published_time" content="2023-02-24T05:00:00.000Z">
 <meta property="article:modified_time" content="2023-02-25T15:33:52.792Z">
 <meta property="article:author" content="姚泽源">
-<meta property="article:tag" content="面试资料整理">
+<meta property="article:tag" content="人工智能">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://article.biliimg.com/bfs/article/8114581b4c0ded3ee308d099cffef64f3767de72.png">
   
   
   
-  <title>低代码业内资料综述 - 代号647</title>
+  <title>关于ChatGPT的个人八卦 - 代号647</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -211,7 +227,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="低代码业内资料综述"></span>
+            <span id="subtitle" data-typed-text="关于ChatGPT的个人八卦"></span>
           
         </div>
 
@@ -222,8 +238,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-05-17 12:00" pubdate>
-          2022年5月17日 中午
+        <time datetime="2023-02-24 13:00" pubdate>
+          2023年2月24日 下午
         </time>
       </span>
     
@@ -235,7 +251,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.3k 字
+          2.3k 字
         
       </span>
     
@@ -247,7 +263,7 @@
         
         
           <!-- compatible with older versions-->
-          12 分钟
+          19 分钟
         
       </span>
     
@@ -285,83 +301,83 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">低代码业内资料综述</h1>
+            <h1 style="display: none">关于ChatGPT的个人八卦</h1>
             
             
               <div class="markdown-body">
                 
-                <h1>低代码业内资料综述</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">低代码平台</th>
-<th style="text-align:left">特征</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">云凤蝶</td>
-<td style="text-align:left">界面美观大方, 组件属性编辑器设计优雅. (缺点: 已停止运行, 无法参考)</td>
-</tr>
-<tr>
-<td style="text-align:left"><a target="_blank" rel="noopener" href="https://www.apicloud.com/studio3">API Cloud</a></td>
-<td style="text-align:left">提供拖拉拽集成环境(IDE), 2021 年被用友 1.5 亿元收购</td>
-</tr>
-<tr>
-<td style="text-align:left"><a target="_blank" rel="noopener" href="https://www.aliwork.com/">钉钉-宜搭</a></td>
-<td style="text-align:left">基于<a target="_blank" rel="noopener" href="https://lowcode-engine.cn/lowcode">低代码引擎</a>协议实现的项目.</td>
-</tr>
-</tbody>
-</table>
-<p>建议先阅读 ☞ <a target="_blank" rel="noopener" href="https://github.com/taowen/awesome-lowcode">国内低代码平台汇总-陶文</a>, 了解前人经验, 然后再考虑低代码项目具体发展方案.</p>
-<p>太长不看版: 直接阅读<a target="_blank" rel="noopener" href="https://lowcode-engine.cn/lowcode">低代码引擎规范</a>亦可</p>
-<h1>文章笔记</h1>
-<h2 id="低代码引擎规范"><a target="_blank" rel="noopener" href="https://lowcode-engine.cn/lowcode">低代码引擎规范</a></h2>
-<p>阿里宜搭项目组出品的低代码实现规范, 对拖拉拽式低代码项目注意事项有非常完善的总结</p>
-<h2 id="程序员为什么不喜欢低代码-陶文"><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/377234404">程序员为什么不喜欢低代码-陶文</a></h2>
-<p>查看<a target="_blank" rel="noopener" href="https://www.cnnews.today/showArticle?main_id=cc51032f7f5455c7efe410e71037985c">ppt</a></p>
-<p>低代码 =&gt; 最终用户编程</p>
-<p>现有需求, 再有解决方案. 付出对应代价/不变, 才能获得想要的优化(C 语言=&gt; 丧失寄存器管理权, java =&gt; 丧失内存管理权)</p>
-<p>强行通过 DSL 解决复杂组件联动, 最后的解决方案一定是 JavaScript 的变种</p>
-<p>抽象与压缩建立在有规律有冗余的基础上, 没有冗余, 就没有压缩(信息熵)</p>
-<p>程序员不喜欢低代码的实质是程序员不喜欢用低代码, 但这是正常现象, 低代码是给最终用户用而本身就不是给程序员用的. 而当程序员成为最终用户时----你看我 markdown 不也写得飞起吗</p>
-<h2 id="GMTC-低代码专场"><a target="_blank" rel="noopener" href="http://giac-history.msup.com.cn/Giac/schedule/subject?id=5100">GMTC 低代码专场</a></h2>
-<p>2021 年 去哪儿/蚂蚁金服/乘法云 对低代码的分享. 没有 ppt, 但大纲内容可以用做参考</p>
-<h2 id="前端服务化——页面搭建工具的死与生"><a target="_blank" rel="noopener" href="https://www.cnblogs.com/sskyy/p/6496287.html">前端服务化——页面搭建工具的死与生</a></h2>
-<p>可视化的集成框架真正的问题在于：虽然对没有前端能力的人来说，它更简单。但相比手写代码它缺少了灵活性，那么在用户前端能力增强后，你拿什么来补偿用户，让他仍然离不开你？</p>
-<p>扩展:</p>
-<p>侯震宇老师在低代码方面也有很多思考, 看文章现实他在阿里内部实现了一套叫&quot;金蝉&quot;的低代码平台</p>
+                <blockquote>
+<p>专业吃瓜</p>
+</blockquote>
+<p>看完了<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Tx4y1w78p">邱锡鹏教授的讲座</a>, 难以按捺自己的吃瓜之情, 这里按讲座顺序八卦下.</p>
+<p>免责声明: 笔者专业不是人工智能方向, 对这块所知了了, 本文仅为吃瓜八卦, 不保证内容正确性.</p>
+<blockquote>
+<p>严肃讨论出门左转<code>知网</code>/<code>arxiv.org/list/cs.AI</code>谢谢</p>
+<p>严肃讨论出门左转<code>知网</code>/<code>arxiv.org/list/cs.AI</code>谢谢</p>
+<p>严肃讨论出门左转<code>知网</code>/<code>arxiv.org/list/cs.AI</code>谢谢</p>
+</blockquote>
+<h1>1. AI 学界对 ChatGPT 的能力/缘起有共识</h1>
+<p>目前为止我看过三个独立来源的学术分享.</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://axii.js.org/index.zh-cn.html">Axii-前端框架</a>, 疑似用于构建金蝉的前端组件库</li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/66474056">长夜未央——企业级研发提效的下一阶段</a>
+<li>北大高才生版论文综述: <a target="_blank" rel="noopener" href="https://yaofu.notion.site/GPT-3-5-360081d91ec245f29029d37b54573756#cf00f4e11d974187956122ce7d534386">符尧:拆解追溯 GPT-3.5 各项能力的起源</a></li>
+<li>人话版论文综述: [张俊林：由 ChatGPT 反思大语言模型（LLM）的技术精要](<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/MISCVMGeT6MvzzhfjHmyCg">https://mp.weixin.qq.com/s/MISCVMGeT6MvzzhfjHmyCg</a></li>
+<li>还有就是今天看到的<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Tx4y1w78p">复旦大学邱锡鹏教授《大型语言模型的能力分析与应用》</a>()</li>
+</ul>
+<p>三个作者一个在爱丁堡读博(符尧), 一个在新浪微博 AI Lab 做负责人(张俊林), 一个在复旦大学尝试复现 ChatGPT(邱锡鹏, <a target="_blank" rel="noopener" href="https://paper.cnii.com.cn/article/terms-zh-cn_16337_315620.html">人民邮电报:复旦大学团队发布国内首个类 ChatGPT 模型 MOSS</a>), 但对 ChatGPT 的能力范围/缘起/训练过程的介绍思路几乎一模一样, 说明学术界内部对 ChatGPT 能力取得了共识, 否则声音不会这么一致</p>
+<p>反过来, 这也说明学术界认可<code>ChatGPT是大型语言模型, 而非通用智能模型</code>这一论断, 基于这一论断可以得出的具体结论参考我上篇文章<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/i-aDQBsOFzj2vv6UNO4Big">ChatGPT 快问快答</a>, 简单来说就是, 凡是认为 ChatGPT 是<strong>通用型 AI</strong>或者基于 ChatGPT 可以在近期(5 年内)发展成<strong>通用型 AI</strong>,可以引发大规模失业/解决大部分问题的, 都是民科, 这些言论都可以略过了.</p>
+<p>大型语言模型的作用只是根据上文生成<strong>合适的下文</strong>, 但<strong>不是正确的下文</strong>, 保证不了正确, 后续应用无从谈起.</p>
+<blockquote>
+<p>太先进的科技在不了解原理的人看来宛如神迹</p>
+<p>比如神话 ChatGPT 那一批</p>
+</blockquote>
+<p>PS: 考虑到 ChatGPT 是半年前推出的产品, 6 个月时间世界范围内没有成功复现的案例, 说明 ChatGPT 技术实现上有门槛----那么后续对 ChatGPT 的功能改进也会更难一些. 目前看, 至少 3 年时间内不用担心 ChatGPT 对世界产生现实性影响.</p>
+<h1>2. 邱锡鹏教授做出来的不是国产 ChatGPT, 可能是 ChatGPT 的萌芽版 InstructGPT</h1>
+<p>参考邱教授自己在知乎上的点赞截图, 原答案在<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/585248111/answer/2903543913">这里</a></p>
+<p><img src="http://article.biliimg.com/bfs/article/8114581b4c0ded3ee308d099cffef64f3767de72.png" alt="点赞截图"></p>
+<p>InstructGPT 是 22 年 2 月提出来的, 目前看邱教授团队是世界第一个宣布复现出类 InstructGPT 模型的团队. 亮点是世界其他团队居然需要一年时间才能复刻 InstructGPT(InsructGPT 参数量为 0.13 亿, GPT-3 参数量 1.75 亿 , ChatGPT 则是 1750 亿. 可以近似认为大语言模型的能力和参数量线性相关), 说明 OpenAI 这条路确实不好走.</p>
+<p>下一步应该是看百度预计三月份发布的<code>文心一言</code>和谷歌的<code>Bard</code>的效果, 如果效果和 ChatGPT 接近, 说明 OpenAI 的技术护城河没有那么深. 如果确认还是 ChatGPT 遥遥领先, 那后边追赶的路可就长了</p>
+<p><img src="http://article.biliimg.com/bfs/article/2fe1af3d2bac5c16957a379c7288f2985bd79de7.png" alt="邱教授介绍ChatGPT发展路径"></p>
+<h1>3. 流浪地球 2 科学顾问找的不错, 用对了<code>人在回路</code>这种冷门专业词汇</h1>
+<p>在电影院的时候, 流浪地球 2 片尾彩蛋, MOSS 说自己基于图丫丫<code>人在回路</code>的学习确认了延续人类文明的最优选择是毁灭人类. 我当时听了就很惊奇: 人在回路这个名词听起来非常怪, 是不是创作团队搞错了? 出门一查发现居然真有这个词, 是 AI 领域的专业名词</p>
+<p><img src="http://article.biliimg.com/bfs/article/7b1de153827b2acc840655c6fca690cd410bbe9e.png" alt="流浪地球2:人在回路彩蛋截图"></p>
+<p>今天听邱教授分享时又看到这个词----所以郭导的科学顾问从哪儿找的, 为什么这么专业</p>
+<p><img src="http://article.biliimg.com/bfs/article/0c7b881ed16088763c744f7a3f2a9b76ef111e5f.png" alt="人在回路与ChatGPT训练"></p>
+<h1>4. 训练 ChatGPT 的不只是肯尼亚&quot;血汗工厂&quot;里的标注员, 还有 40+ 个硕士生</h1>
+<p>为了确保 ChatGPT 的回答和人类预期一致, 需要主动为其编写标准回答----但这就不是简单数据标注就能完成的事了.</p>
+<p>听邱教授分享, OpenAI 团队为了保证问题&amp;回答的质量, 请了 40 多个硕士生负责选择问题&amp;提供标准答案, 够认真</p>
+<p><img src="http://article.biliimg.com/bfs/article/497a88eed147da020ca460c6218bd3f0c7868ee6.png" alt="需要硕士参与对ChatGPT进行校对"></p>
+<h1>5. 普通的训练集不能评估大模型的能力…邱教授使用的是…22 年的高考题</h1>
+<p>邱教授认为普通的 AI 训练集都是为了检测单项能力, 但对于大模型这种怪物, 普通训练集缺点重重(见附图), 简单说就是太弱</p>
+<p><img src="http://article.biliimg.com/bfs/article/eede2374f8ca9c536f9068ec134ea3e4e389825b.png" alt="普通训练集的缺陷"></p>
+<p>那怎么办呢, 考虑到 ChatGPT 所有的训练材料截至于 2021 年, 所以邱教授基于 22 年的中国高考试题, 专门为 ChatGPT 定制了一套<code>GaoKao-Bench</code>----请用高考分数证明你</p>
+<p><img src="http://article.biliimg.com/bfs/article/bd764f573759cf89d85be25d31b872ca82b1b164.png" alt="GAOKAO-Bench"></p>
+<p>做题现场大概是这样:</p>
+<p>数学 =&gt;</p>
+<p><img src="http://article.biliimg.com/bfs/article/56c14eff30dbcbe58329d43d1fc33559420df25d.png" alt="做题现场:数学"></p>
+<p>历史 =&gt;</p>
+<p><img src="http://article.biliimg.com/bfs/article/25082b024f382909346871701dd2f01c18e9fe11.png" alt="做题现场:历史"></p>
+<p>最终结果显示 ChatGPT 在(文理科)客观题上达到了 500 分考生的水平, 主观题上文科得分率 78%, 理科得分率小于 30%. 所以, 比起程序员同行, 文科的同学你们准备好了吗 😂</p>
+<p><img src="http://article.biliimg.com/bfs/article/43404b09d2e305cf692a80b701291f6850d4758f.png" alt="最终考试结果"></p>
+<h1>ChatGPT 的可能应用</h1>
+<p><img src="http://article.biliimg.com/bfs/article/024d483a43c0847f2d06b8b48eeabdc9ecd67f84.png" alt="ChatGPT的进一步改进"></p>
+<p>这一点显示 ChatGPT 实际上是大家的镜子, 我身边的(程序员)纷纷表示 ChatGPT 非常适合拿来写代码/写正则表达式/写 SQL/写 Shell 脚本/写…, 邱老师身为教授居然完全没提到这一茬, 心心念念想的只有----可以帮忙生成更多的人工智能训练集</p>
+<p>比如改善<code>句子表示学习</code></p>
+<p><img src="http://article.biliimg.com/bfs/article/44fad1a0236232a0b1a3e6ce337ceaf6bfe25a02.png" alt="ChatGPT应用:句子表示学习"></p>
+<p>帮忙进行各种学习任务<br>
+<img src="http://article.biliimg.com/bfs/article/86d4447054074cc90eadeb20c52f2d2c12dc5918.png" alt="ChatGPT应用:句子表示学习"></p>
+<p>总之就是: 用人工智能训练人工智能, 正反馈飞轮转起来~</p>
+<h1>最后的总结</h1>
+<p>总结上其实没什么</p>
+<p><img src="http://article.biliimg.com/bfs/article/1faea9c5acab3d6a719feab23d0daa65962da25d.png" alt="最后的总结"></p>
+<p>我认为主要还是 ChatGPT 太新, 目前留出的扩展能力又太弱(只有 4000 个字的记忆空间), 所以也只能泛泛而谈</p>
+<p><img src="http://article.biliimg.com/bfs/article/60fea0071901377af773a63991b0223dae09a563.png" alt="将加速通用人工智能的实现"></p>
+<p>等待修复了这些严重缺陷后的复刻版吧.</p>
+<p>感谢邱教授分享, 感谢 B 站和 up 主提供机会让我们看到这么专业的分享. 感谢互联网, 感谢现代科技的力量</p>
+<p>最后再安利一下自己写的总结文章:</p>
 <ul>
-<li>提到金蝉当前状态: 今年统计已经在平台上创建系统近 300 个，创建页面 7000+。同时也完全集成了数据模型、计算任务等通用后端系统能力。研发状态基本达到了通过 WebIDE 可视化操作即可完成系统研发工作。</li>
-<li>领域 DSL + 针对特定底层技术的驱动代码</li>
+<li>简单科普: <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/i-aDQBsOFzj2vv6UNO4Big">ChatGPT 快问快答</a></li>
+<li>论文精读: <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/GilyrTia3aVygoXIiZPRYA">ChatGPT 资料梳理</a></li>
 </ul>
-</li>
-<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34790596">十倍效能提升——Web 基础研发体系的建立</a></li>
-</ul>
-<h2 id="云凤蝶可视化搭建的推导与实现"><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/90746742">云凤蝶可视化搭建的推导与实现</a></h2>
-<p>对可视化编辑器编写重点进行具体说明</p>
-<h2 id="页面可视化搭建工具前生今世"><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/37171897">页面可视化搭建工具前生今世</a></h2>
-<p>从 VB 时代谈起, 对过往 20 年可视化搭建工具的综述</p>
-<h2 id="低代码-无代码十日谈-一-——趋势背后的逻辑"><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/470015215">低代码/无代码十日谈(一)——趋势背后的逻辑</a></h2>
-<ul>
-<li>软件开发对非互联网行业的企事业单位来说，缺钱又缺人。</li>
-<li>但整个社会中需要被软件服务的需求量其实是巨大的，群体也是巨大</li>
-</ul>
-<h2 id="乘法云-PaaS-的设计与推导"><a target="_blank" rel="noopener" href="https://chengfayun.com/middle-office/design">乘法云 PaaS 的设计与推导</a></h2>
-<p>陶文老师一直致力于低代码项目的研究与思考, 代表作品就是他的创业项目&lt;&lt;乘法云&gt;&gt;. 普通低代码是页面级应用, 乘法云属于业务流程级应用, 目标是提供业务流程级别的可视化搭建</p>
-<ul>
-<li>业务平台</li>
-</ul>
-<p>JAM 架构, JavaScript + Api + MarkupView.</p>
-<p>MarkupView(前端) ==push==&gt; ActiveRecord(后端, 只作为前端数据库使用) ==push=&gt; MarkupView(前端反显)</p>
-<p>通过<code>工作流引擎</code>/<code>流程引擎</code>配置后台项目.</p>
-<p>记录操作级日志, 方便复盘 debug</p>
-<h2 id="formily-js"><a target="_blank" rel="noopener" href="https://github.com/alibaba/formily/blob/formily_next/README.zh-cn.md">formily.js</a></h2>
-<p>复杂表单搭建工具.</p>
-<p>依赖收集语法需要专门学习, 但仍可以认为是当前最好的复杂 form 解决方案</p>
 
                 
               </div>
@@ -374,7 +390,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/">#面试资料整理</a>
+        <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">#人工智能</a>
       
     </div>
   
@@ -386,8 +402,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>低代码业内资料综述</div>
-      <div>https://www.yaozeyuan.online/2022/05/17/2022/05/面试整理/低代码/低代码业内资料综述/</div>
+      <div>关于ChatGPT的个人八卦</div>
+      <div>https://www.yaozeyuan.online/2023/02/24/2023/02/关于ChatGPT的个人八卦/</div>
     </div>
     <div class="license-meta">
       
@@ -399,7 +415,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年5月17日</div>
+          <div>2023年2月24日</div>
         </div>
       
       
@@ -431,18 +447,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/06/13/2022/06/%E6%B1%82%E8%81%8C%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/" title="求职经验总结">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">求职经验总结</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/03/28/2022/03/%E4%B8%80%E6%AC%A1%E7%89%B9%E5%88%AB%E7%9A%84%E4%BC%81%E5%BE%AE%E7%BD%91%E9%A1%B5bug%E8%B0%83%E8%AF%95%E8%AE%B0%E5%BD%95/" title="一次特别的企微网页 bug 调试记录">
-                        <span class="hidden-mobile">一次特别的企微网页 bug 调试记录</span>
+                      <a href="/2023/02/20/2023/02/ChatGPT%E8%B5%84%E6%96%99%E6%A2%B3%E7%90%86/" title="ChatGPT 资料梳理">
+                        <span class="hidden-mobile">ChatGPT 资料梳理</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -465,7 +475,7 @@
         var options = Object.assign(
           {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
           {
-            id: '8aa12523c3ac8b0912967c9f45223e14'
+            id: 'cea49b19f4ea2daeaaae6ba6b447a670'
           }
         )
         var gitalk = new Gitalk(options);
