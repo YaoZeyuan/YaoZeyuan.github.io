@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1helifb8n7uj313k06nwhk.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1helinunp8jj30fl0gndk1.jpg">
 <meta property="article:published_time" content="2023-06-03T05:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-04T05:08:40.957Z">
+<meta property="article:modified_time" content="2023-06-04T05:14:05.487Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="日常">
 <meta name="twitter:card" content="summary_large_image">
@@ -408,7 +408,7 @@ uin: 可以理解为是微信uid, 获取方法是登陆<a target="_blank" rel="n
 对应于<a target="_blank" rel="noopener" href="https://github.com/chg-hou/EnMicroMsg.db-Password-Cracker">EnMicroMsg.db-Password-Cracker</a>这个项目. 由于密码只取了md5的前7位, 一共只有16^7=268435456种可能. 只要用程序反复尝试肯定也能搞出来.</p>
 <p>但这里其实也有风险: 这里只考虑了密码的状态空间有穷, 但没有想到加密算法组合本身也是一个问题----如果加密算法组合配置不正确, 密码正确也一样解不出来. 目前只能祈祷微信别换加密算法了</p>
 <p>方案二: root手机后, 利用xposed框架拦截微信运行时的密码. 好处是该方法肯定可行. 问题是: 需要安卓开发能力----但这是我的弱项.</p>
-<p>好了, 就这样. 剩下的看什么时候有空, 把数据库转html写写吧</p>
+<p>好了, 就这样. 剩下的看什么时候有空, 把数据库转html写写, 预计要明年了</p>
 <h1>参考资料</h1>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://ssine.ink/posts/wechat-data-decryption/">提取微信聊天记录</a>
