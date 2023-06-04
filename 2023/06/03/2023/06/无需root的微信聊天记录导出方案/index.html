@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1helifb8n7uj313k06nwhk.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1helinunp8jj30fl0gndk1.jpg">
 <meta property="article:published_time" content="2023-06-03T05:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-03T18:45:56.069Z">
+<meta property="article:modified_time" content="2023-06-04T05:08:40.957Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="日常">
 <meta name="twitter:card" content="summary_large_image">
@@ -244,7 +244,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.3k 字
+          5.1k 字
         
       </span>
     
@@ -256,7 +256,7 @@
         
         
           <!-- compatible with older versions-->
-          36 分钟
+          43 分钟
         
       </span>
     
@@ -359,12 +359,31 @@ uin: 可以理解为是微信uid, 获取方法是登陆<a target="_blank" rel="n
 <h2 id="将加密数据库转换为无密码数据库">将加密数据库转换为无密码数据库</h2>
 <p>拿到数据库密码后, 确保sqlcipher为<strong>4.1及以上版本</strong>,  执行命令<code>sqlcipher ./resource/EnMicroMsg.db</code>, 打开加密数据库, 依次执行以下代码即可转换得到无密码数据库<code>decryption_en_micro_msg.sqlite3</code></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 查看sqlcipher版本, 要求必须是4.1以上</span><br><span class="hljs-comment">-- 本次验证通过的版本是 4.5.4 community</span><br>PRAGMA cipher_version;<br><span class="hljs-comment">-- 配置密码</span><br>PRAGMA key <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1234567&#x27;</span>;<br><span class="hljs-comment">-- 配置解密算法</span><br>PRAGMA cipher_compatibility <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br><span class="hljs-comment">-- 创建无密码数据库</span><br>ATTACH DATABASE <span class="hljs-string">&#x27;decryption_en_micro_msg.sqlite3&#x27;</span> <span class="hljs-keyword">AS</span> db KEY <span class="hljs-string">&#x27;&#x27;</span>;<br><span class="hljs-comment">-- 将加密数据库导出到无密码数据库中</span><br><span class="hljs-keyword">SELECT</span> sqlcipher_export(<span class="hljs-string">&#x27;db&#x27;</span>);<br><span class="hljs-comment">-- 导出完毕, 关闭连接</span><br>DETACH DATABASE db;<br><span class="hljs-comment">-- 退出sqlcipher</span><br>.q<br></code></pre></td></tr></table></figure>
-<h2 id="将原始数据库转换为html聊天记录">将原始数据库转换为html聊天记录</h2>
-<p>坦诚说这一步我还没实验, 所以没啥好分享的. 但像<a target="_blank" rel="noopener" href="https://github.com/BlueMatthew/WechatExporter">WechatExporter</a>可以把无密码数据库内容转换为html聊天记录, 也可以通过<a target="_blank" rel="noopener" href="https://sqlitebrowser.org/dl/">sqlite3浏览器</a>直接查看聊天内容. 具体如何将数据库转成html文件这个我还没看, 回头有时间搞下, 看能否封装成方案</p>
+<h1>将原始数据库转换为html聊天记录</h1>
+<p><a target="_blank" rel="noopener" href="https://github.com/ppwwyyxx/wechat-dump">wechat-dump</a>本身提供了简单的将数据库转换为html的能力, 不过聊天样式还停留在古早时代, 输出的文件名也只是简单的按序号递增, 没有区分日期时间. 考虑到这是个人项目, 实现上有待完善的点可以理解. 记录一下转换命令</p>
+<h2 id="准备阶段">准备阶段</h2>
+<p>参考<a target="_blank" rel="noopener" href="https://github.com/ppwwyyxx/wechat-dump">wechat-dump</a>本身的项目说明, 需要以下几步.</p>
+<ol>
+<li>执行<code>bash third-party/compile_silk.sh</code>, 构建silk执行文件, 似乎是一个将微信语音转换为mp3的程序, 执行就是了</li>
+<li>下载<code>https://github.com/ppwwyyxx/wechat-dump/releases/download/0.1/emoji.cache.tar.bz2</code>文件, 将解压得到的<code>emoji.cache</code>放在项目根目录下, 方便读取</li>
+<li>整理resource文件夹, 将<code>avatar/emoji/image2/sfs/video/voice2</code>文件夹都放在同一个文件夹下, 作为res目录
+<ol>
+<li>这里边<code>emoji</code>位于<code>./微信(com.tencent.mm)/apps/com.tencent.mm/f/public</code>文件夹下</li>
+<li>其他所有文件夹(<code>avatar/image2/sfs/video/voice2</code>)都在<code>./微信(com.tencent.mm)/apps/com.tencent.mm/r/MicroMsg/$&#123;userid&#125;</code>文件夹下----就是<code>EnMicroMsg.db</code>所在的文件夹</li>
+</ol>
+</li>
+<li>最好注释掉<code>wechat/emoji.py</code>里的日志输出, 报错过多会影响运行速度</li>
+</ol>
+<h2 id="执行">执行</h2>
+<p>项目目录下执行<code>./dump-html.py 联系人的微信备注名 --db decrypted_enmicrossg.sqlite3  --res /mnt/e/微信\(com.tencent.mm\)/apps/com.tencent.mm/r/MicroMsg/xxxxxxxx --output ./resource/html/test.html</code>即可.</p>
+<p>如果忘记了联系人的备注名, 可以数据库的rcontact表中查询, 对应字段是<code>conRemark</code>, 具体数据库结构介绍可以自行百度, 或者看<a target="_blank" rel="noopener" href="https://github.com/lefex/LefexWork/blob/master/blog/iOS/%E5%AF%BC%E5%87%BA%E5%BE%AE%E4%BF%A1iOS%E6%95%B0%E6%8D%AE%E5%BA%93.md">这篇文章</a>, 有简单的介绍</p>
+<p>更暴力的方法是通过<a target="_blank" rel="noopener" href="https://sqlitebrowser.org/dl/">sqlite3浏览器</a>直接查看message表里的聊天内容</p>
+<p>但总而言之, 目前还没看到很好的导出方案. 后续可以考虑自己搞一个</p>
+<h1>特别注意</h1>
 <p>特别注意: <strong>绝对要保护好无加密的聊天数据库文件</strong>, 这里边有所有的微信聊天记录内容, 而且完全没有加密, 所有人都能查看. 放出去就能当场社死…</p>
 <p>不过这都是后话, 属于幸福的烦恼…</p>
 <p>接下来是纯技术部分, 仅为记录方案发现过程. 非代码爱好者可以<code>Ctrl+W</code>了</p>
-<h1>纯技术部分-与正文无关</h1>
+<h1>方案探索过程笔记-与正文无关</h1>
 <p>事实上, 上述流程是一个非常取巧的过程, uin和imei一步都不能错. 错了之后排查问题也相当麻烦. 所以还是得知其所以然, 记录一下正确的探索流程.</p>
 <h2 id="排查思路的来源">排查思路的来源</h2>
 <p>以上思路实际上均来源于<a target="_blank" rel="noopener" href="https://github.com/ppwwyyxx/wechat-dump">wechat-dump</a>开源项目, 具体来说是他的<code>Decrypt database file</code>步骤.</p>
