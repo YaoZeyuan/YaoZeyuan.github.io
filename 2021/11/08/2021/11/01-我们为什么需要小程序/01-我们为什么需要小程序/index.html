@@ -25,15 +25,15 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="假设有天老板找到你, 笑眯眯的说: “小王啊, 你看微信百度支付宝都有自己的小程序平台了, 我们什么时候搞个呢?”  假设有天老板找到你, 笑眯眯的说: “小王啊, 你看微信百度支付宝都有自己的小程序平台了, 我们什么时候搞个呢?” 这时你会… 什么是小程序 评估我们是否需要小程序, 首先得定义什么才是小程序 按照微信的解释, 小程序是一种特殊的网页应用. 传统模式下, 逻辑层(js)和渲染层(">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaoshx5j30cq09cjss.jpg">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaowrvpj30wd0fd12l.jpg">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1gw7uapb14fj30jg1837wh.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaoshx5j30cq09cjss.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaowrvpj30wd0fd12l.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1gw7uapb14fj30jg1837wh.jpg">
 <meta property="article:published_time" content="2021-11-08T00:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-04T05:14:05.479Z">
+<meta property="article:modified_time" content="2023-06-28T15:17:30.601Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="小程序架构指南">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaoshx5j30cq09cjss.jpg">
+<meta name="twitter:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaoshx5j30cq09cjss.jpg">
   
   
   
@@ -430,7 +430,7 @@
 </table>
 <p>从表格看, 小程序方案对 js-bridge 并没有决定性的优势.</p>
 <p>有观点认为小程序优势在于逻辑进程渲染进程分别进行, 所以加载速度会比网页快. 但实际上, 百度首页渲染时间分析显示, 网页渲染时间只有 58ms, 只占总渲染时长的 1.9%, js 运行时长(956ms)和静态资源加载时长(145ms)才是可控的占比大头.</p>
-<p><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaoshx5j30cq09cjss.jpg" alt="百度首页渲染时间分析.png"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaoshx5j30cq09cjss.jpg" alt="百度首页渲染时间分析.png"></p>
 <p>如果考虑到逻辑进程和渲染进程之间通信所消耗的时间, 以及不管是小程序还是 js-bridge 方案, 页面最终运算结果总会呈现在 webview 上这一事实. 双进程方案由于多了启动逻辑进程和进程通信的步骤, 在同等优化层次的情况下, 其性能只会比 js-bridge 更差, 不会更好.</p>
 <p>↓ 微信小程序启动流程 ↓</p>
 <pre><code class=" mermaid">sequenceDiagram
@@ -490,7 +490,7 @@
 <h2 id="小程序方案的真正优势">小程序方案的真正优势</h2>
 <p>2015 年, 微信首先推出了 js-bridge 方案向<strong>公司内部开发者</strong>开放原生能力, 但很快被<strong>平台上的其他开发者</strong>发现, 于是微信顺带推出了正式的 js-sdk 方案, 希望作为平台向开发者提供更多能力.</p>
 <p>但是, 违规应用层出不穷, 由于使用的是 js-bridge 方案, 所以微信只能通过封禁域名的方式对页面进行限制. 在微信运营和黑产团队玩打地鼠玩得风生水起之际, 2015 年 9 月, 一家新注册的公司让微信彻底放弃了挣扎的欲望.</p>
-<p><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaowrvpj30wd0fd12l.jpg" alt="拼多多-新电商开创者"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1gw7uaowrvpj30wd0fd12l.jpg" alt="拼多多-新电商开创者"></p>
 <p>在微信平台上, js-bridge 虽然可以开放能力, 但却不能限制<strong>谁去使用</strong>这些能力. 不开放能力则平台生态难于发展, 贸然开放则又是稚子怀千金于闹市的情况. 在这种状态下, <strong>安全可控</strong>成为了微信对技术方案的最高要求, 准确来说, 是这三点:</p>
 <blockquote>
 <ol>
@@ -499,7 +499,7 @@
 <li>不允许开发者随意使用 window 上的某些未知的可能有危险的 API----白名单是最好的防御</li>
 </ol>
 </blockquote>
-<p><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1gw7uapb14fj30jg1837wh.jpg" alt="微信做小程序只办三件事.png"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1gw7uapb14fj30jg1837wh.jpg" alt="微信做小程序只办三件事.png"></p>
 <p>对应于这种诉求, 逻辑层和表现层完全分离的双进程方案, 对微信而言就是必然选择.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
 <ul>
 <li>通过限定 js 文件只能在 V8 容器中运行, 对业务方可调用的全局函数采用白名单模式, 解决了 js 本身带来的风险</li>

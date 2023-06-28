@@ -25,16 +25,16 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="工作中遇到了一个比较奇特的 bug, 花了三整天才处理完, 挺有意思, 记录下处理过程. 故障表现 手机端打开 https:&#x2F;&#x2F;wx-work.ke.com, 由于是未登录状态, 因此自动跳转到https:&#x2F;&#x2F;wx-auth.ke.com上进行登录. 但回退到https:&#x2F;&#x2F;wx-work.ke.com后仍提示未登录, 自动跳转https:&#x2F;&#x2F;wx-auth.ke.com…陷入循环, 100%复现">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h0li2rdocnj31hc0qo1kx.jpg">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h0lia1gomqj30u50h8n1n.jpg">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h0pnoqmsl9j313b0eeqe4.jpg">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h0pnpm403yj30s60em450.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h0li2rdocnj31hc0qo1kx.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h0lia1gomqj30u50h8n1n.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h0pnoqmsl9j313b0eeqe4.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h0pnpm403yj30s60em450.jpg">
 <meta property="article:published_time" content="2022-03-28T05:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-04T05:14:05.487Z">
+<meta property="article:modified_time" content="2023-06-28T15:17:30.609Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="神奇bug">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h0li2rdocnj31hc0qo1kx.jpg">
+<meta name="twitter:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h0li2rdocnj31hc0qo1kx.jpg">
   
   
   
@@ -344,7 +344,7 @@
 <p>企微手机端 debug 非常困难, 只能挂<code>Charles</code>代理查看发出的请求&amp;用 alert 查看进度. 如果能用电脑调试会好很多. 很幸运, 企微提供了<a target="_blank" rel="noopener" href="https://developer.work.weixin.qq.com/document/path/95466">电脑端网页调试工具</a>, 按指定配置操作, 即可打开开发调试工具(Windows 上是 chrome devtool, mac 上是 safari 调试工具). 一般来说是打开 debug 开关后, 在工作台中任意找一张网页应用进入, 右键启动调试工具后在控制台里输入<code>location.href=&quot;wx-other.ke.com&quot;</code>进入对应页面.</p>
 <h1>实际调试</h1>
 <p>首先根据代码&amp;日志整理 bug 出现的过程:</p>
-<p><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h0li2rdocnj31hc0qo1kx.jpg" alt="根据devtools日志, 复现bug流程"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h0li2rdocnj31hc0qo1kx.jpg" alt="根据devtools日志, 复现bug流程"></p>
 <p>根据 Network 记录, 可以推断代码运行流程为:</p>
 <ol>
 <li>首次进入<code>wx-other</code>页, 发现没有 cookie 后转入企微 oauth 页启动登录流程
@@ -362,15 +362,15 @@
 <ol>
 <li>服务端收到的请求和实际发出的数量不一致. 从服务器日志中可以看到, 服务端并没有收到重新执行 js 后发出的请求.</li>
 </ol>
-<p><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h0lia1gomqj30u50h8n1n.jpg" alt="服务器收到的请求数和实际发出的数量不一致"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h0lia1gomqj30u50h8n1n.jpg" alt="服务器收到的请求数和实际发出的数量不一致"></p>
 <ol start="2">
 <li>神奇的是看 Network 监控确实也发出了请求, 只是响应值仍然是未登录状态下的响应值.</li>
 </ol>
 <h1>发现问题</h1>
 <p><strong>等等, 服务端明明没收到请求, Network 监控里接口的响应值是哪儿来的?</strong></p>
-<p><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h0pnoqmsl9j313b0eeqe4.jpg" alt="disk-cache"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h0pnoqmsl9j313b0eeqe4.jpg" alt="disk-cache"></p>
 <p><strong>这个 Disk-Cache 是怎么回事?</strong></p>
-<p><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h0pnpm403yj30s60em450.jpg" alt="disk-cache高清大图"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h0pnpm403yj30s60em450.jpg" alt="disk-cache高清大图"></p>
 <p>答案很显然, 在企微环境下, 浏览器缓存住了接口响应值, 更过分的是, 企微甚至缓存了网页响应值----当调用<code>history.back()</code>的时候, 企微甚至没去请求页面内容.</p>
 <blockquote>
 <p>如果进一步查阅的话, 会发现 w3c 协议中只规定了 <code>history.back()</code> 只需要回到前一页, 而回退时是否需要刷新页面则由浏览器自行实现. 从这点上说, 企微内置浏览器的回退不刷新虽然和直觉相违, 但并不违背 w3c 规范.<br>

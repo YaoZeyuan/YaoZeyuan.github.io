@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="当前, 实现小程序编辑器有以下方案 方案一: 基于 MonacoEditor, 封装文本编辑器在 Electron 中使用 方案一: 启动本地 VS Code 服务器, Electron 中通过 iframe 嵌入网页实现编辑器功能 方案二: 基于 VS Code 完成编辑器功能, 预览功能通过编写 VS Code 插件实现 方案三: 基于 VS Code &#x2F; Theia 源代码, 定制 IDE(">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/6671cfa8ly1ghqfsbfs9lj213c0sw40e.jpg">
-<meta property="og:image" content="https://tva1.sinaimg.cn/large/6671cfa8ly1ghqnf02e32j213c0sw426.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/6671cfa8ly1ghqfsbfs9lj213c0sw40e.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/6671cfa8ly1ghqnf02e32j213c0sw426.jpg">
 <meta property="article:published_time" content="2020-08-15T00:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-04T05:14:05.439Z">
+<meta property="article:modified_time" content="2023-06-28T15:17:30.561Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/6671cfa8ly1ghqfsbfs9lj213c0sw40e.jpg">
+<meta name="twitter:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/6671cfa8ly1ghqfsbfs9lj213c0sw40e.jpg">
   
   
   
@@ -351,7 +351,7 @@
 <p>微信开发工具探索结论:</p>
 <p>微信使用某种方式, 基于 vscode 源代码, 重新编译出了一套 vscode.</p>
 <p>使用<code>ctrl+alt+shift+p</code>, 输入<code>Preferences:Open User Settings</code>, 可以进入 vscode 的用户配置页面</p>
-<p><img src="https://tva1.sinaimg.cn/large/6671cfa8ly1ghqfsbfs9lj213c0sw40e.jpg" alt="配置页面"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/6671cfa8ly1ghqfsbfs9lj213c0sw40e.jpg" alt="配置页面"></p>
 <p>编译出的代码位于<code>微信web开发者工具\code\package.nw\js\libs\vseditor\bundled\editor.bundled.js</code></p>
 <p>启动编辑器的代码位于<code>core.wxvpkg\45a982046814630a51e40d0fc49574e9.js</code></p>
 <p>编辑器启动配置为</p>
@@ -384,7 +384,7 @@
 <ol>
 <li>在微信开发者界面, 同时按<code>ctrl+alt+shift+p</code>, 然后输入<code>Preferences:Open User Settings</code>, 可以看到 VS Code 的配置页面</li>
 </ol>
-<p><img src="https://tva1.sinaimg.cn/large/6671cfa8ly1ghqnf02e32j213c0sw426.jpg" alt="微信开发者工具中的vscode配置页"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/6671cfa8ly1ghqnf02e32j213c0sw426.jpg" alt="微信开发者工具中的vscode配置页"></p>
 <ol start="2">
 <li>微信定制了 vscode 源代码的实锤在<code>微信web开发者工具\code\package.nw\js\libs\vseditor\bundled\editor.bundled.js</code>, 打开这个文件, 能看到这是 n 个文件压缩后的结果. 搜索<code>安装程序文件夹已损坏或与此安装程序版本不兼容。请更正该问题或获取该程序的新副本</code>, 可以发现, 在<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/blob/6c5fa466293c8cb1822ece225c9a907c24c3793a/build/win32/i18n/Default.zh-cn.isl">github.com/microsoft/vscode/build/win32/i18n/Default.zh-cn.isl</a>中有同样的描述</li>
 <li>如果使用<code>MissingWOW64APIs:&quot;你正运行的 Windows 版本不包含安装程序执行 64 位安装所需的功能。要更正此问题，请安装服务包 %1。&quot;</code>这段话进行判断, 鉴于<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/blob/b4f8f96d0365aa0c0293d138175e732ba11be06d/build/win32/i18n/Default.zh-cn.isl">2017-04-20 的提交中</a>还有这段描述, 但在<a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/blob/12ab70d329a13dd5b18d892cd40edd7138259bc3/build/win32/i18n/messages.zh-cn.isl">2018-03-05 的提交里删除了这段描述</a>, 所以可以推测, 微信是基于 2017-04-20~2018-03-05 之间的 vscode 版本进行的定制化</li>

@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="稳部落作为 Electron 项目, 最大的难点不是项目开发, 而是npm install之后C++代码的二次编译. 每次重装电脑后都要折腾几天用于处理编译问题. 最近雪上加霜, 本地虽然折腾好了, 但线上 Github-CI 反而构建不出来产物, 非常痛苦. 这里记录下当时的处理方法 可能并不需要 rebuild 一般的建议是在 npm scripts 中添加这么一段&quot;postinst">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h5945ux8duj31hc0u0tk2.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h5945ux8duj31hc0u0tk2.jpg">
 <meta property="article:published_time" content="2022-08-16T05:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-04T05:14:05.487Z">
+<meta property="article:modified_time" content="2023-06-28T15:17:30.613Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="趟坑">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/007Yq4pTly1h5945ux8duj31hc0u0tk2.jpg">
+<meta name="twitter:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h5945ux8duj31hc0u0tk2.jpg">
   
   
   
@@ -311,7 +311,7 @@
 <li>本地 node 版本必须和 Electron 内置的 node 版本保持一致, 否则本地 node6, 构建出来的<code>.node</code>文件也是为 node6 准备的, 结果 Electron 中内嵌的 Node 版本是 16(Electron-Node 对应关系可以在<a target="_blank" rel="noopener" href="https://www.electronjs.org/releases/stable">发布记录</a>中找到), NAPI 接口都不一样, 项目能运行起来才怪.</li>
 <li>对 windows 项目, 直接安装 Visual Studio . 微软官方也提供了中文版的<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/visualstudio/install/install-visual-studio?view=vs-2022">安装说明</a>, 下一个 Visual Studio Installer, 安装社区版(免费)即可. 安装完成勾上 Node.js 开发, 会自动下载需要的依赖
 <ul>
-<li><img src="http://tva1.sinaimg.cn/large/007Yq4pTly1h5945ux8duj31hc0u0tk2.jpg" alt="VS依赖列表"></li>
+<li><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h5945ux8duj31hc0u0tk2.jpg" alt="VS依赖列表"></li>
 </ul>
 </li>
 <li>如果二次构建时提示找不到 VS 对应版本或 electron 的头文件下载的特别慢, 则创建一个 <code>.yarnrc</code>为 yarn 指路即可<br>
