@@ -1,0 +1,750 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon.png">
+  <link rel="icon" href="/static/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="上回说到, 公司决定开发小程序平台, 并委派你作为项目负责人, 编制开发路线图. 所以问题来了, 小程序的开发路线图, 应该是什么样的? 在制定开发路线图前, 我们要先梳理小程序的业务流程, 以及相关的技术点. 小程序业务流程 小程序的业务流程可以分为外围和内部两部分. 外围指的是业务方从创建小程序到在 App 上启动的一系列操作, 内部则是小程序在 App 上从启动到退出的全部过程, 这里我们分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小程序架构指南(二):小程序业务流程与开发路线图">
+<meta property="og:url" content="https://www.yaozeyuan.online/2021/11/08/2021/11/02-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%BC%80%E5%8F%91%E8%B7%AF%E7%BA%BF%E5%9B%BE/02-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%BC%80%E5%8F%91%E8%B7%AF%E7%BA%BF%E5%9B%BE/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="上回说到, 公司决定开发小程序平台, 并委派你作为项目负责人, 编制开发路线图. 所以问题来了, 小程序的开发路线图, 应该是什么样的? 在制定开发路线图前, 我们要先梳理小程序的业务流程, 以及相关的技术点. 小程序业务流程 小程序的业务流程可以分为外围和内部两部分. 外围指的是业务方从创建小程序到在 App 上启动的一系列操作, 内部则是小程序在 App 上从启动到退出的全部过程, 这里我们分">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-08T01:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-11T15:04:30.093Z">
+<meta property="article:author" content="姚泽源">
+<meta property="article:tag" content="小程序架构指南">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>小程序架构指南(二):小程序业务流程与开发路线图 - 代号647</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/static/css/customer.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>代号647</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="小程序架构指南(二):小程序业务流程与开发路线图"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-11-08 09:00" pubdate>
+          2021年11月8日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          33 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">小程序架构指南(二):小程序业务流程与开发路线图</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>上回说到, 公司决定开发小程序平台, 并委派你作为项目负责人, 编制开发路线图. 所以问题来了, 小程序的开发路线图, 应该是什么样的?</p>
+<p>在制定开发路线图前, 我们要先梳理小程序的业务流程, 以及相关的技术点.</p>
+<h1>小程序业务流程</h1>
+<p>小程序的业务流程可以分为外围和内部两部分. 外围指的是业务方从创建小程序到在 App 上启动的一系列操作, 内部则是小程序在 App 上从启动到退出的全部过程, 这里我们分开讨论.</p>
+<h2 id="小程序外围流程">小程序外围流程</h2>
+<p>小程序外围流程主要分为两部分</p>
+<p>首先是注册发布流程</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant 用户
+    participant 小程序后台
+    participant IDE
+    Note over 用户,IDE: 创建小程序
+    用户 -&gt;&gt; 小程序后台 : 创建小程序, 获取app_id
+    用户-&gt;&gt; IDE : 填写app_id, 在本地创建小程序
+    Note over 用户,IDE: 开发调试
+    IDE -&gt;&gt; IDE : 在IDE中开发调试小程序
+    IDE -&gt;&gt; 小程序后台: 上传小程序
+    小程序后台 -&gt;&gt; 小程序后台 : 创建上传记录
+    小程序后台 -&gt;&gt; IDE : 返回预览二维码
+    IDE -&gt;&gt; 用户 : 使用App, 扫码打开小程序
+    用户 -&gt;&gt; 用户 : 真机调试 &amp; 预览
+    用户 -&gt;&gt; 小程序后台 : 提交审核
+    小程序后台 -&gt;&gt; 小程序后台 : 上线发布
+</code></pre>
+<p>需要实现以下模块&amp;功能</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">-</span> 后台<br><span class="hljs-bullet">  -</span> 小程序注册接口<br><span class="hljs-bullet">  -</span> 上传接口<br><span class="hljs-bullet">  -</span> 提审接口<br><span class="hljs-bullet">  -</span> 发布接口<br><span class="hljs-bullet">-</span> IDE<br><span class="hljs-bullet">  -</span> 创建小程序<br><span class="hljs-bullet">    -</span> npx miniprogram-cli create<br><span class="hljs-bullet">  -</span> 编辑<br><span class="hljs-bullet">  -</span> 打开已有项目<br><span class="hljs-bullet">  -</span> 预览小程序<br><span class="hljs-bullet">    -</span> npx miniprogram-cli start<br><span class="hljs-bullet">  -</span> 小程序打包<br><span class="hljs-bullet">    -</span> npx miniprogram-cli build<br><span class="hljs-bullet">  -</span> 获取小程序信息<br><span class="hljs-bullet">  -</span> 向后台上传小程序<br><span class="hljs-bullet">    -</span> 登录后台, 获取上传 token<br><span class="hljs-bullet">-</span> miniprogram-cli<br><span class="hljs-bullet">  -</span> 整合在 IDE 中<br><span class="hljs-bullet">  -</span> 提供 create/start/build 功能<br></code></pre></td></tr></table></figure>
+<p>其次是启动流程</p>
+<pre><code class=" mermaid">sequenceDiagram
+    participant App
+    participant IDE
+    participant 小程序后台
+    Note over IDE,小程序后台: 上传发布小程序
+    IDE -&gt;&gt; IDE : 编写/预览小程序
+    IDE -&gt;&gt; IDE : 构建生成小程序zip包/source-map
+    IDE -&gt;&gt; 小程序后台 : 向后台上传小程序zip包/source-map
+
+    小程序后台-&gt;&gt; 小程序后台: 创建上传记录, 将包上传到cdn, 记录md5值
+    小程序后台-&gt;&gt; 小程序后台: 根据上传记录创建发布申请/发布上线
+    小程序后台-&gt;&gt; 小程序后台: 配置小程序推荐列表
+
+    Note over App,小程序后台: 移动端交互
+
+    App -&gt;&gt; 小程序后台 : 获取小程序广场配置
+
+    小程序后台 -&gt;&gt; App : 推荐小程序列表
+    小程序后台 -&gt;&gt; App : 最近使用的小程序
+    小程序后台 -&gt;&gt; App : 收藏的小程序列表
+
+    App -&gt;&gt; App : 点击小程序icon
+    App -&gt;&gt; 小程序后台 : 获取小程序详情(app_id)
+    小程序后台 -&gt;&gt; 小程序后台: 将该小程序添加到最近使用的小程序中
+    小程序后台 -&gt;&gt; App : 返回小程序信息/小程序cdn_url/md5
+
+
+</code></pre>
+<p>对应的, 是以下模块&amp;功能</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">-</span> App(Android &amp; iOS)<br><span class="hljs-bullet">  -</span> 小程序广场页(一般是聊天列表页下拉)<br><span class="hljs-bullet">  -</span> 接口调用(获取小程序具体配置)<br><span class="hljs-bullet">  -</span> 静态资源下载 &amp; 校验<br><span class="hljs-bullet">  -</span> 启动小程序<br><span class="hljs-bullet">-</span> 后台<br><span class="hljs-bullet">  -</span> 根据预设条件判断 detail 接口返回值<br><span class="hljs-bullet">    -</span> 符合条件返回小程序静态资源地址 &amp; md5 校验值<br><span class="hljs-bullet">    -</span> 不符合条件走异常流程<br><span class="hljs-bullet">      -</span> 小程序未上线<br><span class="hljs-bullet">      -</span> 小程序已下线<br><span class="hljs-bullet">      -</span> 小程序已被屏蔽<br><span class="hljs-bullet">      -</span> 所在平台未开通小程序<br><span class="hljs-bullet">      -</span> 所在城市未开通小程序<br><span class="hljs-bullet">      -</span> 所在用户组没有访问小程序权限<br><span class="hljs-bullet">      -</span> 基础库版本过低<br><span class="hljs-bullet">      -</span> 基础库版本过低, 降级到 h5 地址<br><span class="hljs-bullet">      -</span> 基础库版本为特定值, 需要返回指定静态资源内容(锁版本)<br></code></pre></td></tr></table></figure>
+<p>调研期间我们先不考虑具体实现方案, 只整理完成小程序项目所需的前置技术点, 大致可以分为这么几类</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-section"># IDE 选型</span><br><br><span class="hljs-bullet">-</span> [ ] 构建 IDE 可选方案集<br><span class="hljs-bullet">  -</span> [ ] VS Code 插件<br><span class="hljs-bullet">  -</span> [ ] Electron + 代码编辑器<br><span class="hljs-bullet">    -</span> [ ] 代码编辑器方案<br><span class="hljs-bullet">      -</span> [<span class="hljs-string"> </span>] [<span class="hljs-string">monaco-editor</span>](<span class="hljs-link">https://microsoft.github.io/monaco-editor/</span>)<br><span class="hljs-bullet">      -</span> [<span class="hljs-string"> </span>] [<span class="hljs-string">vscode-web</span>](<span class="hljs-link">https://github.com/microsoft/vscode/blob/main/remote/web/package.json</span>)<br><span class="hljs-bullet">      -</span> [<span class="hljs-string"> </span>] [<span class="hljs-string">code-server</span>](<span class="hljs-link">https://github.com/cdr/code-server</span>)(第三方公司实现的 web 版 vscode)<br><span class="hljs-bullet">      -</span> [ ] CodeMirror<br><span class="hljs-bullet">      -</span> [ ] ace.js<br><span class="hljs-bullet">  -</span> [ ] 订制 VS Code<br><span class="hljs-bullet">  -</span> [<span class="hljs-string"> </span>] [<span class="hljs-string">Theia</span>](<span class="hljs-link">https://theia-ide.org/</span>)<br><span class="hljs-bullet">  -</span> [<span class="hljs-string"> </span>] [<span class="hljs-string">阿里-开天 IDE-未公开发布</span>](<span class="hljs-link">https://developer.aliyun.com/article/762768</span>)<br><span class="hljs-bullet">-</span> [ ] 编写界面<br><span class="hljs-bullet">  -</span> [ ] 创建小程序<br><span class="hljs-bullet">  -</span> [ ] 登录小程序后台(以获取上传用的 token)<br><span class="hljs-bullet">  -</span> [ ] 启动预览<br><span class="hljs-bullet">  -</span> [ ] 启动构建<br><span class="hljs-bullet">  -</span> [ ] 上传小程序包<br><span class="hljs-bullet">  -</span> [ ] 类 chrome 的 DevTools<br><br><span class="hljs-section"># cli 工具</span><br><br><span class="hljs-bullet">-</span> [ ] 制定/维护小程序项目模板<br><span class="hljs-bullet">-</span> [ ] 基于模板创建小程序项目(npx miniprogram create)<br><span class="hljs-bullet">-</span> [ ] 启动小程序开发环境(npx miniprogram start)<br><span class="hljs-bullet">-</span> [ ] 构建小程序安装包(npx miniprogram start)<br><span class="hljs-bullet">-</span> [ ] [进阶]打包输出 source-map, 支持监控线上错误/查看报错详情<br><br><span class="hljs-section"># App</span><br><br><span class="hljs-bullet">-</span> [ ] 小程序启动流程设计<br><span class="hljs-bullet">-</span> [ ] 逻辑进程渲染进程间通信方案设计<br><span class="hljs-bullet">-</span> [ ] 小程序实现方案设定<br><span class="hljs-bullet">  -</span> [ ] 页面切换如何实现<br><span class="hljs-bullet">    -</span> [ ] 前进/返回效果<br><span class="hljs-bullet">    -</span> [ ] 打开新页面效果<br><span class="hljs-bullet">    -</span> [ ] 从 App 进入小程序/从小程序跳转到 App/从小程序跳转到 App 再返回小程序的交互过程 如何实现 / [进阶] 如果跳转到外部 App, 如何实现(微信小程序打开百度地图)<br><span class="hljs-bullet">    -</span> [ ] schema 跳转方案<br><span class="hljs-bullet">  -</span> [ ] 支付功能<br><span class="hljs-bullet">  -</span> [ ] 本地静态缓存<br><span class="hljs-bullet">-</span> [ ] Native &amp; js 通信方案实现<br><span class="hljs-bullet">  -</span> [ ] js 如何调用 Native 中的接口<br><span class="hljs-bullet">  -</span> [ ] Native 如何获取 js 中传入的参数<br><span class="hljs-bullet">  -</span> [ ] Native 运行完成后, 如何通知 js. 期间控制流程切换的时序图如何设定<br><span class="hljs-bullet">  -</span> [ ] js 如何获取 Native 中执行方法后的结果<br><span class="hljs-bullet">-</span> [ ] 实现非 ECMA 语法<br><span class="hljs-bullet">  -</span> [ ] 实现 setTimeout<br><br><span class="hljs-section"># 小程序后台</span><br><br><span class="hljs-bullet">-</span> 技术选型<br><span class="hljs-bullet">  -</span> 项目方案(Express/koa)<br><span class="hljs-bullet">  -</span> ORM 方案<br><span class="hljs-bullet">  -</span> CDN 上传<br><span class="hljs-bullet">  -</span> redis 库选择<br><span class="hljs-bullet">  -</span> 日志记录<br><span class="hljs-bullet">  -</span> 接口设计<br><span class="hljs-bullet">  -</span> Mock 管理<br><span class="hljs-bullet">  -</span> 文档管理<br><span class="hljs-bullet">-</span> 用户系统<br><span class="hljs-bullet">  -</span> 注册/登录<br><span class="hljs-bullet">  -</span> 项目权限管理<br><span class="hljs-bullet">    -</span> root 用户<br><span class="hljs-bullet">    -</span> 管理员<br><span class="hljs-bullet">    -</span> 开发者<br><span class="hljs-bullet">    -</span> 预览成员<br><span class="hljs-bullet">-</span> 小程序发布流程设计<br><span class="hljs-bullet">  -</span> 上传-&gt;预览-&gt;提审-&gt;审核-&gt;发布<br><span class="hljs-bullet">-</span> 小程序项目配置<br><span class="hljs-bullet">  -</span> 项目基础信息(logo/应用名/应用简介/etc)<br><span class="hljs-bullet">  -</span> 降级策略<br><span class="hljs-bullet">  -</span> 开城策略<br><span class="hljs-bullet">  -</span> 注销应用<br><span class="hljs-bullet">-</span> [进阶]监控系统<br><span class="hljs-bullet">  -</span> 数据清洗<br><span class="hljs-bullet">  -</span> 数据存储(ES/mongodb)<br><span class="hljs-bullet">  -</span> 错误查询<br><span class="hljs-bullet">    -</span> source-map 解析<br><span class="hljs-bullet">  -</span> 性能监控<br><span class="hljs-bullet">    -</span> 订制数据项<br><span class="hljs-bullet">    -</span> 上报/处理/分析数据项<br><br><span class="hljs-section"># 小程序基础库(运行在逻辑进程中)</span><br><br><span class="hljs-bullet">-</span> [ ] API 设计<br><span class="hljs-bullet">-</span> [ ] 页面启动<br><span class="hljs-bullet">-</span> [ ] 页面切换<br><span class="hljs-bullet">-</span> [ ] 页面路由管理<br><span class="hljs-bullet">  -</span> [ ] 路由参数读取<br><span class="hljs-bullet">-</span> [ ] 触发页面生命周期事件<br><br><span class="hljs-section"># 小程序 webview-render(运行在渲染进程中)</span><br><br><span class="hljs-bullet">-</span> [ ] 订制渲染协议<br><span class="hljs-bullet">-</span> [ ] 向逻辑层转发 Dom 事件(支持冒泡)<br><span class="hljs-bullet">-</span> [ ] 单实例组件支持(例如地图组件)<br><br><span class="hljs-section"># 组件库</span><br><br><span class="hljs-bullet">-</span> [ ] 技术方案选型<br><span class="hljs-bullet">  -</span> [ ] React<br><span class="hljs-bullet">  -</span> [ ] Vue<br><span class="hljs-bullet">  -</span> [<span class="hljs-string"> </span>] [<span class="hljs-string">stencil</span>](<span class="hljs-link">https://getstencil.com/</span>)<br><span class="hljs-bullet">-</span> [ ] 特殊元素支持<br><span class="hljs-bullet">  -</span> [ ] Canvas<br><br><span class="hljs-section"># 其他问题</span><br><br><span class="hljs-bullet">-</span> [ ] 构建小程序预览环境<br><span class="hljs-bullet">-</span> [ ] 版本管理与同步<br><span class="hljs-bullet">  -</span> [ ] alpha 版本与 正式版<br><span class="hljs-bullet">  -</span> [ ] 管理小程序项目/小程序基础库/小程序 webview-render/小程序组件库/Native 小程序 sdk 之间版本对应关系<br><span class="hljs-bullet">-</span> [ ] bug 解决<br><span class="hljs-bullet">  -</span> [ ] 逻辑进程引擎统一为 V8<br><span class="hljs-bullet">    -</span> [ ] jsCore 中 setTimeout 的 bug<br><span class="hljs-bullet">      -</span> jSCore 中执行 setTimeout 会直接清空当前微任务队列<br><span class="hljs-bullet">      -</span> https://developer.apple.com/forums/thread/678277<br></code></pre></td></tr></table></figure>
+<p>其中, 最为关键的, 是这两个问题</p>
+<ol>
+<li>在逻辑进程/渲染进程中, js 如何与 Native 进行通信 =&gt; 如果不能通信, 后续所有交互均无法进行</li>
+<li>在逻辑层中运行的 js, 如何在渲染层生成对应 Dom 操作, 以更新界面, 与用户交互 =&gt; 这是小程序的核心问题. 如果不能完成逻辑层 js 到渲染层 Dom 的<code>惊险一跃</code>, 整个小程序方案将会无从谈起</li>
+</ol>
+<p>欲知这两个问题究竟要如何解决, 且听下文分解</p>
+<h1>参考资料</h1>
+<p><a target="_blank" rel="noopener" href="https://blog.aotu.io/notes/2020/04/13/2020-4-13-taro-components/">Taro Next H5 跨框架组件库实践</a>(taro 使用 Stencil 的原因)<br>
+<a target="_blank" rel="noopener" href="https://blog.aotu.io/notes/2020/04/07/electron-in-taro-ide/">Electron 在 Taro IDE 的开发实践</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E6%8C%87%E5%8D%97/" class="print-no-link">#小程序架构指南</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>小程序架构指南(二):小程序业务流程与开发路线图</div>
+      <div>https://www.yaozeyuan.online/2021/11/08/2021/11/02-小程序业务流程与开发路线图/02-小程序业务流程与开发路线图/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年11月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/08/2021/11/03-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/03-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" title="小程序架构指南(三):小程序架构实现中的关键问题及解决方案">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">小程序架构指南(三):小程序架构实现中的关键问题及解决方案</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/08/2021/11/01-%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%B0%8F%E7%A8%8B%E5%BA%8F/01-%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%B0%8F%E7%A8%8B%E5%BA%8F/" title="小程序架构指南(一):我们为什么需要小程序">
+                        <span class="hidden-mobile">小程序架构指南(一):我们为什么需要小程序</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: '33e8ac6e00e16b2ca7998c0c5bb963ca'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

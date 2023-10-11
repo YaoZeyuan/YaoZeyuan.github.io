@@ -1,0 +1,765 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon.png">
+  <link rel="icon" href="/static/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="如果要制定一个稳定性改进方案, 拢共分几步? 起始思路 &#x3D;&gt; 假设我们的系统已经足够稳定, 那么会有哪些特征. 然后对比当下系统, 找到尚不满足的特征, 制定实现这些特征所需要的步骤, 形成方案. 这个思路没什么问题, 但有一个隐患: 如果我们对稳定性的认知和别人不一样怎么办. 比如我们认知的稳定性是代码 100%正确,每次上线 8 人签字确认后才能执行, 但考核方提了一句: 如果机房停电了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何查找资料-以稳定性方案制定为例">
+<meta property="og:url" content="https://www.yaozeyuan.online/2022/09/16/2022/09/%E5%A6%82%E4%BD%95%E6%9F%A5%E6%89%BE%E8%B5%84%E6%96%99-%E4%BB%A5%E7%A8%B3%E5%AE%9A%E6%80%A7%E6%96%B9%E6%A1%88%E5%88%B6%E5%AE%9A%E4%B8%BA%E4%BE%8B/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="如果要制定一个稳定性改进方案, 拢共分几步? 起始思路 &#x3D;&gt; 假设我们的系统已经足够稳定, 那么会有哪些特征. 然后对比当下系统, 找到尚不满足的特征, 制定实现这些特征所需要的步骤, 形成方案. 这个思路没什么问题, 但有一个隐患: 如果我们对稳定性的认知和别人不一样怎么办. 比如我们认知的稳定性是代码 100%正确,每次上线 8 人签字确认后才能执行, 但考核方提了一句: 如果机房停电了">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-16T05:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-11T15:04:30.101Z">
+<meta property="article:author" content="姚泽源">
+<meta property="article:tag" content="元学习">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>如何查找资料-以稳定性方案制定为例 - 代号647</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/static/css/customer.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>代号647</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="如何查找资料-以稳定性方案制定为例"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-16 13:00" pubdate>
+          2022年9月16日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">如何查找资料-以稳定性方案制定为例</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>如果要制定一个稳定性改进方案, 拢共分几步?</p>
+<p>起始思路 =&gt; 假设我们的系统已经足够稳定, 那么会有哪些特征. 然后对比当下系统, 找到尚不满足的特征, 制定实现这些特征所需要的步骤, 形成方案.</p>
+<p>这个思路没什么问题, 但有一个隐患: 如果我们对稳定性的认知和别人不一样怎么办. 比如我们认知的稳定性是代码 100%正确,每次上线 8 人签字确认后才能执行, 但考核方提了一句: 如果机房停电了咋整. 这就触到了盲点. 所以可以把问题修正为: 如何界定稳定性? 如何衡量系统的稳定性? 以及, 考虑到稳定性保障应该是一项专业领域, 所以问题还可以泛化为: <strong>如何快速的, 系统性的获取非自身专业知识</strong>(同类问题: <strong>如何 1 小时快速成为真の懂王</strong>/<strong>30 天时间如何精通 C++</strong>)</p>
+<p>需要注意的是这个问题看起来不靠谱, 但实际上是有可行方案的, 关键点在于时间.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">时间周期</th>
+<th style="text-align:left">对应行业</th>
+<th style="text-align:left">相关策略/理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">&gt;1 年</td>
+<td style="text-align:left">教育(大学/研究生)</td>
+<td style="text-align:left">研读专业教材 / <a target="_blank" rel="noopener" href="http://www.naturechina.com/solutions/literature_review">如何写出一篇优秀的文献综述？《自然》专访</a></td>
+</tr>
+<tr>
+<td style="text-align:left">半年~1 年</td>
+<td style="text-align:left">行业基金研究员</td>
+<td style="text-align:left">研究员需要用相对较长的时间给出特定行业/公司的研究报告, 且需要为报告专业性负责</td>
+</tr>
+<tr>
+<td style="text-align:left">1 个月~1 年</td>
+<td style="text-align:left">vc 投资/尽调调查</td>
+<td style="text-align:left">投资流程相对较短, 1 个月完成一项尽职研究 1 年也只能处理 12 家公司(且不能保证成功投资),因此其思路可以借鉴</td>
+</tr>
+<tr>
+<td style="text-align:left">1 天~1 周</td>
+<td style="text-align:left">新闻编辑</td>
+<td style="text-align:left">新闻工作者只在传媒领域是内行, 对于其他所有行业都是相对外行. 但需要提供看起来内行的新闻报道, 而且最好不会被真正的内行挑刺(例如科技新闻/互联网新闻等)</td>
+</tr>
+</tbody>
+</table>
+<p>如果时间是 4 年, 那么直接翻看相关专业大学教材显然是最靠谱的方法; 如果时间缩短到一年或者半年, 各大基金中的行业研究员则是我们学习的榜样; 时间缩短到一个月, 投资公司的<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/62323623/answer/215629216">尽职调查经验总结</a>(商业/财务/法律, 核心是商业尽调, 因为每个被投公司场景都不一致, 符合预期)显然可以参考; 如果时间缩短到一天到一周, 那我建议看新闻编辑的经验总结, 毕竟<strong>新闻工作者要在所有领域对外行装内行</strong>, 如果你认为<strong>睡前消息</strong>栏目所讲解的在你<strong>专业范围之外</strong>的新闻都有理有据并让你深深认同的话, 那马前卒同志在经费不足的条件下<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/23100603/answer/92831119">装内行的经验总结</a>显然也值得一看, 不长, 就两句话</p>
+<blockquote>
+<ol>
+<li>搜索引擎的头 500 个结果都扫过了吗？</li>
+<li>有没有根据搜索结果换关键词 2 次以上？</li>
+</ol>
+</blockquote>
+<p>所以, 问题转化为:</p>
+<ol>
+<li>用哪些关键词搜索稳定性领域相关资料</li>
+<li>目前有哪些稳定性相关资料</li>
+</ol>
+<p>进一步:</p>
+<ol>
+<li>有哪些系统是我们公认的稳定性很高的系统</li>
+<li>他们是怎么衡量自己的稳定性的</li>
+<li>公司内部有哪些公认稳定性很高的系统, 公司内部有没有负责稳定性的团队, 他们之前是怎么做的(晋升报告/文档总结/系统压测报告/etc)</li>
+<li>我们之前有没有做过类似的工作, 文档链接在哪里</li>
+</ol>
+<p>表格版</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">业务方</th>
+<th style="text-align:left">收集方向</th>
+<th style="text-align:left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">公认稳定性高的系统</td>
+<td style="text-align:left">有哪些团队</td>
+<td style="text-align:left">如何衡量稳定性</td>
+</tr>
+<tr>
+<td style="text-align:left">公司内部稳定性相关团队</td>
+<td style="text-align:left">有哪些系统</td>
+<td style="text-align:left">晋升报告/文档总结/压测报告</td>
+</tr>
+<tr>
+<td style="text-align:left">项目历史文档</td>
+<td style="text-align:left">历史相关工作</td>
+<td style="text-align:left">文档整理</td>
+</tr>
+</tbody>
+</table>
+<p>然后, 资料收集, 内容整理, 和当前系统比对, 制定对应解决方案</p>
+<h1>参考资料</h1>
+<ol>
+<li>睡前消息<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/vInXJbTm_qWJup8GrOSNOQ">482 期文稿</a>, 介绍 CIM 软件系统开发, 相对比较接近开发者的专业领域, 可以尝试进行挑刺</li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/528627242/answer/2487529583">如何看待睡前消息知乎回答里总有一张十分恰当的图？</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/550401281">快速系统获取非己专业知识</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/550445870">RE:快速系统获取非己专业知识</a>
+<ol>
+<li>前置定理:我们遇到的问题都已经存在解</li>
+<li>识别出问题在哪个领域–&gt;使用搜索引擎</li>
+<li>该领域的通识类高分书籍–&gt;搜索引擎</li>
+<li>分类搜索引擎进行查找–&gt;知识经验类用知乎,视频类用 b 站,权威用 G–&gt;还是搜索引擎</li>
+<li>通识类搞定后去看会议期刊(大概)–&gt;学会使用学术类搜索引擎</li>
+<li>最后这一条应该对应于破除信息茧房</li>
+</ol>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%85%83%E5%AD%A6%E4%B9%A0/" class="print-no-link">#元学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>如何查找资料-以稳定性方案制定为例</div>
+      <div>https://www.yaozeyuan.online/2022/09/16/2022/09/如何查找资料-以稳定性方案制定为例/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/09/17/2022/09/%E7%A8%B3%E5%AE%9A%E6%80%A7%E7%9B%B8%E5%85%B3%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/" title="稳定性相关资料整理">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">稳定性相关资料整理</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/08/16/2022/08/Electron%E7%BC%96%E8%AF%91%E8%B6%9F%E5%9D%91%E7%BB%8F%E9%AA%8C/" title="Electron编译趟坑经验">
+                        <span class="hidden-mobile">Electron编译趟坑经验</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: '06ac9912567dc8ca16a61783fdd358b5'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

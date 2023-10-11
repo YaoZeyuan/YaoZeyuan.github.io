@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon.png">
+  <link rel="icon" href="/static/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="上篇文章中, 我们通过跟踪 React 源码, 找到了React-Reconciler接管组件更新的原理. 但对小程序而言, React-Reconciler接管组件更新还不够, 我们需要React-Reconciler能够将组件的更新动作转化为界面更新指令并通知出来, 这样才能在 webview 层构建出实际 Dom. 而这, 就是HostConfig和Container的工作. HostCo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小程序架构指南(五):源码详解小程序启动原理(下)">
+<meta property="og:url" content="https://www.yaozeyuan.online/2021/11/08/2021/11/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="上篇文章中, 我们通过跟踪 React 源码, 找到了React-Reconciler接管组件更新的原理. 但对小程序而言, React-Reconciler接管组件更新还不够, 我们需要React-Reconciler能够将组件的更新动作转化为界面更新指令并通知出来, 这样才能在 webview 层构建出实际 Dom. 而这, 就是HostConfig和Container的工作. HostCo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-08T04:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-11T15:04:30.097Z">
+<meta property="article:author" content="姚泽源">
+<meta property="article:tag" content="小程序架构指南">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>小程序架构指南(五):源码详解小程序启动原理(下) - 代号647</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/static/css/customer.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>代号647</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="小程序架构指南(五):源码详解小程序启动原理(下)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-11-08 12:00" pubdate>
+          2021年11月8日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          39 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">小程序架构指南(五):源码详解小程序启动原理(下)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <!-- # 05-源码详解\_小程序启动原理(下)-HostConfig 原理与 webview-render 的实现 -->
+<p>上篇文章中, 我们通过跟踪 React 源码, 找到了<code>React-Reconciler</code>接管组件更新的原理. 但对小程序而言, <code>React-Reconciler</code>接管组件更新还不够, 我们需要<code>React-Reconciler</code>能够将组件的更新动作转化为界面更新指令并通知出来, 这样才能在 webview 层构建出实际 Dom. 而这, 就是<code>HostConfig</code>和<code>Container</code>的工作.</p>
+<h1>HostConfig 与 Container: Reconciler 与 Renderer 间的中间层</h1>
+<p>通过之前的文章我们知道, Fiber 架构下的 React 分为三层, 分别是对外的<code>React Component API</code>, 也就是我们平常写的 <code>JSX</code>, 和监控<code>JSX</code>变动, 根据对应虚拟 Dom 结构变更生成界面操作指令的<code>React-Reconciler</code>和将界面操作指令转化为对应平台实现的<code>Renderer</code>渲染器.</p>
+<p><code>React component API &lt;----&gt; Reconciler 调和器 ----&gt; Renderer 渲染器</code></p>
+<p><code>Reconciler</code> 通过接管 <code>useState</code>/<code>setState</code> 的实现获取 <code>JSX</code> 对象的变动情况, 并根据变动调用 JSX 对象的生命周期钩子和计算界面更新指令. 但具体实现时, <code>Reconciler</code>会面临这样一个问题: <strong>我怎么知道当前的 Renderer 渲染器支持哪些指令?</strong></p>
+<p>答案当然是在初始化<code>Reconciler</code>时, 就要告诉<code>Reconciler</code>当前渲染器支持的指令列表, 而这份列表, 就叫做<code>HostConfig</code>.</p>
+<p>对于 HostConfig, <code>Reconciler</code>规定了两类 API, 分别是必须接口和可选接口.按 React 项目组的<a target="_blank" rel="noopener" href="https://github.com/facebook/react/tree/main/packages/react-reconciler">说法</a>, 这些接口目前还不稳定所以并没有公开介绍. 但实际上, 这个功能已经可以满足日常使用了(要不怎么会有 Remax 项目&amp;一众小程序项目). react 项目组给出了<a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/main/packages/react-reconciler/src/forks/ReactFiberHostConfig.custom.js">HostConfig 的示例</a>, 这里贴一下 remax 中 hostConfig 的部分内容</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.dev/remaxjs/remax/blob/v2.15.0/packages/remax-runtime/src/hostConfig/index.ts</span><br><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> scheduler <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;scheduler&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-variable constant_">REMAX_METHOD</span>, <span class="hljs-variable constant_">TYPE_TEXT</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../constants&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; generate &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../instanceId&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">VNode</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../VNode&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Container</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../Container&quot;</span>;<br><span class="hljs-keyword">import</span> &#123; createCallbackProxy &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;../SyntheticEvent/createCallbackProxy&quot;</span>;<br><span class="hljs-keyword">import</span> diffProperties <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./diffProperties&quot;</span>;<br><span class="hljs-comment">// ...省略其余代码</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;<br>  now,<br><br>  <span class="hljs-comment">// ...省略其余代码</span><br><br>  <span class="hljs-comment">// 创建dom节点</span><br>  <span class="hljs-title function_">createInstance</span>(<span class="hljs-params"><span class="hljs-keyword">type</span>: <span class="hljs-built_in">string</span>, newProps: <span class="hljs-built_in">any</span>, container: Container</span>) &#123;<br>    <span class="hljs-keyword">const</span> id = <span class="hljs-title function_">generate</span>();<br>    <span class="hljs-keyword">const</span> node = <span class="hljs-keyword">new</span> <span class="hljs-title class_">VNode</span>(&#123;<br>      id,<br>      <span class="hljs-attr">type</span>: <span class="hljs-variable constant_">DOM_TAG_MAP</span>[<span class="hljs-keyword">type</span>] ?? <span class="hljs-keyword">type</span>,<br>      <span class="hljs-attr">props</span>: &#123;&#125;,<br>      container,<br>    &#125;);<br>    node.<span class="hljs-property">props</span> = <span class="hljs-title function_">processProps</span>(newProps, node, id);<br><br>    <span class="hljs-keyword">return</span> node;<br>  &#125;,<br><br>  <span class="hljs-comment">// 创建文本节点</span><br>  <span class="hljs-title function_">createTextInstance</span>(<span class="hljs-params">text: <span class="hljs-built_in">string</span>, container: Container</span>) &#123;<br>    <span class="hljs-keyword">const</span> id = <span class="hljs-title function_">generate</span>();<br>    <span class="hljs-keyword">const</span> node = <span class="hljs-keyword">new</span> <span class="hljs-title class_">VNode</span>(&#123;<br>      id,<br>      <span class="hljs-attr">type</span>: <span class="hljs-variable constant_">TYPE_TEXT</span>,<br>      <span class="hljs-attr">props</span>: <span class="hljs-literal">null</span>,<br>      container,<br>    &#125;);<br>    node.<span class="hljs-property">text</span> = text;<br>    <span class="hljs-keyword">return</span> node;<br>  &#125;,<br><br>  <span class="hljs-comment">// ...省略其余代码</span><br><br>  <span class="hljs-comment">// Reconciler更新周期执行完毕后, 会调用该接口, 通知渲染器可以进行实际渲染</span><br>  <span class="hljs-comment">// 在小程序代码中用于作为向webview发送更新指令的标记</span><br>  <span class="hljs-attr">resetAfterCommit</span>: <span class="hljs-function">(<span class="hljs-params">container: Container</span>) =&gt;</span> &#123;<br>    container.<span class="hljs-title function_">applyUpdate</span>();<br>  &#125;,<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p><code>Reconciler</code>会根据虚拟 Dom 变动情况, 调用<code>HostConfig</code>中提供的接口, 这些调用方法和参数汇合到一起, 就是界面更新指令. 而对<code>HostConfig</code>接口的调用又会被转发给<code>Container</code>, 由<code>Container</code>对象维护<code>updateQueue</code>数组, 记录操作执行过程.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.dev/remaxjs/remax/blob/v2.15.0/packages/remax-runtime/src/Container.ts</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Container</span> &#123;<br>  <span class="hljs-comment">// ...省略其余代码</span><br>  <span class="hljs-attr">updateQueue</span>: <span class="hljs-title class_">Array</span>&lt;<span class="hljs-title class_">SpliceUpdate</span> | <span class="hljs-title class_">SetUpdate</span>&gt; = [];<br><br>  <span class="hljs-comment">// ...省略其余代码</span><br>  <span class="hljs-title function_">requestUpdate</span>(<span class="hljs-params">update: SpliceUpdate | SetUpdate</span>) &#123;<br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">updateQueue</span>.<span class="hljs-title function_">push</span>(update);<br>  &#125;<br><br>  <span class="hljs-title function_">applyUpdate</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">this</span>.<span class="hljs-property">stopUpdate</span> || <span class="hljs-variable language_">this</span>.<span class="hljs-property">updateQueue</span>.<span class="hljs-property">length</span> === <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-comment">// ...省略其余代码</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">context</span>.$spliceData(<br>      &#123;<br>        [<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">normalizeUpdatePath</span>([...update.<span class="hljs-property">path</span>, <span class="hljs-string">&quot;children&quot;</span>])]: [<br>          update.<span class="hljs-property">start</span>,<br>          update.<span class="hljs-property">deleteCount</span>,<br>          ...update.<span class="hljs-property">items</span>,<br>        ],<br>      &#125;,<br>      callback<br>    );<br><br>    <span class="hljs-comment">// ...省略其余代码</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">updateQueue</span> = [];<br><br>    <span class="hljs-keyword">return</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>当<code>Reconciler</code>的一个更新周期结束时, 会调用<code>HostConfig</code>上的<code>resetAfterCommit</code>函数, 然后被转发给<code>Container</code>的<code>applyUpdate</code>方法. <code>Container</code>收到消息后, 将之前记录下来的界面更新指令 JSON 化为字符串, 通过 Native 转发给 运行在 webview 上的 <code>webview-render</code> 对象, webview-render 收到更新指令后, 根据指令操作实际 Dom, 界面构建完成.</p>
+<h1>webview-render: 更新指令的设计与用户交互的实现</h1>
+<p>界面的更新指令则由两种类型实现. <code>SpliceUpdate</code>对应于节点变动, 前端收到后直接删除旧 Dom, 创建新 Dom. 但这样会出现问题. 例如, 对于<code>&lt;input value=&#123;$value&#125; /&gt;</code>元素, 当 value 发生改变时, 如果直接删除重建 input 元素, 会导致输入光标丢失. 因此出现了<code>SetUpdate</code>指令, 对于该指令, 只更新 Dom 属性, 不重建 Dom.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 界面更新指令类型定义</span><br><span class="hljs-comment">// 位于 https://github.dev/remaxjs/remax/blob/v2.15.0/packages/remax-runtime/src/Container.ts#L8</span><br><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SpliceUpdate</span> &#123;<br>  <span class="hljs-attr">path</span>: <span class="hljs-built_in">string</span>[];<br>  <span class="hljs-attr">start</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">deleteCount</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">items</span>: <span class="hljs-title class_">RawNode</span>[];<br>  children?: <span class="hljs-title class_">RawNode</span>[];<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;splice&quot;</span>;<br>  <span class="hljs-attr">node</span>: <span class="hljs-title class_">VNode</span>;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">SetUpdate</span> &#123;<br>  <span class="hljs-attr">path</span>: <span class="hljs-built_in">string</span>[];<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">value</span>: <span class="hljs-built_in">any</span>;<br>  <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;set&quot;</span>;<br>  <span class="hljs-attr">node</span>: <span class="hljs-title class_">VNode</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 发送到webview-render端的VNode数据结构</span><br><span class="hljs-comment">// 位于 https://github.dev/remaxjs/remax/blob/v2.15.0/packages/remax-runtime/src/VNode.ts#L6</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">RawNode</span> &#123;<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">type</span>: <span class="hljs-built_in">string</span>;<br>  props?: <span class="hljs-built_in">any</span>;<br>  nodes?: &#123; [<span class="hljs-attr">key</span>: <span class="hljs-built_in">number</span>]: <span class="hljs-title class_">RawNode</span> &#125;;<br>  children?: <span class="hljs-title class_">Array</span>&lt;<span class="hljs-title class_">RawNode</span> | <span class="hljs-built_in">number</span>&gt;;<br>  text?: <span class="hljs-built_in">string</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>weview-render 收到指令后会根据 node 中的配置创建 Dom 元素, 并更新到 webview 中. 这个比较好实现, 直接<code>document.createElement</code>就行. 前端 render 的难点在于: <strong>如何将用户操作时产生的 click/touch/change 事件回传给 js-core 中的 Reconciler</strong>?</p>
+<p>我们知道, jsx 中绑定的事件处理函数是不能在 json 化之后传递给 webview-render 的, 但是, <strong>不能传递函数, 我们可以传递函数名啊</strong></p>
+<p>在生成 Dom 构建命令时, 我们可以建立一个事件处理函数映射表, 函数名命名规范为<code>$&#123;事件名&#125;_$&#123;递增计数器&#125;_handler</code>. 在 webview 中则用 addEventListener 为对应 dom 节点绑定事件处理函数. 当事件发生时, 把 event 对象中的数据和需要调用的函数名通过 Native 传回 js-core 引擎, 然后在 js-core 中调用对应的实际函数, 触发组件状态变更, 组件重新渲染.</p>
+<p>至此, 小程序运行流程形成闭环.</p>
+<h1>结尾的话</h1>
+<p>通过这五篇文章, 我们了解了小程序项目价值, 梳理了开发路线图, 解决了小程序开发过程中最为核心的数据传递和跨进程 Dom 交互问题. 但这并不意味着小程序任务的圆满结束. 事实上, 正如<code>02-小程序业务流程与开发路线图</code>分析的那样, 后续的小程序基础库/IDE/后台/组件库更是小程序项目中所面临的难点.</p>
+<p>不过, 这一系列的文章已经写得太长, 有必要在这里简单收束一下. 至于小程序项目中面临的其他问题该怎么解决嘛</p>
+<p>欲知后事如何, 请待下回分解~</p>
+<h1>参考资料</h1>
+<p><a target="_blank" rel="noopener" href="https://remaxjs.org/guide/implementation-notes/">Remax 实现原理</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E6%8C%87%E5%8D%97/" class="print-no-link">#小程序架构指南</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>小程序架构指南(五):源码详解小程序启动原理(下)</div>
+      <div>https://www.yaozeyuan.online/2021/11/08/2021/11/05-源码详解_小程序启动原理(下)-HostConfig原理与webview-render的实现/05-源码详解_小程序启动原理(下)-HostConfig原理与webview-render的实现/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年11月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/03/28/2022/03/%E4%B8%80%E6%AC%A1%E7%89%B9%E5%88%AB%E7%9A%84%E4%BC%81%E5%BE%AE%E7%BD%91%E9%A1%B5bug%E8%B0%83%E8%AF%95%E8%AE%B0%E5%BD%95/" title="一次特别的企微网页 bug 调试记录">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一次特别的企微网页 bug 调试记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/08/2021/11/04-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8A)-%E6%BA%90%E7%A0%81%E7%BA%A7%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E4%B8%8EReact-Reconciler%E7%9B%91%E6%8E%A7%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%9E%E7%8E%B0/04-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8A)-%E6%BA%90%E7%A0%81%E7%BA%A7%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E4%B8%8EReact-Reconciler%E7%9B%91%E6%8E%A7%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%9E%E7%8E%B0/" title="小程序架构指南(四):源码详解小程序启动原理(上)">
+                        <span class="hidden-mobile">小程序架构指南(四):源码详解小程序启动原理(上)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: 'fbc492e8b15954571f4169600134faf7'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

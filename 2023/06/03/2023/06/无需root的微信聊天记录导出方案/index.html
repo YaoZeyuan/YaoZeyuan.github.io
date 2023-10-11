@@ -1,0 +1,804 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon.png">
+  <link rel="icon" href="/static/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="价值三台手机&amp;至少10个工作日的研究成果 前置要求: 编程开发能力(必须-&gt;未来可能会封装解决方案) 小米手机(必须) ubuntu运行环境(用于安装sqlcipher)  微信前后用了近10年, 最近两年每回换手机都想把聊天记录导成文本进行记录, 但没找到好方法. 今天终于把路径跑通了, 记录一下. 微信聊天记录导出分为三步:  将微信数据库从手机端导出, 得到微信数据库EnMi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无需root的微信聊天记录导出方案">
+<meta property="og:url" content="https://www.yaozeyuan.online/2023/06/03/2023/06/%E6%97%A0%E9%9C%80root%E7%9A%84%E5%BE%AE%E4%BF%A1%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%E5%AF%BC%E5%87%BA%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="价值三台手机&amp;至少10个工作日的研究成果 前置要求: 编程开发能力(必须-&gt;未来可能会封装解决方案) 小米手机(必须) ubuntu运行环境(用于安装sqlcipher)  微信前后用了近10年, 最近两年每回换手机都想把聊天记录导成文本进行记录, 但没找到好方法. 今天终于把路径跑通了, 记录一下. 微信聊天记录导出分为三步:  将微信数据库从手机端导出, 得到微信数据库EnMi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heli1688mgj30u01uoq7s.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heli1nzfenj30u01uodkx.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heli21re3cj30u01uo444.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heliamh8lgj30u01uowk4.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1helic7d5hej310m08rgo7.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heliju5wupj31ap0ay45n.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1helifb8n7uj313k06nwhk.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1helinunp8jj30fl0gndk1.jpg">
+<meta property="article:published_time" content="2023-06-03T05:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-11T15:04:30.101Z">
+<meta property="article:author" content="姚泽源">
+<meta property="article:tag" content="日常">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heli1688mgj30u01uoq7s.jpg">
+  
+  
+  
+  <title>无需root的微信聊天记录导出方案 - 代号647</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/static/css/customer.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>代号647</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="无需root的微信聊天记录导出方案"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-03 13:00" pubdate>
+          2023年6月3日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          5.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          43 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">无需root的微信聊天记录导出方案</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>价值三台手机&amp;至少10个工作日的研究成果<br>
+前置要求:<br>
+编程开发能力(必须-&gt;未来可能会封装解决方案)<br>
+小米手机(必须)<br>
+ubuntu运行环境(用于安装sqlcipher)</p>
+</blockquote>
+<p>微信前后用了近10年, 最近两年每回换手机都想把聊天记录导成文本进行记录, 但没找到好方法. 今天终于把路径跑通了, 记录一下.</p>
+<p>微信聊天记录导出分为三步:</p>
+<ol>
+<li>将微信数据库从手机端导出, 得到微信数据库<code>EnMicroMsg.db</code></li>
+<li>破解微信数据库密码, 得到解密后的数据库<code>EnMicroMsg.db.decrypted</code></li>
+<li>读取数据库内容, 导出为html格式</li>
+</ol>
+<p>这里边最难的是前两步.</p>
+<h1>准备阶段</h1>
+<p>导出聊天记录需要以下前提</p>
+<ul>
+<li>硬件: <strong>小米/红米</strong>手机(必须)
+<ul>
+<li>微信版本8.0.37</li>
+<li>MIUI版本14及以下</li>
+</ul>
+</li>
+<li>操作系统: Ubuntu22.04</li>
+</ul>
+<p>该方案要求用户使用的必须是<strong>小米/红米</strong>手机. 如果没有的话可<a target="_blank" rel="noopener" href="https://list.jd.com/list.html?cat=13765%2C13767%2C13768&amp;psort=2&amp;ev=exbrand_%E5%B0%8F%E7%B1%B3%EF%BC%88MI%EF%BC%89%5E&amp;psort=2&amp;shop=1&amp;click=2">买台任意的二手小米手机</a>, 三四百块钱不算太贵. 考虑到只用一次的话, 临时借台也能接受.</p>
+<p>拿到小米手机后, 为避免意外, 需要对操作环境状态进行初始化. 流程如下</p>
+<ol>
+<li>将原聊天记录备份到电脑端</li>
+<li>删除小米手机内的微信, 安装<a target="_blank" rel="noopener" href="https://www.apkmirror.com/apk/wechat-tencent/wechat/wechat-8-0-33-release/wechat-8-0-33-3-android-apk-download/">微信8.0.37</a>版本</li>
+<li>从电脑端将聊天内容恢复到手机上.</li>
+</ol>
+<p>通过这个步骤, 可以保证微信聊天记录一定是以8.0.37的加密算法进行的加密, 避免未来微信升级, 加密策略变更导致流程失效</p>
+<p>然后开始处理</p>
+<h1>从手机中导出微信数据库</h1>
+<p>首先从手机中导出微信数据库. MIUI版本14及以下提供了手机端备份App功能, 依次点击<code>设置</code>-<code>我的设备</code>-<code>备份与恢复</code>-<code>手机备份恢复</code>-<code>手机备份</code>(备份内容只选择微信)-<code>立即备份</code></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heli1688mgj30u01uoq7s.jpg" alt="设置-我的设备"><br>
+<img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heli1nzfenj30u01uodkx.jpg" alt="备份与恢复"><br>
+<img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heli21re3cj30u01uo444.jpg" alt="手机备份"><br>
+<img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heliamh8lgj30u01uowk4.jpg" alt="备份产物路径"><br>
+<img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1helic7d5hej310m08rgo7.jpg" alt="备份产物路径-2"></p>
+<p>备份完成后, 文件位于<code>MIUI/Backup/AllBackup</code>中, <code>微信(com.tencent.mm).bak</code>即为微信应用的所有内容, 复制到电脑上, 将后缀名从<code>.bak</code>修改为<code>.zip</code>, 解压即可.</p>
+<p>解压后微信聊天记录数据库名为<code>EnMicroMsg.db</code>, 位于<code>微信(com.tencent.mm)/apps/com.tencent.mm/r/MicroMsg/xxxxxx</code>文件夹内. 这个位置不太好找, 可以直接在操作系统下搜索文件名.</p>
+<p>由于准备环节中我们通过重装微信的方式, 保证了当前手机上只有一个用户, 所以这里只会出现一个聊天数据库文件, 不需要和其他数据库进行分辨.</p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1heliju5wupj31ap0ay45n.jpg" alt="确认数据库文件位置"><br>
+<img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1helifb8n7uj313k06nwhk.jpg" alt="微信聊天记录数据库"></p>
+<p>接下来是数据库解密环节</p>
+<h1>解密微信数据库</h1>
+<h2 id="生成解密密码">生成解密密码</h2>
+<p>解密微信数据库需要两个参数:</p>
+<p>IMEI: 这个在8.0.37版本是固定值, 恒定为<code>1234567890ABCDEF</code><br>
+uin: 可以理解为是微信uid, 获取方法是登陆<a target="_blank" rel="noopener" href="https://filehelper.weixin.qq.com/?from=windows&amp;type=recommend">文件传输助手-网页版</a>, cookie里的wxuin字段即是</p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1helinunp8jj30fl0gndk1.jpg" alt="微信uin"></p>
+<p>uin也可以直接查看导出的<code>./微信(com.tencent.mm)/apps/com.tencent.mm/sp/auth_info_key_prefs.xml</code>文件, 里边有<code>_auth_uin</code>字段</p>
+<p>或者更暴力一点用<code>find  /mnt/d/redmi_微信数据备份测试/微信\(com.tencent.mm\)/apps/com.tencent.mm/sp/  -name &quot;*.xml&quot;  -type f -exec sh -c 'grep -q uin &quot;$1&quot; &amp;&amp; echo &quot;$1&quot;' _ &#123;&#125; \;</code> 直接过滤也可以----当然从路径中可以看出, 需要在wsl下执行这个命令</p>
+<p>对应的密码是<code>md5(imei + uin)</code>的前7位(密码中如有字母, 均为小写)</p>
+<h2 id="将加密数据库转换为无密码数据库">将加密数据库转换为无密码数据库</h2>
+<p>拿到数据库密码后, 确保sqlcipher为<strong>4.1及以上版本</strong>,  执行命令<code>sqlcipher ./resource/EnMicroMsg.db</code>, 打开加密数据库, 依次执行以下代码即可转换得到无密码数据库<code>decryption_en_micro_msg.sqlite3</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 查看sqlcipher版本, 要求必须是4.1以上</span><br><span class="hljs-comment">-- 本次验证通过的版本是 4.5.4 community</span><br>PRAGMA cipher_version;<br><span class="hljs-comment">-- 配置密码</span><br>PRAGMA key <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;1234567&#x27;</span>;<br><span class="hljs-comment">-- 配置解密算法</span><br>PRAGMA cipher_compatibility <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br><span class="hljs-comment">-- 创建无密码数据库</span><br>ATTACH DATABASE <span class="hljs-string">&#x27;decryption_en_micro_msg.sqlite3&#x27;</span> <span class="hljs-keyword">AS</span> db KEY <span class="hljs-string">&#x27;&#x27;</span>;<br><span class="hljs-comment">-- 将加密数据库导出到无密码数据库中</span><br><span class="hljs-keyword">SELECT</span> sqlcipher_export(<span class="hljs-string">&#x27;db&#x27;</span>);<br><span class="hljs-comment">-- 导出完毕, 关闭连接</span><br>DETACH DATABASE db;<br><span class="hljs-comment">-- 退出sqlcipher</span><br>.q<br></code></pre></td></tr></table></figure>
+<h1>将原始数据库转换为html聊天记录</h1>
+<p><a target="_blank" rel="noopener" href="https://github.com/ppwwyyxx/wechat-dump">wechat-dump</a>本身提供了简单的将数据库转换为html的能力, 不过聊天样式还停留在古早时代, 输出的文件名也只是简单的按序号递增, 没有区分日期时间. 考虑到这是个人项目, 实现上有待完善的点可以理解. 记录一下转换命令</p>
+<h2 id="准备阶段">准备阶段</h2>
+<p>参考<a target="_blank" rel="noopener" href="https://github.com/ppwwyyxx/wechat-dump">wechat-dump</a>本身的项目说明, 需要以下几步.</p>
+<ol>
+<li>执行<code>bash third-party/compile_silk.sh</code>, 构建silk执行文件, 似乎是一个将微信语音转换为mp3的程序, 执行就是了</li>
+<li>下载<code>https://github.com/ppwwyyxx/wechat-dump/releases/download/0.1/emoji.cache.tar.bz2</code>文件, 将解压得到的<code>emoji.cache</code>放在项目根目录下, 方便读取</li>
+<li>整理resource文件夹, 将<code>avatar/emoji/image2/sfs/video/voice2</code>文件夹都放在同一个文件夹下, 作为res目录
+<ol>
+<li>这里边<code>emoji</code>位于<code>./微信(com.tencent.mm)/apps/com.tencent.mm/f/public</code>文件夹下</li>
+<li>其他所有文件夹(<code>avatar/image2/sfs/video/voice2</code>)都在<code>./微信(com.tencent.mm)/apps/com.tencent.mm/r/MicroMsg/$&#123;userid&#125;</code>文件夹下----就是<code>EnMicroMsg.db</code>所在的文件夹</li>
+</ol>
+</li>
+<li>最好注释掉<code>wechat/emoji.py</code>里的日志输出, 报错过多会影响运行速度</li>
+</ol>
+<h2 id="执行">执行</h2>
+<p>项目目录下执行<code>./dump-html.py 联系人的微信备注名 --db decrypted_enmicrossg.sqlite3  --res /mnt/e/微信\(com.tencent.mm\)/apps/com.tencent.mm/r/MicroMsg/xxxxxxxx --output ./resource/html/test.html</code>即可.</p>
+<p>如果忘记了联系人的备注名, 可以数据库的rcontact表中查询, 对应字段是<code>conRemark</code>, 具体数据库结构介绍可以自行百度, 或者看<a target="_blank" rel="noopener" href="https://github.com/lefex/LefexWork/blob/master/blog/iOS/%E5%AF%BC%E5%87%BA%E5%BE%AE%E4%BF%A1iOS%E6%95%B0%E6%8D%AE%E5%BA%93.md">这篇文章</a>, 有简单的介绍</p>
+<p>更暴力的方法是通过<a target="_blank" rel="noopener" href="https://sqlitebrowser.org/dl/">sqlite3浏览器</a>直接查看message表里的聊天内容</p>
+<p>但总而言之, 目前还没看到很好的导出方案. 后续可以考虑自己搞一个</p>
+<h1>特别注意</h1>
+<p>特别注意: <strong>绝对要保护好无加密的聊天数据库文件</strong>, 这里边有所有的微信聊天记录内容, 而且完全没有加密, 所有人都能查看. 放出去就能当场社死…</p>
+<p>不过这都是后话, 属于幸福的烦恼…</p>
+<p>接下来是纯技术部分, 仅为记录方案发现过程. 非代码爱好者可以<code>Ctrl+W</code>了</p>
+<h1>方案探索过程笔记-与正文无关</h1>
+<p>事实上, 上述流程是一个非常取巧的过程, uin和imei一步都不能错. 错了之后排查问题也相当麻烦. 所以还是得知其所以然, 记录一下正确的探索流程.</p>
+<h2 id="排查思路的来源">排查思路的来源</h2>
+<p>以上思路实际上均来源于<a target="_blank" rel="noopener" href="https://github.com/ppwwyyxx/wechat-dump">wechat-dump</a>开源项目, 具体来说是他的<code>Decrypt database file</code>步骤.</p>
+<p>项目提供了一个<code>./decrypt-db.py decrypt --input ./resource/EnMicroMsg.db --imei 1234567890ABCDEF --uin 123456789</code> 命令, 可以用这个命令快速验证imei和uin组合是否正确, 正确就可以得到无密码数据库, 不正确就报错.</p>
+<p>而这个项目又依赖<code>pysqlcipher3</code>包, 这个包要求操作系统中有4.10以上版本的<code>libsqlcipher-dev</code>, 但ubuntu/debian目前<code>libsqlcipher-dev</code>只提供到 3.4.1, 不能满足要求. 所以问题来了…</p>
+<h2 id="如何获得sqlcipher应用程序">如何获得sqlcipher应用程序</h2>
+<p>目前官方未提供直接的应用程序下载, 我们需要的是…<strong>手工编译</strong></p>
+<p>首先克隆<a target="_blank" rel="noopener" href="https://github.com/sqlcipher/sqlcipher">sqlcipher</a>项目</p>
+<p>构建前可能需要一些依赖, 可以提前安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt-get install openssl tcl<br></code></pre></td></tr></table></figure>
+<p>如果configure失败, 提示<code>configure: error: C compiler cannot create executables </code>的话, 可以先卸载<code>sudo apt-get autoremove gcc g++</code>后重新安装<code>sudo apt-get install gcc g++</code>, 还不行就运行<code>prelink -au &amp;&amp; depmod -a</code>以更新系统</p>
+<p>执行以下代码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">export SQLITE_HAS_CODEC<br>export SQLITE_TEMP_STORE=2<br></code></pre></td></tr></table></figure>
+<p>然后开始构建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">生成构建配置</span><br>./configure --enable-tempstore=yes CFLAGS=&quot;-DSQLITE_HAS_CODEC&quot; LDFLAGS=&quot;-lcrypto&quot;<br><span class="hljs-meta prompt_"># </span><span class="language-bash">构建sqlcipher的可执行文件. 如果构建失败, 或需要重新构建前, 记得先执行make clean 清理之前的残留构建产物</span><br>make <br><span class="hljs-meta prompt_"># </span><span class="language-bash">将构建产物推送至/usr/local/lib, 提供libsqlcipher.so动态链接库供pysqlcipher3绑定</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">由于是推送到/usr/local/lib, 所以需要sudo权限</span><br>sudo make install<br><span class="hljs-meta prompt_"># </span><span class="language-bash">将构建后的sqlcipher推送至全局Path下, 方便使用</span><br>cp sqlcipher /usr/local/sbin/<br></code></pre></td></tr></table></figure>
+<p>构建完成后执行<code>sudo /sbin/ldconfig -v</code>, 否则<code>pip install pysqlcipher3</code>时会有<code>cannot open shared object file: No such file or directory</code>报错</p>
+<p><code>pip install pysqlcipher3</code>默认会有缓存, 如果需要强制重新安装的话, 需要先执行<code>rm -rf ~/.cache</code>清理pip缓存</p>
+<p>可以通过<code>python3 -c &quot;from pysqlcipher3 import dbapi2 as sqlite; print(sqlite.sqlite_version)&quot;</code>确认pysqlcipher3绑定的是不是预期中的sqlite版本, SQLCipher 4.5.4 community的输出是<code>3.41.2</code>. 如果输出值是<code>3.37.2</code>, 说明是sqlcipher (3.4.1-2build1)的产物, <code>apt autoremove</code>把官方的sqlcipher卸掉吧.</p>
+<h2 id="其他的破解微信数据库密码的方法">其他的破解微信数据库密码的方法</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/ppwwyyxx/wechat-dump">wechat-dump</a>的思路是已知密码生成规则破解密码. 还有其他的两种思路:</p>
+<p>方案一: 暴力破解.<br>
+对应于<a target="_blank" rel="noopener" href="https://github.com/chg-hou/EnMicroMsg.db-Password-Cracker">EnMicroMsg.db-Password-Cracker</a>这个项目. 由于密码只取了md5的前7位, 一共只有16^7=268435456种可能. 只要用程序反复尝试肯定也能搞出来.</p>
+<p>但这里其实也有风险: 这里只考虑了密码的状态空间有穷, 但没有想到加密算法组合本身也是一个问题----如果加密算法组合配置不正确, 密码正确也一样解不出来. 目前只能祈祷微信别换加密算法了</p>
+<p>方案二: root手机后, 利用xposed框架拦截微信运行时的密码. 好处是该方法肯定可行. 问题是: 需要安卓开发能力----但这是我的弱项.</p>
+<p>好了, 就这样. 剩下的看什么时候有空, 把数据库转html写写, 预计要明年了</p>
+<h1>参考资料</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ssine.ink/posts/wechat-data-decryption/">提取微信聊天记录</a>
+<ul>
+<li>按这篇文章实现的微信聊天记录导出</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://filehelper.weixin.qq.com/?from=windows&amp;type=recommend">文件传输助手-网页版</a>
+<ul>
+<li>虽然微信大量封禁了网页版微信的登录权限, 但奈何文件助手也是网页, 登陆上去一样可以看uin…</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://dheeraj-alim.medium.com/installing-pysqlcipher3-on-centos-6bdaf8b53537">Installing pysqlcipher3 on CentOS</a>
+<ul>
+<li>编译sqlcipher以安装pysqlcipher3时必看</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44401286/article/details/106699335">加载共享库报错：cannot open shared object file: No such file or directory</a></li>
+<li><a target="_blank" rel="noopener" href="https://packages.ubuntu.com/jammy/sqlcipher">软件包: sqlcipher (3.4.1-2build1) [universe]</a>
+<ul>
+<li>目前ubuntu/debian官方提供的sqlcipher(3.4.1)对应sqlite3版本是3.37.2</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%97%A5%E5%B8%B8/" class="print-no-link">#日常</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>无需root的微信聊天记录导出方案</div>
+      <div>https://www.yaozeyuan.online/2023/06/03/2023/06/无需root的微信聊天记录导出方案/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/24/2023/02/%E5%85%B3%E4%BA%8EChatGPT%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%85%AB%E5%8D%A6/" title="关于ChatGPT的个人八卦">
+                        <span class="hidden-mobile">关于ChatGPT的个人八卦</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: 'b13e641e3d9dfa14121a4d51b31a1544'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

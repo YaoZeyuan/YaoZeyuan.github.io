@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon.png">
+  <link rel="icon" href="/static/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="上回说到, 借助 React Fiber 架构提供的能力, 我们可以基于 React 完成小程序架构. 但由于篇幅所限, 我们只概要描述了下思路而略过了核心原理和实现方案. 在这篇文章中, 我们会以基于同样构建思路的remax@2.15.0为例, 分析类小程序项目中项目的具体启动过程. 通过之前的文章我们知道, 小程序的基本启动模型是:  解析 app.json, 获取其中注册的JSX对象和对应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小程序架构指南(四):源码详解小程序启动原理(上)">
+<meta property="og:url" content="https://www.yaozeyuan.online/2021/11/08/2021/11/04-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8A)-%E6%BA%90%E7%A0%81%E7%BA%A7%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E4%B8%8EReact-Reconciler%E7%9B%91%E6%8E%A7%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%9E%E7%8E%B0/04-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8A)-%E6%BA%90%E7%A0%81%E7%BA%A7%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E4%B8%8EReact-Reconciler%E7%9B%91%E6%8E%A7%E7%BB%84%E4%BB%B6%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="上回说到, 借助 React Fiber 架构提供的能力, 我们可以基于 React 完成小程序架构. 但由于篇幅所限, 我们只概要描述了下思路而略过了核心原理和实现方案. 在这篇文章中, 我们会以基于同样构建思路的remax@2.15.0为例, 分析类小程序项目中项目的具体启动过程. 通过之前的文章我们知道, 小程序的基本启动模型是:  解析 app.json, 获取其中注册的JSX对象和对应">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-08T03:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-11T15:04:30.097Z">
+<meta property="article:author" content="姚泽源">
+<meta property="article:tag" content="小程序架构指南">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>小程序架构指南(四):源码详解小程序启动原理(上) - 代号647</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/static/css/customer.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>代号647</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="小程序架构指南(四):源码详解小程序启动原理(上)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-11-08 11:00" pubdate>
+          2021年11月8日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          14k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          119 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">小程序架构指南(四):源码详解小程序启动原理(上)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <!-- # 04-源码详解\_小程序启动原理(上)-源码级小程序启动流程与 React-Reconciler 监控组件状态的实现 -->
+<p>上回说到, 借助 React Fiber 架构提供的能力, 我们可以基于 React 完成小程序架构. 但由于篇幅所限, 我们只概要描述了下思路而略过了核心原理和实现方案. 在这篇文章中, 我们会以基于同样构建思路的<a target="_blank" rel="noopener" href="https://github.com/remaxjs/remax/blob/v2.15.0/packages/remax-runtime/src/render.ts">remax@2.15.0</a>为例, 分析类小程序项目中项目的具体启动过程.</p>
+<p>通过之前的文章我们知道, 小程序的基本启动模型是:</p>
+<ol>
+<li>解析 app.json, 获取其中注册的<code>JSX</code>对象和对应的 path</li>
+<li>初始化实现了<code>HostConfig</code>协议所约定接口的对象, 作为负责实际渲染的容器<code>Container</code></li>
+<li>获取待渲染的<code>JSX</code>对象
+<ol>
+<li>从 Native 中获取当前打开的 scheme, 解析出正在访问的路径&amp;参数</li>
+<li>和已注册路由进行比较
+<ol>
+<li>如果匹配到已注册 path, 则加载对应的<code>JSX</code>对象</li>
+<li>否则加载默认页面对应的<code>JSX</code>对象
+<ol>
+<li>[可选]如果没找到匹配路径, 也可以直接报白屏错误, 看小程序引擎实现者的心情</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>将<code>Container</code>对象, 和<code>JSX</code>对象 一起传入由<code>Reconciler</code>导出的<code>render</code>方法</li>
+<li>在传统浏览器环境中
+<ol>
+<li><code>Reconciler</code>会将<code>JSX</code>渲染为虚拟 Dom</li>
+<li>期间根据<code>JSX</code>变动, 不断产生更新指令, 将指令转换为<code>HostConfig</code>中约定的 Dom 操作, 并调用<code>Container</code>暴露的操作方法.</li>
+<li><code>Container</code>根据被调用的操作, 创建实际 Dom. 从而生成实际页面</li>
+</ol>
+</li>
+<li>在实际小程序运行环境中
+<ol>
+<li>由于小程序环境中逻辑层和渲染层分开展示, 因此在逻辑层中运行的<code>Container</code>并不会创建实际 Dom.</li>
+<li>所以在小程序应用中, 我们引入一个中间层, 用 js 对象模拟 Dom 操作, 并记录<code>Reconciler</code>传入的 Dom 操作指令.</li>
+<li>在一个操作批次结束后, 将操作指令 json 化, 变成字符串格式的指令列表</li>
+<li>通过<code>Native</code>转发给位于渲染层的<code>webview-render</code>对象</li>
+<li><code>webview-render</code>对象根据操作指令, 在 webview 中构建实际 Dom</li>
+</ol>
+</li>
+</ol>
+<p>也就是这个模型</p>
+<p><code>ReactElement对象 -&gt; Render(React-Reconciler) -&gt; Container(HostConfig) -&gt; 转发命令 -&gt; Webview-Render</code></p>
+<p>我们以<code>Remax@2.15.0</code>和<code>React@16.7.0</code>为例, 结合实际代码对启动流程进行一次跟踪</p>
+<p>小程序启动示例代码如下所示</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 最简小程序模型.</span><br><span class="hljs-comment">// https://github.dev/remaxjs/remax/blob/v2.15.0/packages/remax-runtime/src/__tests__/index.test.tsx#L53</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Container</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@remax/remax-runtime/Container&quot;</span>;<br><span class="hljs-keyword">import</span> render <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@remax/remax-runtime/render&quot;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title function_">MiniProgramPage</span> = (<span class="hljs-params"></span>) =&gt; <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;foo&quot;</span>&gt;</span>hello<span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span>;<br><span class="hljs-keyword">const</span> container = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Container</span>();<br><span class="hljs-title function_">render</span>(<span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">MiniProgramPage</span> /&gt;</span></span>, container);<br></code></pre></td></tr></table></figure>
+<p>在这段代码中, 我们完成了以下工作:</p>
+<ol start="0">
+<li>直接获取待渲染的 jsx 对象 MiniProgramPage</li>
+<li>在逻辑层内初始化 Dom 容器 <code>Container</code>, 用于在 js-core 中模拟 Dom 功能, 接收并缓存后续<code>ReactReconciler</code>传过来的 Dom 指令</li>
+<li>将 <code>jsx对象</code>和<code>Container</code>传给 render, 进入渲染逻辑.</li>
+</ol>
+<p>值得一提的是, 整个小程序启动进程只有这三行代码, <code>render</code>函数执行完毕启动进程即宣告结束. 后续 render 中的 react-reconciler 会接管<code>jsx对象</code>的 setState 方法, 从而可以接管组件中的所有变动, 进而和旧 jsx 对象进行比较, 计算虚拟 Dom 变更情况, 生成实际 Dom 操作指令, 然后再根据 HostConfig 协议调用 Container 对象上暴露的方法…</p>
+<p>HostConfig 协议和 Container 对象的实现我们放在下篇文章, 这篇文章我们只搞清楚两件事:</p>
+<ol>
+<li>render 函数的实现</li>
+<li>react-reconciler 接管 JSX 变更的实现</li>
+</ol>
+<h1>render 函数的实现</h1>
+<p>先看下 render 函数的实现</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.dev/remaxjs/remax/blob/v2.15.0/packages/remax-runtime/src/render.ts</span><br><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> <span class="hljs-title class_">React</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactReconciler</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;react-reconciler&quot;</span>;<br><span class="hljs-keyword">import</span> hostConfig <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./hostConfig&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Container</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./Container&quot;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">AppContainer</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./AppContainer&quot;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-title class_">ReactReconcilerInst</span> = <span class="hljs-title class_">ReactReconciler</span>(hostConfig <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>);<br><br><span class="hljs-keyword">if</span> (process.<span class="hljs-property">env</span>.<span class="hljs-property">NODE_ENV</span> === <span class="hljs-string">&quot;development&quot;</span>) &#123;<br>  <span class="hljs-title class_">ReactReconcilerInst</span>.<span class="hljs-title function_">injectIntoDevTools</span>(&#123;<br>    <span class="hljs-attr">bundleType</span>: <span class="hljs-number">1</span>,<br>    <span class="hljs-attr">version</span>: <span class="hljs-string">&quot;16.13.1&quot;</span>,<br>    <span class="hljs-attr">rendererPackageName</span>: <span class="hljs-string">&quot;remax&quot;</span>,<br>  &#125;);<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">getPublicRootInstance</span>(<span class="hljs-params">container: ReactReconciler.FiberRoot</span>) &#123;<br>  <span class="hljs-keyword">const</span> containerFiber = container.<span class="hljs-property">current</span>;<br>  <span class="hljs-keyword">if</span> (!containerFiber.<span class="hljs-property">child</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>  &#125;<br>  <span class="hljs-keyword">return</span> containerFiber.<span class="hljs-property">child</span>.<span class="hljs-property">stateNode</span>;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">render</span>(<span class="hljs-params"></span><br><span class="hljs-params">  rootElement: React.ReactElement | <span class="hljs-literal">null</span>,</span><br><span class="hljs-params">  container: Container | AppContainer</span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// Create a root Container if it doesnt exist</span><br>  <span class="hljs-keyword">if</span> (!container.<span class="hljs-property">_rootContainer</span>) &#123;<br>    container.<span class="hljs-property">_rootContainer</span> = <span class="hljs-title class_">ReactReconcilerInst</span>.<span class="hljs-title function_">createContainer</span>(<br>      container,<br>      <span class="hljs-number">0</span>,<br>      <span class="hljs-literal">false</span>,<br>      <span class="hljs-literal">null</span><br>    );<br>  &#125;<br><br>  <span class="hljs-title class_">ReactReconcilerInst</span>.<span class="hljs-title function_">updateContainer</span>(<br>    rootElement,<br>    container.<span class="hljs-property">_rootContainer</span>,<br>    <span class="hljs-literal">null</span>,<br>    <span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-comment">// ignore</span><br>    &#125;<br>  );<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">getPublicRootInstance</span>(container.<span class="hljs-property">_rootContainer</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以看到, render 函数实际是对<code>ReactReconciler</code>的封装. 整个实现可以分为三步:</p>
+<ol>
+<li>基于 HostConfig 初始化<code>ReactReconcilerInst</code>对象, 后续<code>ReactReconciler</code>会根据 HostConfig 提供的 API 生成 Dom 操作指令, 然后按照指令调用<code>container</code>上的接口</li>
+<li>通过<code>ReactReconcilerInst.createContainer</code>方法将<code>container</code>对象包装为 Fiber 节点</li>
+<li>通过<code>ReactReconcilerInst.updateContainer</code>方法获取待渲染的 <code>JSX</code> 对象</li>
+</ol>
+<p>至此, 整个流程执行完毕. 为<code>ReactReconciler</code>输入<code>HostConfig</code>&amp;<code>container</code>&amp;<code>JSX</code>, <code>ReactReconciler</code>会启动对<code>JSX</code>的渲染, 并根据<code>JSX</code>对象的变动计算虚拟 Dom 的变更, 生成实际 Dom 更新指令并根据 HostConfig 配置调用 container 上的方法.</p>
+<p>但这里存在一个问题了, <code>JSX</code>只是一个普普通通的 <code>React.Component</code> 对象, 状态变更调用的也是内部的 setState 方法, <code>ReactReconciler</code>是怎么知到<code>JSX</code>的变动状态并计算虚拟 Dom 变更的呢?</p>
+<p>实际情况是<code>ReactReconciler</code>在<code>updateContainer</code>方法中, 替换了<code>JSX</code>对象中 setState 方法的实现. 因此可以获知<code>JSX</code>的所有变动情况, 并根据需要调用<code>JSX</code>的生命周期钩子, 获取状态更新后的 render 结果.</p>
+<p>不过说归说, talk is cheap show me your code. 接下来还是要依次看下 createContainer 和 updateContainer 的实现, 这里要涉及 react 的源码, 我们以react@16.7.0为例</p>
+<h2 id="ReactReconciler-createContainer-的实现">ReactReconciler.createContainer 的实现</h2>
+<p>首先是 createContainer</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberReconciler.js#L274</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createContainer</span>(<span class="hljs-params"></span><br><span class="hljs-params">  containerInfo: Container,</span><br><span class="hljs-params">  isConcurrent: <span class="hljs-built_in">boolean</span>,</span><br><span class="hljs-params">  hydrate: <span class="hljs-built_in">boolean</span></span><br><span class="hljs-params"></span>): <span class="hljs-title class_">OpaqueRoot</span> &#123;<br>  <span class="hljs-comment">// 如果追下去的话会发现真的只初始化了一个FiberRoot, 其他啥都没干.</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">createFiberRoot</span>(containerInfo, isConcurrent, hydrate);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以看到, 初始化容器只是简单创建了一个 Fiber 节点并返回, 本身没有多余操作</p>
+<h1>ReactReconciler.updateContainer 的实现</h1>
+<p>然后看看 updateContainer 的实现</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberReconciler.js#L282</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">updateContainer</span>(<span class="hljs-params"></span><br><span class="hljs-params">  element: ReactNodeList,</span><br><span class="hljs-params">  container: OpaqueRoot,</span><br><span class="hljs-params">  parentComponent: ?React$Component&lt;<span class="hljs-built_in">any</span>, <span class="hljs-built_in">any</span>&gt;,</span><br><span class="hljs-params">  callback: ?<span class="hljs-built_in">Function</span></span><br><span class="hljs-params"></span>): <span class="hljs-title class_">ExpirationTime</span> &#123;<br>  <span class="hljs-keyword">const</span> current = container.<span class="hljs-property">current</span>;<br>  <span class="hljs-keyword">const</span> currentTime = <span class="hljs-title function_">requestCurrentTime</span>();<br>  <span class="hljs-keyword">const</span> expirationTime = <span class="hljs-title function_">computeExpirationForFiber</span>(currentTime, current);<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">updateContainerAtExpirationTime</span>(<br>    element,<br>    container,<br>    parentComponent,<br>    expirationTime,<br>    callback<br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>updateContainer 主要工作就是将<code>jsx对象</code>和<code>container</code>传给<code>updateContainerAtExpirationTime</code>, 并注册更新任务. 如果继续跟进的话, 可以看到以下调用链</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberReconciler.js#L161</span><br>updateContainerAtExpirationTime&#123;<br>  <span class="hljs-comment">// ...省略其余代码</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">scheduleRootUpdate</span>(current, element, expirationTime, callback);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>=&gt;</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberReconciler.js#L161</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">updateContainerAtExpirationTime</span>(<span class="hljs-params"></span><br><span class="hljs-params">  element: ReactNodeList,</span><br><span class="hljs-params">  container: OpaqueRoot,</span><br><span class="hljs-params">  parentComponent: ?React$Component&lt;<span class="hljs-built_in">any</span>, <span class="hljs-built_in">any</span>&gt;,</span><br><span class="hljs-params">  expirationTime: ExpirationTime,</span><br><span class="hljs-params">  callback: ?<span class="hljs-built_in">Function</span></span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// ...省略其余代码</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">scheduleRootUpdate</span>(current, element, expirationTime, callback);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>=&gt;</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberReconciler.js#114</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">scheduleRootUpdate</span>(<span class="hljs-params"></span><br><span class="hljs-params">  current: Fiber,</span><br><span class="hljs-params">  element: ReactNodeList,</span><br><span class="hljs-params">  expirationTime: ExpirationTime,</span><br><span class="hljs-params">  callback: ?<span class="hljs-built_in">Function</span></span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// ...省略其他代码</span><br>  <span class="hljs-title function_">scheduleWork</span>(current, expirationTime);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>=&gt;</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberScheduler.js#L1788</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">scheduleWork</span>(<span class="hljs-params">fiber: Fiber, expirationTime: ExpirationTime</span>) &#123;<br>  <span class="hljs-title function_">requestWork</span>(root, rootExpirationTime);<br>  <span class="hljs-comment">// ...省略其他代码</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>requestWork</code>对应的是注册组件更新任务代码, 如果继续跟下去的话, 会依次看到下边的调用链, 一直到<code>beginWork</code></p>
+<p><code>requestWork</code>=&gt;<code>performWorkOnRoot</code>=&gt;<code>renderRoot</code>=&gt;<code>workLoop</code> =&gt; <code>performUnitOfWork</code> =&gt; <code>beginWork</code></p>
+<p>看下<code>beginWork</code>的代码</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberBeginWork.js#L1673</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">beginWork</span>(<span class="hljs-params"></span><br><span class="hljs-params">  current: Fiber | <span class="hljs-literal">null</span>,</span><br><span class="hljs-params">  workInProgress: Fiber,</span><br><span class="hljs-params">  renderExpirationTime: ExpirationTime</span><br><span class="hljs-params"></span>): <span class="hljs-title class_">Fiber</span> | <span class="hljs-literal">null</span> &#123;<br>  <span class="hljs-comment">// ...省略其他代码</span><br>  <span class="hljs-keyword">switch</span> (workInProgress.<span class="hljs-property">tag</span>) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-title class_">FunctionComponent</span>: &#123;<br>      <span class="hljs-keyword">const</span> <span class="hljs-title class_">Component</span> = workInProgress.<span class="hljs-property">type</span>;<br>      <span class="hljs-keyword">const</span> unresolvedProps = workInProgress.<span class="hljs-property">pendingProps</span>;<br>      <span class="hljs-keyword">const</span> resolvedProps =<br>        workInProgress.<span class="hljs-property">elementType</span> === <span class="hljs-title class_">Component</span><br>          ? unresolvedProps<br>          : <span class="hljs-title function_">resolveDefaultProps</span>(<span class="hljs-title class_">Component</span>, unresolvedProps);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title function_">updateFunctionComponent</span>(<br>        current,<br>        workInProgress,<br>        <span class="hljs-title class_">Component</span>,<br>        resolvedProps,<br>        renderExpirationTime<br>      );<br>    &#125;<br>    <span class="hljs-keyword">case</span> <span class="hljs-title class_">ClassComponent</span>: &#123;<br>      <span class="hljs-keyword">const</span> <span class="hljs-title class_">Component</span> = workInProgress.<span class="hljs-property">type</span>;<br>      <span class="hljs-keyword">const</span> unresolvedProps = workInProgress.<span class="hljs-property">pendingProps</span>;<br>      <span class="hljs-keyword">const</span> resolvedProps =<br>        workInProgress.<span class="hljs-property">elementType</span> === <span class="hljs-title class_">Component</span><br>          ? unresolvedProps<br>          : <span class="hljs-title function_">resolveDefaultProps</span>(<span class="hljs-title class_">Component</span>, unresolvedProps);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title function_">updateClassComponent</span>(<br>        current,<br>        workInProgress,<br>        <span class="hljs-title class_">Component</span>,<br>        resolvedProps,<br>        renderExpirationTime<br>      );<br>    &#125;<br>  &#125;<br>  <span class="hljs-comment">// ...省略其他代码</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>对于函数组件, ReactReconciler 调用的是<code>updateFunctionComponent</code>函数, 对于类组件, ReactReconciler 调用的是<code>updateClassComponent</code></p>
+<p>至此, render 函数的原理讲解完毕. 接下来是那个核心问题: <code>ReactReconciler</code>是怎么拿到<code>JSX</code>的状态变更的.</p>
+<h1>ReactReconciler 获取 JSX 对象状态变更信息的实现</h1>
+<h2 id="类组件-ClassComponent">类组件: ClassComponent</h2>
+<p>先从类组件开始.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberBeginWork.js#L531</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">updateClassComponent</span>(<span class="hljs-params"></span><br><span class="hljs-params">  current: Fiber | <span class="hljs-literal">null</span>,</span><br><span class="hljs-params">  workInProgress: Fiber,</span><br><span class="hljs-params">  Component: <span class="hljs-built_in">any</span>,</span><br><span class="hljs-params">  nextProps,</span><br><span class="hljs-params">  renderExpirationTime: ExpirationTime</span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// ...省略其他代码</span><br>  <span class="hljs-title function_">constructClassInstance</span>(<br>    workInProgress,<br>    <span class="hljs-title class_">Component</span>,<br>    nextProps,<br>    renderExpirationTime<br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>updateClassComponent</code>中无门需要关注的是<code>constructClassInstance</code>, 将类组件实例化</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberClassComponent.js#513</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">constructClassInstance</span>(<span class="hljs-params"></span><br><span class="hljs-params">  workInProgress: Fiber,</span><br><span class="hljs-params">  ctor: <span class="hljs-built_in">any</span>,</span><br><span class="hljs-params">  props: <span class="hljs-built_in">any</span>,</span><br><span class="hljs-params">  renderExpirationTime: ExpirationTime</span><br><span class="hljs-params"></span>): <span class="hljs-built_in">any</span> &#123;<br>  <span class="hljs-comment">// ...省略其他代码</span><br>  <span class="hljs-title function_">adoptClassInstance</span>(workInProgress, instance);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>需要关注的是<code>adoptClassInstance</code>, 在这个函数中, 将组件实例的<code>updater</code>设置为了<code>classComponentUpdater</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberClassComponent.js#L503</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">adoptClassInstance</span>(<span class="hljs-params">workInProgress: Fiber, instance: <span class="hljs-built_in">any</span></span>): <span class="hljs-built_in">void</span> &#123;<br>  <span class="hljs-comment">// 关键代码</span><br>  instance.<span class="hljs-property">updater</span> = classComponentUpdater;<br>  <span class="hljs-comment">// ...省略其他代码</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>而这个<code>classComponentUpdater</code>, 其代码如下</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberClassComponent.js#L188</span><br><span class="hljs-keyword">const</span> classComponentUpdater = &#123;<br>  isMounted,<br>  <span class="hljs-title function_">enqueueSetState</span>(<span class="hljs-params">inst, payload, callback</span>) &#123;<br>    <span class="hljs-keyword">const</span> fiber = <span class="hljs-title function_">getInstance</span>(inst);<br>    <span class="hljs-keyword">const</span> currentTime = <span class="hljs-title function_">requestCurrentTime</span>();<br>    <span class="hljs-keyword">const</span> expirationTime = <span class="hljs-title function_">computeExpirationForFiber</span>(currentTime, fiber);<br><br>    <span class="hljs-keyword">const</span> update = <span class="hljs-title function_">createUpdate</span>(expirationTime);<br>    update.<span class="hljs-property">payload</span> = payload;<br>    <span class="hljs-keyword">if</span> (callback !== <span class="hljs-literal">undefined</span> &amp;&amp; callback !== <span class="hljs-literal">null</span>) &#123;<br>      <span class="hljs-keyword">if</span> (__DEV__) &#123;<br>        <span class="hljs-title function_">warnOnInvalidCallback</span>(callback, <span class="hljs-string">&quot;setState&quot;</span>);<br>      &#125;<br>      update.<span class="hljs-property">callback</span> = callback;<br>    &#125;<br><br>    <span class="hljs-title function_">flushPassiveEffects</span>();<br>    <span class="hljs-title function_">enqueueUpdate</span>(fiber, update);<br>    <span class="hljs-title function_">scheduleWork</span>(fiber, expirationTime);<br>  &#125;,<br>  <span class="hljs-comment">// ...省略其他代码</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>由于<code>classComponentUpdater</code>由<code>ReactReconciler</code>提供, 所以对<code>classComponentUpdater</code>自然可以被<code>ReactReconciler</code>捕获到.</p>
+<p>但为什么将组件实例的<code>updater</code>设置成<code>classComponentUpdater</code>就会被捕获呢? 搂一眼<code>React.Component</code>的源码</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactBaseClasses.js#L58</span><br><br><span class="hljs-title class_">Component</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">setState</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">partialState, callback</span>) &#123;<br>  <span class="hljs-title function_">invariant</span>(<br>    <span class="hljs-keyword">typeof</span> partialState === <span class="hljs-string">&quot;object&quot;</span> ||<br>      <span class="hljs-keyword">typeof</span> partialState === <span class="hljs-string">&quot;function&quot;</span> ||<br>      partialState == <span class="hljs-literal">null</span>,<br>    <span class="hljs-string">&quot;setState(...): takes an object of state variables to update or a &quot;</span> +<br>      <span class="hljs-string">&quot;function which returns an object of state variables.&quot;</span><br>  );<br>  <span class="hljs-variable language_">this</span>.<span class="hljs-property">updater</span>.<span class="hljs-title function_">enqueueSetState</span>(<span class="hljs-variable language_">this</span>, partialState, callback, <span class="hljs-string">&quot;setState&quot;</span>);<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>显然, <code>Component</code>中的 setState 实际上调用的就是 updater 上的<code>enqueueSetState</code>方法. 而由于 updater 本身已经被替换为了<code>ReactReconciler</code>自身的实现, 所以自然可以捕获到类组件上的所有数据变更.</p>
+<p>问题得解</p>
+<h2 id="函数组件-FunctionComponent">函数组件: FunctionComponent</h2>
+<p>接着看下一项, <code>ReactReconciler</code>对函数组件中 useState 的接管实现</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactHooks.js#L54</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> useState&lt;S&gt;(<span class="hljs-attr">initialState</span>: (<span class="hljs-function">() =&gt;</span> S) | S) &#123;<br>  <span class="hljs-keyword">const</span> dispatcher = <span class="hljs-title function_">resolveDispatcher</span>();<br>  <span class="hljs-keyword">return</span> dispatcher.<span class="hljs-title function_">useState</span>(initialState);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>useState 位于<code>ReactHooks.js</code>文件, 实际调用的是<code>ReactCurrentOwner.currentDispatcher</code>上提供的 useState 方法</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactHooks.js#L14</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactCurrentOwner</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;./ReactCurrentOwner&quot;</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">resolveDispatcher</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> dispatcher = <span class="hljs-title class_">ReactCurrentOwner</span>.<span class="hljs-property">currentDispatcher</span>;<br>  <span class="hljs-title function_">invariant</span>(<br>    dispatcher !== <span class="hljs-literal">null</span>,<br>    <span class="hljs-string">&quot;Hooks can only be called inside the body of a function component.&quot;</span><br>  );<br>  <span class="hljs-keyword">return</span> dispatcher;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>而<code>resolveDispatcher</code>返回的又是<code>ReactCurrentOwner.currentDispatcher</code>对象. 这个<code>ReactCurrentOwner</code>看起来位于<code>packages/react/src/ReactCurrentOwner.js</code>, 但点进去会发现里边只有一个普通对象</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react/src/ReactCurrentOwner.js#L1</span><br><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> &#123;<span class="hljs-title class_">Fiber</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-reconciler/src/ReactFiber&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-keyword">typeof</span> &#123;<span class="hljs-title class_">Dispatcher</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-reconciler/src/ReactFiberDispatcher&#x27;</span>;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Keeps track of the current owner.</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * The current owner is the component who should own any components that are</span><br><span class="hljs-comment"> * currently being constructed.</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">ReactCurrentOwner</span> = &#123;<br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * <span class="hljs-doctag">@internal</span></span><br><span class="hljs-comment">   * <span class="hljs-doctag">@type</span> &#123;<span class="hljs-type">ReactComponent</span>&#125;</span><br><span class="hljs-comment">   */</span><br>  <span class="hljs-attr">current</span>: (<span class="hljs-attr">null</span>: <span class="hljs-literal">null</span> | <span class="hljs-title class_">Fiber</span>),<br>  <span class="hljs-attr">currentDispatcher</span>: (<span class="hljs-attr">null</span>: <span class="hljs-literal">null</span> | <span class="hljs-title class_">Dispatcher</span>),<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title class_">ReactCurrentOwner</span>;<br></code></pre></td></tr></table></figure>
+<p>所以<code>react/src/ReactCurrentOwner.js</code>显然不是<code>ReactCurrentOwner</code>实际的提供者. 如果返回<code>beginWork</code>, 看<code>ReactReconciler</code>提供<code>ReactCurrentOwner</code>的方式时我们会看到</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberBeginWork.js#L47</span><br><span class="hljs-comment">// ...省略其他代码</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactSharedInternals</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;shared/ReactSharedInternals&quot;</span>;<br><span class="hljs-comment">// ...省略其他代码</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">ReactCurrentOwner</span> = <span class="hljs-title class_">ReactSharedInternals</span>.<span class="hljs-property">ReactCurrentOwner</span>;<br><span class="hljs-comment">// ...省略其他代码</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">updateFunctionComponent</span>(<span class="hljs-params"></span><br><span class="hljs-params">  current,</span><br><span class="hljs-params">  workInProgress,</span><br><span class="hljs-params">  Component,</span><br><span class="hljs-params">  nextProps: <span class="hljs-built_in">any</span>,</span><br><span class="hljs-params">  renderExpirationTime</span><br><span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// ...省略其他代码</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><code>ReactReconciler</code>也提供了一个<code>ReactCurrentOwner</code>, 如果继续往后跟, 可以看到他在<code>workLoop</code>中替换了<code>ReactCurrentOwner.currentDispatcher</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberScheduler.js#29</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ReactSharedInternals</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;shared/ReactSharedInternals&quot;</span>;<br><span class="hljs-comment">// ...省略其他代码</span><br><span class="hljs-keyword">const</span> &#123; <span class="hljs-title class_">ReactCurrentOwner</span> &#125; = <span class="hljs-title class_">ReactSharedInternals</span>;<br><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/packages/react-reconciler/src/ReactFiberScheduler.js#1187</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">workLoop</span>(<span class="hljs-params">isYieldy</span>) &#123;<br>  <span class="hljs-comment">// ...省略其他代码</span><br>  <span class="hljs-keyword">if</span> (enableHooks) &#123;<br>    <span class="hljs-title class_">ReactCurrentOwner</span>.<span class="hljs-property">currentDispatcher</span> = <span class="hljs-title class_">Dispatcher</span>;<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-title class_">ReactCurrentOwner</span>.<span class="hljs-property">currentDispatcher</span> = <span class="hljs-title class_">DispatcherWithoutHooks</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>但问题是, <code>ReactReconciler</code>引入的是<code>shared/ReactSharedInternals</code>, react 中引用的却是<code>react/src/ReactCurrentOwner.js</code>, 这是怎么做到的?</p>
+<p>来看这段代码</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 位于 https://github.com/facebook/react/blob/v16.7.0/scripts/rollup/forks.js#L48</span><br><br><span class="hljs-comment">// Without this fork, importing `shared/ReactSharedInternals` inside</span><br><span class="hljs-comment">// the `react` package itself would not work due to a cyclical dependency.</span><br><span class="hljs-string">&#x27;shared/ReactSharedInternals&#x27;</span>: <span class="hljs-function">(<span class="hljs-params">bundleType, entry, dependencies</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">if</span> (entry === <span class="hljs-string">&#x27;react&#x27;</span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;react/src/ReactSharedInternals&#x27;</span>;<br>  &#125;<br>  <span class="hljs-keyword">if</span> (dependencies.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&#x27;react&#x27;</span>) === -<span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-comment">// React internals are unavailable if we can&#x27;t reference the package.</span><br>    <span class="hljs-comment">// We return an error because we only want to throw if this module gets used.</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<br>      <span class="hljs-string">&#x27;Cannot use a module that depends on ReactSharedInternals &#x27;</span> +<br>        <span class="hljs-string">&#x27;from &quot;&#x27;</span> +<br>        entry +<br>        <span class="hljs-string">&#x27;&quot; because it does not declare &quot;react&quot; in the package &#x27;</span> +<br>        <span class="hljs-string">&#x27;dependencies or peerDependencies. For example, this can happen if you use &#x27;</span> +<br>        <span class="hljs-string">&#x27;warning() instead of warningWithoutStack() in a package that does not &#x27;</span> +<br>        <span class="hljs-string">&#x27;depend on React.&#x27;</span><br>    );<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>&#125;,<br></code></pre></td></tr></table></figure>
+<p>显然, 答案是 rollup.</p>
+<p>react 在使用 rollup 构建时, 通过定制编译脚本, 在输出将<code>shared/ReactSharedInternals</code>映射为了<code>react/src/ReactSharedInternals</code>, 从而实现对<code>ReactCurrentOwner</code>变量的替换, 进而将 useState 的实际提供者替换为<code>ReactReconciler</code>, 实现了对 useState 的控制</p>
+<p>而我们对<code>ReactReconciler</code>接管函数组件<code>useState</code>的过程, 也可以宣告结束.</p>
+<p>搞定了<code>ReactReconciler</code>的秘密, 在接下来的文章里, 我们就可以放心的研究 HostConfig 和 Container 的设计和实现了</p>
+<h1>参考资料</h1>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59831684">小前端读源码 - React 组件更新原理</a><br>
+<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/266892192">react 源码剖析：react/react-dom/react-reconciler 的关系</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E6%8C%87%E5%8D%97/" class="print-no-link">#小程序架构指南</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>小程序架构指南(四):源码详解小程序启动原理(上)</div>
+      <div>https://www.yaozeyuan.online/2021/11/08/2021/11/04-源码详解_小程序启动原理(上)-源码级小程序启动流程与React-Reconciler监控组件状态的实现/04-源码详解_小程序启动原理(上)-源码级小程序启动流程与React-Reconciler监控组件状态的实现/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2021年11月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/11/08/2021/11/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/05-%E6%BA%90%E7%A0%81%E8%AF%A6%E8%A7%A3_%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8%E5%8E%9F%E7%90%86(%E4%B8%8B)-HostConfig%E5%8E%9F%E7%90%86%E4%B8%8Ewebview-render%E7%9A%84%E5%AE%9E%E7%8E%B0/" title="小程序架构指南(五):源码详解小程序启动原理(下)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">小程序架构指南(五):源码详解小程序启动原理(下)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/08/2021/11/03-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/03-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%9E%B6%E6%9E%84%E5%AE%9E%E7%8E%B0%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" title="小程序架构指南(三):小程序架构实现中的关键问题及解决方案">
+                        <span class="hidden-mobile">小程序架构指南(三):小程序架构实现中的关键问题及解决方案</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: '3efe86528304dbb7123b01cbcb1736ed'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

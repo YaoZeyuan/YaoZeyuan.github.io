@@ -1,0 +1,722 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon.png">
+  <link rel="icon" href="/static/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="记录一些我认为比较有意思的CSS使用方法  属性选择器 众所周知，CSS说白了就是对各种选择器的排列组合。子代（tr &gt; td，只选择tr的直接子元素td） ， 后代（tr  td选择tr下的所有td元素）， 相邻元素(tr + tbody, 紧接着tr元素的tbody元素)， 以及地球人都会用的 元素、类、伪类、ID选择器，略过不提。 跟上边这些被各种w3cSchool讲烂了的选择器相比">
+<meta property="og:type" content="article">
+<meta property="og:title" content="非典型CSS指南">
+<meta property="og:url" content="https://www.yaozeyuan.online/2016/06/24/2016/%E9%9D%9E%E5%85%B8%E5%9E%8BCSS%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="记录一些我认为比较有意思的CSS使用方法  属性选择器 众所周知，CSS说白了就是对各种选择器的排列组合。子代（tr &gt; td，只选择tr的直接子元素td） ， 后代（tr  td选择tr下的所有td元素）， 相邻元素(tr + tbody, 紧接着tr元素的tbody元素)， 以及地球人都会用的 元素、类、伪类、ID选择器，略过不提。 跟上边这些被各种w3cSchool讲烂了的选择器相比">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-06-24T09:48:01.000Z">
+<meta property="article:modified_time" content="2023-10-11T15:04:30.053Z">
+<meta property="article:author" content="姚泽源">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>非典型CSS指南 - 代号647</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/static/css/customer.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>代号647</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="非典型CSS指南"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2016-06-24 17:48" pubdate>
+          2016年6月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">非典型CSS指南</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>记录一些我认为比较有意思的CSS使用方法</p>
+</blockquote>
+<h1>属性选择器</h1>
+<p>众所周知，CSS说白了就是对各种选择器的排列组合。子代（<code>tr &gt; td</code>，<strong>只选择tr的直接子元素td</strong>）<br>
+， 后代（<code>tr  td</code><strong>选择tr下的所有td元素</strong>）， 相邻元素(<code>tr + tbody</code>, <strong>紧接着tr元素的tbody元素</strong>)， 以及地球人都会用的<br>
+元素、类、伪类、ID选择器，略过不提。</p>
+<p>跟上边这些被各种w3cSchool讲烂了的选择器相比，知道属性选择器的人就少多了。<br>
+属性选择器，顾名思义，可以根据指定属性按某些规则对页面元素赋予对应样式。这在页面元素的属性很有规律的时很有用处，示例如下：</p>
+<ul>
+<li><code>a[title]</code>:选择所有具有title属性的a元素</li>
+<li><code>[type='password']</code>，选择所有type是password(且仅是password)的标签。</li>
+</ul>
+<p>除此之外</p>
+<ul>
+<li><code>^=</code>选择属性值以指定内容开始的标签</li>
+<li><code>$=</code>选择属性值以指定内容结束的标签</li>
+<li><code>*=</code>选择属性值含有指定内容的标签</li>
+<li><code>~=</code>选择属性值包含指定内容的标签</li>
+</ul>
+<h1>特殊性</h1>
+<p>有必要说说CSS里的<code>特殊性</code>。</p>
+<p>不知道大家平常有没有碰到过这样一种情况，就是给一个类设上了样式，而且是在最后才声明出来，但这个样式却总是被其他样式给覆盖掉，非得加上!important才行，查w3cSchool也查不出原因，非常诡异。</p>
+<p>但说来也简单，对于CSS中的每条规则，浏览器都会为此计算出一组特殊性值，在具体应用样式时，只有特殊性最高的样式才会被应用到元素身上。<br>
+而之所以我们前面设定的样式不生效，说白了就是因为外部CSS文件中的特殊性大于我们设定的特殊性而已。</p>
+<p>计算规则如下：</p>
+<ul>
+<li>特殊性共有四位，记为0,0,0,0，</li>
+<li>对于选择器中给定的各个ID属性值，加0,1,0,0</li>
+<li>对于选择器中给定的各个类属性值、属性选择器或者伪类选择器(<code>:link</code>、<code>:active</code>)，加0,0,1,0</li>
+<li>对于选择其中给定的各个元素和伪元素(<code>:after</code>、<code>:before</code>),加0,0,0,1</li>
+<li>对于结合符（<code>+</code>）和通配符（<code>*</code>）选择器，特殊性加0,0,0,0</li>
+<li>继承得来的属性，没有任何特殊性（需要说明的是，没有特殊性的特殊性小于（0,0,0,0），也就是说，如果你在一开始声明<code>*&#123;color:red;&#125;</code>（特殊性（0，0，0，0））的话，那么所有元素都会变成红色）</li>
+<li>对于内联样式，特殊性加(1,0,0,0)</li>
+<li>对于<code>!important</code>重要声明，它的特殊性是</li>
+<li>对不起，<code>!important</code>不计算特殊性，浏览器在计算的时候会把所有样式分成重要和非重要两组，分别计算特殊性</li>
+</ul>
+<p>比如说下面这样（注释内容为该选择器的特殊性）</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">h1</span> &#123;<span class="hljs-attribute">color</span> : red;&#125;                                              <span class="hljs-comment">/* (0,0,0,1) */</span><br><span class="hljs-selector-tag">p</span> <span class="hljs-selector-tag">em</span> &#123;<span class="hljs-attribute">color</span> : purple;&#125;                                         <span class="hljs-comment">/* (0,0,0,2) */</span><br><span class="hljs-selector-class">.grape</span> &#123;<span class="hljs-attribute">color</span> : purple;&#125;                                       <span class="hljs-comment">/* (0,0,1,0) */</span><br>*<span class="hljs-selector-class">.bright</span> &#123;<span class="hljs-attribute">color</span>: yellow;&#125;                                      <span class="hljs-comment">/* (0,0,1,0) */</span>                      <br><span class="hljs-selector-tag">p</span><span class="hljs-selector-class">.bright</span> <span class="hljs-selector-tag">em</span><span class="hljs-selector-class">.dark</span> &#123;<span class="hljs-attribute">color</span> : black;&#125;                              <span class="hljs-comment">/* (0,0,2,2) */</span>          <br><span class="hljs-selector-id">#id216</span> &#123;<span class="hljs-attribute">color</span> : blue;&#125;                                         <span class="hljs-comment">/* (0,1,0,0) */</span><br><span class="hljs-selector-tag">div</span><span class="hljs-selector-id">#sidebar</span> *<span class="hljs-selector-attr">[href]</span> &#123;<span class="hljs-attribute">color</span> : red;&#125;                             <span class="hljs-comment">/* (0,1,1,1) */</span>          <br><span class="hljs-selector-tag">html</span> &gt; <span class="hljs-selector-tag">body</span> <span class="hljs-selector-tag">table</span> <span class="hljs-selector-tag">tr</span><span class="hljs-selector-attr">[id*=<span class="hljs-string">&quot;totals&quot;</span>]</span> <span class="hljs-selector-tag">td</span> <span class="hljs-selector-tag">ul</span> &gt; <span class="hljs-selector-tag">li</span> &#123;<span class="hljs-attribute">color</span> : black;&#125; <span class="hljs-comment">/* (0,0,1,7) */</span><br></code></pre></td></tr></table></figure>
+<p>然后在最终应用规则时，按以下方式进行：</p>
+<ol>
+<li>找出所有相关规则，这些规则都包含与一个给定元素相匹配的选择器、</li>
+<li>按显式权重对应用到该元素的所有生命排序。标志!important的规则权重要高于没有!important标志的规则。按来源对应用到给定元素的所有声明排序。共有3种来源：创作人员，读者和浏览器（专业说法叫用户代理）。<br>
+正常情况下，创作人员的样式要胜过读者的样式，有!important标志的读者样式要强于所有其他样式，这包括有!important标志的创作人员样式。创作人员样式和读者样式都比用户代理的默认样式要强。</li>
+<li>按特殊性对应用到给定元素的所有声明排序。有较高特殊性的声明权重要大于有较低特殊性的声明</li>
+<li>按出现顺序对应用到给定元素的所有生命排序。一个声明在样式表或文档中越后出现，它的权重就越大。如果样式表中有导入的样式表，一般认为出现在导入样式表中的声明在前，主样式表中的所有声明在后。</li>
+</ol>
+<p>Over</p>
+<h1>零散的CSS小Tip</h1>
+<ul>
+<li>cursor属性可以更改鼠标在元素上的样式，<code>&#123;cursor:default;&#125;</code>是正常的箭头，<code>&#123;cursor:pointer;&#125;</code>是小手，这是CSS中的一组系统级样式，可以根据属性值的不同调用系统中对应鼠标样式进行显示，这条在用CSS标记一个链接已经被访问过时可以用上</li>
+<li>利用<code>:before</code>和<code>:after</code>这两个伪元素，可以在指定元素的前后生成并不存在的元素。</li>
+<li>比如可以用<code>a:before&#123;content:'链接:'&#125;</code>，在所有链接前都加上『链接：』提示语</li>
+<li>更进一步，利用<code>:before</code>和<code>:after</code>的<code>content</code>属性，我们还可以展示元素属性中的内容</li>
+<li>例如<code>a[href]:after&#123;content:attr(href)&#125;</code>，显示所有<code>a</code>元素的链接；</li>
+<li><code>*[class]:after&#123;content:attr(class)&#125;</code>，显示所有元素的class</li>
+<li>etc……</li>
+<li>行内元素的居中对齐：<code>&#123;text-align:center&#125;</code></li>
+<li>垂直对齐：<code>&#123;vertical-align:middle&#125;</code></li>
+<li>块元素居中：<code>&#123;margin:auto&#125;</code></li>
+<li>使用<code>display</code>可以更改一个元素的显示，比如可以用<code>&#123;display:table&#125;</code>,<code>&#123;display:table-row&#125;</code>,<code>&#123;display:cell&#125;</code>,能硬生生的用div画出一个表格</li>
+<li>打印网页时可以用<code>page-break-before</code>&amp;<code>page-break-after</code>控制分页，兼容所有的浏览器，用过都说好</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>非典型CSS指南</div>
+      <div>https://www.yaozeyuan.online/2016/06/24/2016/非典型CSS指南/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2016年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2016/06/25/2016/%E4%BD%BF%E7%94%A8Github%E8%BE%93%E5%87%BAMarkdown%E7%AE%80%E5%8E%86%E6%97%B6%E4%B8%AD%E6%89%80%E7%94%A8%E5%88%B0%E7%9A%84%E6%9C%80%E7%AE%80css/" title="使用Github输出Markdown简历时中所用到的最简css">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用Github输出Markdown简历时中所用到的最简css</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2016/06/23/2016/%E3%80%90%E8%AF%91%E3%80%91Java%E4%BB%A3%E7%A0%81%E7%BC%96%E8%BE%91%E8%A7%84%E8%8C%83via%E6%99%AE%E6%9E%97%E6%96%AF%E9%A1%BF%E7%AE%97%E6%B3%95%E5%85%AC%E5%BC%80%E8%AF%BE/" title="【译】Java代码编辑规范via普林斯顿算法公开课">
+                        <span class="hidden-mobile">【译】Java代码编辑规范via普林斯顿算法公开课</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments">
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: '09c5c4c6ec56ffa8167b2dd15b73498b'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
