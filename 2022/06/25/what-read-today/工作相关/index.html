@@ -48,7 +48,7 @@
 <meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h3ld7is0dlj30kk0zjtph.jpg">
 <meta property="og:image" content="https://img.shields.io/badge/dynamic/json?label=citationCount&amp;query=citationCount&amp;url=https%3A%2F%2Fapi.semanticscholar.org%2Fgraph%2Fv1%2Fpaper%2Fabd1c342495432171beb7ca8fd9551ef13cbd0ff%3Ffields%3DcitationCount">
 <meta property="article:published_time" content="2022-06-25T05:00:00.000Z">
-<meta property="article:modified_time" content="2023-10-12T16:08:56.458Z">
+<meta property="article:modified_time" content="2023-11-26T18:37:22.995Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="what-read-today">
 <meta name="twitter:card" content="summary_large_image">
@@ -256,7 +256,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          64k 字
+          65k 字
         
       </span>
     
@@ -268,7 +268,7 @@
         
         
           <!-- compatible with older versions-->
-          530 分钟
+          539 分钟
         
       </span>
     
@@ -318,6 +318,70 @@
 <p>虽然看过很多好文章, 但一直没找到整理的地方, 后续再找时也不方便. 最近翻 github 时看到了陶文整理的<a target="_blank" rel="noopener" href="https://github.com/taowen/awesome-lowcode/blob/master/%E4%BB%8A%E6%97%A5%E9%98%85%E8%AF%BB.md">今日阅读</a>文件, 记录每天看到的优秀文章, 贴下链接, 附一两句简单的评论, 感觉是一个不错的方案</p>
 <p>一方面, 阅读经历本身不涉及关键隐私, 分享好文可以创造信息. 另一方面, 也可以作为外人了解我们的途径. 没有明显坏处但成本低有收益的事, 是可以做一做的.</p>
 <p>故有此页面</p>
+<h1>2023-11-27</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://graphics.stanford.edu/~seander/bithacks.html#OperationCounting">斯坦福大学整理的位运算技巧合集</a>
+<ul>
+<li>不过并没有什么用, 开发中用不到, 生活中更用不到</li>
+</ul>
+</li>
+</ul>
+<h1>2023-11-23</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://clickhouse.com/docs/zh/sql-reference/statements/select">clickhouse中文文档</a></li>
+</ul>
+<h1>2023-11-22</h1>
+<ul>
+<li>正则表达式匹配所有汉字</li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/Wikipedia:Unicode%E6%89%A9%E5%B1%95%E6%B1%89%E5%AD%97">Unicode1.0提供了20916个汉字编码</a>, 使用<code>[一-龟]</code>可以匹配码表中<code>\u4E00(一)</code>~<code>\u9F9F(龟)</code>共20896个汉字, 相较于网上的<code>[\u4e00-\u9fa5]</code>, 只少了<code>龠/龡	/龢/龣/龤/龥</code>六个字, 既可以满足需要, 也方便记忆
+<ul>
+<li>全量码表参见<a target="_blank" rel="noopener" href="https://sf-zhou.github.io/programming/chinese_unicode_encoding_table.htm">中日韩汉字 Unicode 编码表</a></li>
+<li>关于unicode编码则可以看这篇文章: <a target="_blank" rel="noopener" href="https://liyucang-git.github.io/2019/06/17/%E5%BD%BB%E5%BA%95%E5%BC%84%E6%87%82Unicode%E7%BC%96%E7%A0%81/">彻底弄懂Unicode编码</a></li>
+</ul>
+</li>
+</ul>
+<h1>2023-10-20</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.jetbrains.com/zh-hans/2020/06/10/intellij-idea-language-pack/">idea系列编辑器已经官方支持中文</a></li>
+</ul>
+<h1>2023-10-18</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://cleam.github.io/2021/09/23/cognitive-complexity/">代码复杂度指标, 除了圈复杂度, 还有认知复杂度</a>
+<ul>
+<li>圈复杂度（Cyclomatic Complexity）
+<ul>
+<li>1976年制定</li>
+<li>计算代码中的路径数</li>
+<li>可参考<a target="_blank" rel="noopener" href="https://kaelzhang81.github.io/2017/06/18/%E8%AF%A6%E8%A7%A3%E5%9C%88%E5%A4%8D%E6%9D%82%E5%BA%A6/">这篇文章</a></li>
+</ul>
+</li>
+<li>认知复杂度（Cognitive Complexity）
+<ul>
+<li>在圈复杂度的基础上增加了嵌套层数作为计算维度, 嵌套越多, 复杂度越高</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>2023-10-17</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://anjia0532.github.io/2017/06/21/nginx-logging-request-body-as-hexidecimal/">nginx日志中$request_body 十六进制字符(\x22\x9B\x5C\x09\x08…)完美解决方案</a>
+<ul>
+<li>一般通过拼接字符串的方式让nginx的access.log输出为json字段, 但其默认编码格式有问题, 如果是特殊请求, 会输出对json来说非法的字段
+<ul>
+<li>例如对于请求<code>https://demo.baidu.com/static/1?a=%22\\b</code>, 默认编码下$args的值为<code>args:&quot;a=%22\x5C\x5Cb&quot;</code>, 这里的<code>\x5c</code>对json来说是非法字段, 会导致识别失败</li>
+</ul>
+</li>
+<li>nginx 1.11.8之后, log_format支持了escape=json参数, 允许以json格式进行编码</li>
+<li>通过配置<code>log_format main escape=json '&#123;&quot;args&quot;:&quot;$args&quot;&#125;';</code>的方式, 就能用json格式对args进行编码, 输出内容则是符合json规则的
+<ul>
+<li><code>&#123;&quot;args&quot;:&quot;a=%22\\\\b&quot;&#125;</code></li>
+</ul>
+</li>
+<li>PS: 如果页面404, access.log中不会记录$args的值, 在default编码下会留下一个<code>-</code>, 而json编码下则是空字符串<code>&quot;&quot;</code></li>
+</ul>
+</li>
+</ul>
 <h1>2023-09-26</h1>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/637107614">Puppeteer国内镜像地址变动</a>
@@ -3018,9 +3082,9 @@ application/atom+xml
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/11/2022/07/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%95%99%E6%9D%90%E7%AC%94%E8%AE%B0/" title="&lt;&lt;人工智能&gt;&gt;笔记">
+                      <a href="/2022/06/25/what-read-today/%E7%94%9F%E6%B4%BB%E7%9B%B8%E5%85%B3/" title="今日阅读-生活相关内容">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">&lt;&lt;人工智能&gt;&gt;笔记</span>
+                        <span class="hidden-mobile">今日阅读-生活相关内容</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -3028,8 +3092,8 @@ application/atom+xml
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/06/25/what-read-today/%E7%94%9F%E6%B4%BB%E7%9B%B8%E5%85%B3/" title="今日阅读-生活相关内容">
-                        <span class="hidden-mobile">今日阅读-生活相关内容</span>
+                      <a href="/2022/06/25/2022/06/30%E5%88%86%E9%92%9F%E6%90%9E%E5%AE%9A%E4%B8%AA%E4%BA%BA%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD/" title="30分钟搞定个人数据备份">
+                        <span class="hidden-mobile">30分钟搞定个人数据备份</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
