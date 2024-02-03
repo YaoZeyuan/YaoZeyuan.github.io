@@ -56,7 +56,7 @@
 <meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zqx2ij20qo0f0jrr.jpg">
 <meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zqjnkj20qo0f0a9v.jpg">
 <meta property="article:published_time" content="2016-06-26T09:48:01.000Z">
-<meta property="article:modified_time" content="2024-02-03T01:56:55.143Z">
+<meta property="article:modified_time" content="2024-02-03T02:00:57.818Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30p52dj20qo0f03zr.jpg">
@@ -103,7 +103,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -314,26 +314,26 @@
 文中大量引用了《编写可读代码的艺术》书中的内容，向原作者以及译者致敬！</p>
 </blockquote>
 <p>大家好, 相信大家都见过这样的代码: 通篇都是单字母变量和魔数, 一眼看过去很难知道它在做什么</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30p52dj20qo0f03zr.jpg" alt="POJ-1922-AC源码"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30p52dj20qo0f03zr.jpg" srcset="/img/loading.gif" lazyload alt="POJ-1922-AC源码"></p>
 <p>这样的</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30p21ij20qo0f0myc.jpg" alt="POJ-3176-AC源码"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30p21ij20qo0f0myc.jpg" srcset="/img/loading.gif" lazyload alt="POJ-3176-AC源码"></p>
 <p>运气好还能看到这样的</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30ti7oj20qo0f0dhu.jpg" alt="第十五届国际混乱代码大赛-获奖作品"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30ti7oj20qo0f0dhu.jpg" srcset="/img/loading.gif" lazyload alt="第十五届国际混乱代码大赛-获奖作品"></p>
 <p>想想看, 如果在项目里有 1000 行这样的代码, 维护起来是什么感觉……</p>
 <p>在我们的项目中, 我们用了很多办法来增强代码的可读性. 比如, 我们会设定统一的代码格式, 要求为代码添加注释, 在写完代码后更新 Wiki.<br>
 同样, 也有很多书在试图让我们的代码更容易理解. 我今天分享的内容, 就是这一系列书籍中的一本 —— 《编写可读代码的艺术》</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30ou35j20qo0f074b.jpg" alt="编写可读代码的艺术"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30ou35j20qo0f074b.jpg" srcset="/img/loading.gif" lazyload alt="编写可读代码的艺术"></p>
 <p>让我们先从最基本的问题开始</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30onhvj20qo0f0glh.jpg" alt="什么样的代码才是好代码"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30onhvj20qo0f0glh.jpg" srcset="/img/loading.gif" lazyload alt="什么样的代码才是好代码"></p>
 <p>这里有两份遍历链表的代码</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30oxjlj20qo0f0q3b.jpg" alt="两份遍历链表的代码"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30oxjlj20qo0f0q3b.jpg" srcset="/img/loading.gif" lazyload alt="两份遍历链表的代码"></p>
 <p>这两份代码, 都是在从头到尾的遍历一份链表, 如果要评判优劣的话, 显然是下边的代码最好, 因为他又短, 又便于理解.</p>
 <p>在我们通常的观点中, 一般认为代码是越短越好. 因为代码越短, 所需要理解的元素也就越少, 所以可读性也就越好</p>
 <p>但,真的是越短越好吗?</p>
 <!--
 (这是一段计算底数乘以 2 的 n 次方的程序)
 -->
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30owx9j20qo0f0t8y.jpg" alt="真的是越短越好吗"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30owx9j20qo0f0t8y.jpg" srcset="/img/loading.gif" lazyload alt="真的是越短越好吗"></p>
 <p>来看这两段代码.</p>
 <p>先看第一段, 在有注释的情况下, 大家能理解这段代码在做些什么吗? 应该很困难</p>
 <p>那看第二段, 这样是不是就好一些了. 其实就是在计算 a 乘以 2 的 n 次幂.</p>
@@ -354,16 +354,16 @@
 <p>对于任何代码, 当我们在写完它之后, 就可以估算一下, 让身边的同事把代码通读一遍并达到理解的水平所需的时间, 这个时间的长短, 就是我们评判代码可读性的尺度.</p>
 <p>而这种度量方式, 被称为:『可读性基本定理』:</p>
 <p>好的代码, 应该是使别人理解它所需的时间——最小化</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30spz0j20qo0f0mx6.jpg" alt="好的代码, 应该是别人理解它所需的时间最小化"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30spz0j20qo0f0mx6.jpg" srcset="/img/loading.gif" lazyload alt="好的代码, 应该是别人理解它所需的时间最小化"></p>
 <p>而且需要特别点出的是, 当我们说『理解』时, 我们对『理解』这个词有着很高的要求.<br>
 我们所说的理解, 是指当一个人真的『理解』了这些代码之后, 他应该就能直接去改动它, 找出缺陷并能明白这些代码是怎么和代码的其他部分交互的.<br>
 让这个时间最小化, 是评判代码可读性的核心标准.</p>
 <p>所以, 如何编写可读代码这个问题就变成了: 『怎样才能编写代码, 让别人理解它所需的时间最小化』</p>
 <p>让我们从命名开始.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30uj6bj20qo0f0dkr.jpg" alt="命名之法: 把信息装进名字里"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30uj6bj20qo0f0dkr.jpg" srcset="/img/loading.gif" lazyload alt="命名之法: 把信息装进名字里"></p>
 <p>在为方法、变量命名的时候, 我们要尽量起一个有意义的名字.</p>
 <p>比如<code>食人花</code>, 真的很贴切……</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30tgtdj20qo0f0ju2.jpg" alt="贴切的名字: 使用专业的词语"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg30tgtdj20qo0f0ju2.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 使用专业的词语"></p>
 <p>然后来看几条起名时的原则.</p>
 <p>首先, 使用专业的词语.</p>
 <p>一般来说, 专业的词语总是最有表现力的. 比如在下边这个方法中.</p>
@@ -383,28 +383,28 @@
 <p>比如说, 如果这是一个重量级操作, 停止之后就不可以再恢复, 那它应该叫 kill</p>
 <p>如果还有方法可以继续这个线程, 那它应该叫 pause</p>
 <p>这样就贴切多了.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5baq3vj20qo0f0wf1.jpg" alt="贴切的名字: 找到更有表现力的词"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5baq3vj20qo0f0wf1.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 找到更有表现力的词"></p>
 <p>然后继续.</p>
 <p>在中文环境中, 如果我们想要去拿一个东西的话, 可以用『拿』、『取』、『递』、『抓』这些同义词.<br>
 在不同语境选择不同的词汇可以让文章更有表现力.<br>
 同样, 英文里有很多同义词, 如果能记住这些词, 在写代码的时候也可以让方法的含义变得更直观.</p>
 <p>比如表格里的这些词语.</p>
 <p>当然, 过分了就不好了.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5ba93qj20qo0f03yp.jpg" alt="贴切的名字: 过犹不及"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5ba93qj20qo0f03yp.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 过犹不及"></p>
 <p>比如 PHP 里有一个 explode 函数, 这个函数的名字很形象, 一看就知道是要把字符串炸碎成块.<br>
 但问题是, PHP5.3 之前还有一个内置的函数叫 split. 如果不看说明的话, 根本就不知道这两个函数有什么区别.<br>
 这就很尴尬了……</p>
 <p>不过补充一下, split 方法从 5.3 起开始被声明为废弃函数, 在 PHP7 里正式移除. 也算是比较好的结果了.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5baogdj20qo0f03zh.jpg" alt="贴切的名字: 避免空泛的名字_1"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5baogdj20qo0f03zh.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 避免空泛的名字_1"></p>
 <p>然后.</p>
 <p>在我们平常写循环的时候, 经常会用<code>i</code>、<code>j</code>、<code>k</code>这样没有意义的名字做循环变量. 但这样往往就需要让读者去回看上下文才能明白变量的内容, 延长了理解所需的时间, 是一项不太好的习惯.</p>
 <p>而且, 有时候还会出现问题.</p>
 <p>比如, 看这段代码. 在这段代码的最后, members 和 users 使用了错误的索引, 但因为使用了无意义变量, 所以即使是知道用错了, 也很难看出来错在了那儿. 这在后期维护的时候就是一个大坑.</p>
 <p>如果换成有意义的名字就好了.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5betb6j20qo0f0q3j.jpg" alt="贴切的名字: 避免空泛的名字_2"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5betb6j20qo0f0q3j.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 避免空泛的名字_2"></p>
 <p>一目了然.</p>
 <p>然后下一条, 在变量名中展示信息.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5baggbj20qo0f0dgr.jpg" alt="贴切的名字: 在变量中展示信息"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5baggbj20qo0f0dgr.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 在变量中展示信息"></p>
 <p>如果一个信息非常重要的话, 我们应该考虑把它嵌到变量名里.</p>
 <p>比如, start 方法需要一个延迟启动参数, 我们可以在后边附上 secsond, 来说明是按秒来进行延迟启动</p>
 <p>createCache 方法需要设定 size 大小, 如果没有单位的话很难知道这个大小是 b, 还是 kb, 还是 mb,所以可以附上单位 mb, 一目了然.</p>
@@ -414,19 +414,19 @@
 <p>不过这里要特别说一下, 顺时针在英文里的缩写是 cw, 但在中文世界中很少有人知道这个缩写, 所以作者在这里用反而会导致理解时间变长.</p>
 <p>一般来说, 在平常写代码的时候要尽量减少不常见缩写的使用.<br>
 如果缩写不能让刚加入项目的新人明白是什么意思的话, 就不要让他出现在代码里.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5bald3j20qo0f0gm8.jpg" alt="贴切的名字: 在变量中展示信息"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5bald3j20qo0f0gm8.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 在变量中展示信息"></p>
 <p>继续, 和上边一样, 这次是把单位换成了信息.</p>
 <p>如果是纯文本密码的话, 最好在前边加上 plaintext 说明</p>
 <p>如果是需要转义的注释, 可以在前边加上 unescaped 前缀</p>
 <p>在 Python 里的字符串变量经常会有编码问题, 所以如果是 html 字符串的话可以考虑加上 utf8 后缀</p>
 <p>当然最后一条也是一样. 加个 url_encode 后缀, 理解速度会快很多</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5bdkbrj20qo0f0aab.jpg" alt="贴切的名字: 丢掉没用的词"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5bdkbrj20qo0f0aab.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 丢掉没用的词"></p>
 <p>当然, 加必要信息也不是什么都往里边加. 如果变量名里有没用的单词的话, 完全可以直接拿掉.</p>
 <p>比如, coverToString 不如直接用 toString.</p>
 <p>同样, serveLoop 和 doServeLoop 一样清楚.</p>
 <p>减少冗余信息是一种美德.</p>
 <p>然后是, 让变量名不会被误解.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5beay6j20qo0f0jrx.jpg" alt="贴切的名字: 让变量名不会误解"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5beay6j20qo0f0jrx.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 让变量名不会误解"></p>
 <p>假如我们有一个这样的函数(clip)</p>
 <p>显然, 只看 clip 这个名字, 它可能会有两种行为:</p>
 <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-number">1.</span>从尾部删掉 <span class="hljs-built_in">length</span> 的长度<br><br><span class="hljs-number">2.</span>截取最大长度为 <span class="hljs-built_in">length</span> 的一段<br></code></pre></td></tr></table></figure>
@@ -437,7 +437,7 @@
 length 可能是字节数, 也可能是字符数, 字数也有可能. 如果只有一个孤零零的 length 的话, 读者还是没法判断到底以什么为单位去截取字符串.</p>
 <p>所以, 这就是前面所说的需要把单位附在名字后边的那种情况. 在这里, 我们假定是按字符数截取文本, 所以, 应该用 max_chars, 而不是 max_length</p>
 <p>在分页展示数据的时候, 我们经常会遇到为范围变量命名的问题, 这里有几个通用的命名原则</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5bf200j20qo0f00uk.jpg" alt="贴切的名字: 描述范围时的通用命名原则"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5bf200j20qo0f00uk.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 描述范围时的通用命名原则"></p>
 <p>首先, 我们可以使用 min 和 max 来表达包含极限.</p>
 <p>在需要表达极限含义的时候, 我们可能会用到 limit 这个词.<br>
 但 limit 有少于和少于且包括这两种状态, 不符合清晰明了的原则.<br>
@@ -445,7 +445,7 @@ length 可能是字节数, 也可能是字符数, 字数也有可能. 如果只�
 <p>同样, 在表达一段区间时, 可以用 first/last 表示包含的含义. 比如这个, print_number 从 0 开始, 到 9 结束</p>
 <p>同样, 我们可以用 begin/end 表示 包含/排除 范围, 就像这张图中所展示的一样</p>
 <p>在为布尔值进行命名时, 也有一些原则</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5bfl0oj20qo0f0gq8.jpg" alt="贴切的名字: 为布尔值命名"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg5bfl0oj20qo0f0gq8.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 为布尔值命名"></p>
 <p>对于那些返回布尔类型的函数, 要确保他们返回<code>true</code>或<code>false</code>的含义非常明确才可以.</p>
 <p>比如这个变量, <code>read_password = true</code>, 这就有两个含义: 已经读取过密码, 或者需要读取密码. 在实际看代码的时候就会很困惑.</p>
 <p>通常来说, 在布尔值前面要加上<code>is</code>, <code>has</code>, <code>can</code>或者<code>should</code>这样的定语, 可以让变量含义变得更明确</p>
@@ -453,7 +453,7 @@ length 可能是字节数, 也可能是字符数, 字数也有可能. 如果只�
 用反义名字会明显的增加我们理解代码时的负担.</p>
 <p>比如这个, <code>disable_ssl = false</code>, 这种变量名出现在代码里简直就是反人类……</p>
 <p>换成<code>use_ssl = true</code>就好多了.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zwfxuj20qo0f0ac8.jpg" alt="贴切的名字: 符合用户的预期"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zwfxuj20qo0f0ac8.jpg" srcset="/img/loading.gif" lazyload alt="贴切的名字: 符合用户的预期"></p>
 <p>命名的最后一条要求就是: 命名时一定要符合用户的预期. 如果 is_mobile 方法实际调用的是 is_url, 绝对会出事……</p>
 <p>比如 C++ 里的链表类有个经典的 size 方法.<br>
 在 C++11 之前的标准库里, 所有的 size 方法复杂度都是 o(1), 唯独链表的 size() 复杂度是 o(n) 操作.<br>
@@ -461,12 +461,12 @@ length 可能是字节数, 也可能是字符数, 字数也有可能. 如果只�
 群众反响强烈……</p>
 <p>当然, 坚持不懈的坑了大家 10 年之后, C++ 终于在 11 年把这个方法改成 o(1) 的了.</p>
 <p>讲完变量命名, 来讲一下程序中的控制流</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zyus2j20qo0f0gp0.jpg" alt="简化控制流: 最小化代码中的思想包袱"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zyus2j20qo0f0gp0.jpg" srcset="/img/loading.gif" lazyload alt="简化控制流: 最小化代码中的思想包袱"></p>
 <p>在编写程序的时候, 如果没有条件判断和循环的话, 整个代码还是相对比较好看的.<br>
 但一旦加上了控制语句, 每多一层<code>if</code>/<code>else</code>, 结构就会复杂一倍.<br>
 如果控制语句一直堆叠下去的话, 整个代码就会像漫画里的蛇那样. 可读性…… 几乎为 0</p>
 <p>然后这里是简化控制流的几个通用原则</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zqty6j20qo0f074y.jpg" alt="简化控制流: 通用原则"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zqty6j20qo0f074y.jpg" srcset="/img/loading.gif" lazyload alt="简化控制流: 通用原则"></p>
 <p>比如, 调整<code>if</code>/<code>else</code>的顺序, 先处理正逻辑, 先处理简单情况, 或者先处理有趣或者可疑的情况.</p>
 <p>然后就是最小化嵌套. 这个很好理解, 因为对我们来说, 每层嵌套都是在为我们的“思维栈”加一个条件,<br>
 当嵌套很深时, 代码会非常难以理解.</p>
@@ -476,10 +476,10 @@ length 可能是字节数, 也可能是字符数, 字数也有可能. 如果只�
 因为所有的三目运算符其实都可以被转换为<code>if</code>/<code>else</code>语句,<br>
 而且跟同样的<code>if</code>/<code>else</code>相比, 三目运算符除了节约代码行数之外并没有其他优势, 而且在大部分情况下都会让代码变得更加难以理解.<br>
 所以, 如果没有特别的理由, 可以尽量避免使用三目运算符.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zvdivj20qo0f0diu.jpg" alt="拆分超长的表达式: 拆成容易理解的小块"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zvdivj20qo0f0diu.jpg" srcset="/img/loading.gif" lazyload alt="拆分超长的表达式: 拆成容易理解的小块"></p>
 <p>除了 n 层嵌套的循环之外, 另一个很折磨人的就是那些一大坨一大坨的代码块了.<br>
 这里介绍几个把他们拆分成容易理解的小块代码的方法.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zr27fj20qo0f03zc.jpg" alt="拆分超长的表达式: 使用解释变量"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zr27fj20qo0f03zc.jpg" srcset="/img/loading.gif" lazyload alt="拆分超长的表达式: 使用解释变量"></p>
 <p>首先, 是使用解释变量.</p>
 <p>比如我们可以用变量名去解释子表达式的含义.</p>
 <p>先看这行代码.<br>
@@ -489,24 +489,24 @@ length 可能是字节数, 也可能是字符数, 字数也有可能. 如果只�
 <p>比如这里的<code>request.user.id == document.owner_id</code>, 这行代码很长, 而且出现了两次. 但它实际上只是要判断一下当前用户是不是文档的所有者而已.<br>
 所以我们可以用一个总结变量把这个值记下来.<br>
 这样代码也好多了.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zt5bqj20qo0f0aac.jpg" alt="拆分超长的表达式: 德摩根定理"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zt5bqj20qo0f0aac.jpg" srcset="/img/loading.gif" lazyload alt="拆分超长的表达式: 德摩根定理"></p>
 <p>另外一点要说的就是德摩根定理, 这个在我们简化条件判断的时候很有用.</p>
 <p>只有一句话: 分别取反, 转换与或.</p>
 <p>就像下边这样.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zz5bhj20qo0f0tc7.jpg" alt="重新组织代码: 零散Tips_0"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zz5bhj20qo0f0tc7.jpg" srcset="/img/loading.gif" lazyload alt="重新组织代码: 零散Tips_0"></p>
 <p>最后是一些零散的建议.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zr1blj20qo0f0dgi.jpg" alt="重新组织代码: 零散Tips_1"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zr1blj20qo0f0dgi.jpg" srcset="/img/loading.gif" lazyload alt="重新组织代码: 零散Tips_1"></p>
 <p>比如, 如果我们在两个地方用到了同一处代码, 就可以考虑把代码独立出来, 做成函数, 而不是用复制粘贴的形式.</p>
 <p>再比如, 如果有可能的话, 每一个函数应该只完成一个功能. 即使不能做到这么小的粒度, 也要尽量把代码按功能拆分到不同的段落中</p>
 <p>然后就是当我们编写代码之前, 可以先试着用自然语言把逻辑或者问题描述一遍. 这样可以让代码写的更自然.</p>
 <p>另外代码里尽量不要出现被注释掉的代码. 在有版本控制系统的情况下, 应该用代码库来记录代码, 而不是把代码记到注释里.<br>
 无用的代码应该直接删除, 不应该留下来影响阅读.</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zqx2ij20qo0f0jrr.jpg" alt="重新组织代码: 零散Tips_2"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zqx2ij20qo0f0jrr.jpg" srcset="/img/loading.gif" lazyload alt="重新组织代码: 零散Tips_2"></p>
 <p>我们每隔一段时间应该去看下代码库里的函数, 不是为了记下来, 只是去看看有什么可以直接拿来用的代码, 避免重复造轮子.</p>
 <p>然后, 对于错误消息, 我们也要尽量把失败消息放在返回值里或者打印出来, 而不是直接丢掉. 在有错误消息的情况下, 会让 debug 工作简单很多.</p>
 <p>最后, 过犹不及. 上边说的这些, 其实都是建议. 真正在做的时候, 还是要根据具体情况具体对待, 避免出现过度优化的情况.</p>
 <p>我的分享就到这里了, 谢谢大家！</p>
-<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zqjnkj20qo0f0a9v.jpg" alt="谢谢大家"></p>
+<p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/woriginal/6671cfa8ly1fnbg6zqjnkj20qo0f0a9v.jpg" srcset="/img/loading.gif" lazyload alt="谢谢大家"></p>
 
                 
               </div>
@@ -593,7 +593,7 @@ length 可能是字节数, 也可能是字符数, 字数也有可能. 如果只�
             
   
   
-    <article id="comments">
+    <article id="comments" lazyload>
       
   <div id="gitalk-container"></div>
   <script type="text/javascript">
@@ -757,6 +757,10 @@ length 可能是字节数, 也可能是字符数, 字数也有可能. 如果只�
 
 
 
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
 
 
 
