@@ -26,7 +26,7 @@
 <meta property="og:description" content="记录每天看到的优秀文章-工作相关">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-01-01T05:00:00.000Z">
-<meta property="article:modified_time" content="2024-02-04T06:15:55.231Z">
+<meta property="article:modified_time" content="2024-02-12T15:00:32.823Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="what-read-today">
 <meta name="twitter:card" content="summary_large_image">
@@ -225,7 +225,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          6.1k 字
+          6.4k 字
         
       </span>
     
@@ -237,7 +237,7 @@
         
         
           <!-- compatible with older versions-->
-          51 分钟
+          54 分钟
         
       </span>
     
@@ -291,6 +291,23 @@
 <ul>
 <li><a href="/2022/06/25/what-read-today/2022-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3/">2022-工作相关</a></li>
 <li><a href="/2023/01/01/what-read-today/2023-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3/">2023-工作相关</a></li>
+</ul>
+<h1>2024-02-06</h1>
+<ul>
+<li>尝试基于<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/@php-wasm/node">@php-wasm/node</a>, 使用node运行<a target="_blank" rel="noopener" href="https://www.adminer.org/">adminer</a>. 能跑出来界面, 但有几个明确会失败的case, 无法投入正常使用. 比较可惜, 待后续官方改进吧
+<ul>
+<li>bad case 列表
+<ul>
+<li>登录完成后执行自定义SQL, 稳定失败.</li>
+<li>进入数据表详情页, 选择任意条件进行搜索时, 概率性失败</li>
+<li>似乎不能编辑数据项或者创建新数据项</li>
+</ul>
+</li>
+<li>可以考虑屏蔽掉post功能后, 作为一个查阅数据库的工具提供. 但意义不大. 后续再说吧.</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/WordPress/wordpress-playground/issues/807">WordPress/wordpress-playground</a>项目的e2e测试示例, 可用于参考</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/aschmelyun/diode/blob/main/lib/Commands/Serve.js">diode-cli</a>这个项目也是类似思路, 一年前试图基于0.2.0版本启动laravel.</li>
 </ul>
 <h1>2024-01-29</h1>
 <ul>
