@@ -25,11 +25,15 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="记录每天看到的优秀文章-工作相关">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1hry9mluklej316m0k0qv5.jpg">
+<meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1hry9n92yd5j316m0k31fa.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007Yq4pTly1hry9oqma2aj30s907v4bd.jpg">
 <meta property="article:published_time" content="2024-01-01T05:00:00.000Z">
-<meta property="article:modified_time" content="2024-02-12T15:00:32.823Z">
+<meta property="article:modified_time" content="2024-07-29T16:49:00.741Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="what-read-today">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1hry9mluklej316m0k0qv5.jpg">
   
   
   
@@ -225,7 +229,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          6.4k 字
+          9.7k 字
         
       </span>
     
@@ -237,7 +241,7 @@
         
         
           <!-- compatible with older versions-->
-          54 分钟
+          81 分钟
         
       </span>
     
@@ -291,6 +295,210 @@
 <ul>
 <li><a href="/2022/06/25/what-read-today/2022-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3/">2022-工作相关</a></li>
 <li><a href="/2023/01/01/what-read-today/2023-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3/">2023-工作相关</a></li>
+</ul>
+<h1>2024-07-26</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://disksing.com/fake-screenshot/">字幕截图生成器</a>
+<ul>
+<li>上传图片后可以生成任意字幕效果</li>
+</ul>
+</li>
+</ul>
+<h1>2024-07-23</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.emoe.xyz/image-dithering-and-its-application/">图像抖动及其应用</a>
+<ul>
+<li>直接将图像从彩色二值化降级为黑白, 会带来明显的色带. 效果很差</li>
+<li>但通过引入抖动, 让颜色散布在一片区域中, 可以在低端设备上模拟出彩色的效果(eg: 单片机面板/电纸书).</li>
+<li>常用方法: 阈值抖动、随机抖动、规则抖动(进阶: Bayer抖动)、Floyd–Steinberg抖动(误差扩散算法)</li>
+<li><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1hry9mluklej316m0k0qv5.jpg" srcset="/img/loading.gif" lazyload alt="彩色图片二值化"></li>
+<li><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1hry9n92yd5j316m0k31fa.jpg" srcset="/img/loading.gif" lazyload alt="灰白图片二值化"></li>
+<li>原文</li>
+<li>
+<blockquote>
+<p>在计算机以及数字信号处理技术发展，有限的数据位宽带来了量化误差，在相当一段时间内制约着数字系统的精度以及效果。而抖动（Dither）则是一种对信号人为加入噪声，以使量化误差随机化的手段，以避免大片不自然的信号出现。</p>
+</blockquote>
+</li>
+<li>
+<blockquote>
+<p>最早对抖动的应用可追溯至第二次世界大战。当时，轰炸机使用装有成百上千齿轮的机械计算机进行导航和弹道计算。事实证明这些仪器在空中比在地面上表现得更为准确。工程师意识到这是因为飞机的振动使得哪些传动部件由短促的抽动变为了更加连续的运动，从而减小了行程的误差。于是他们特地在计算机中安装了振动电机以提高精度，同时，这种振动手段也被称为“dither”——源于中世纪英语动词“didderen”。如今，当你敲动机械仪表想让它指示得更准确时，其实就是在利用抖动。在现代的词典中，“dither”被定义为紧张、混乱或激动的状态，不过在此处，它是件使数字系统更接近模拟现实的好事。</p>
+</blockquote>
+</li>
+<li>不同算法下的抖动效果也不一样.</li>
+<li>使用了相同的色彩，效果却截然不同，左侧：直接量化；右侧：Floyd–Steinberg抖动</li>
+<li><img src="https://tva1.sinaimg.cn/large/007Yq4pTly1hry9oqma2aj30s907v4bd.jpg" srcset="/img/loading.gif" lazyload alt="直接量化 vs Floyd–Steinberg抖动"></li>
+</ul>
+</li>
+</ul>
+<h1>2024-07-12</h1>
+<ul>
+<li>如何获取excel内表格的超链接
+<ul>
+<li>答: 另存为html后用浏览器打开, F12执行以下代码<code>const list = [...document.querySelectorAll('tr td a')].map(item =&gt; item.href);console.log(JSON.stringify(list, null, 2))</code></li>
+</ul>
+</li>
+</ul>
+<h1>2024-07-11</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/lqzhgood/wechat-need-web">wechat-need-web</a>
+<ul>
+<li>一个Chrome插件, 通过修改header的方式, 允许账号登录web端微信</li>
+</ul>
+</li>
+</ul>
+<h1>2024-07-08</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://pku-minic.github.io/online-doc/#/">北大编译实践在线文档</a>
+<ul>
+<li>一个别人的<a target="_blank" rel="noopener" href="https://github.com/piood/MySysY2RV/tree/main">实现示例</a>, 来自一个知乎<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/392127140/answer/3555181541">回答</a></li>
+<li>所以, 什么时候才有空写一个编译器呢</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://nju-projectn.github.io/ics-pa-gitbook/ics2021/linux.html">Linux入门教程</a>
+<ul>
+<li>南大 计算机系统基础 课程试验配套教材</li>
+<li>同时还有以下文章
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md">提问的智慧</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tangx/Stop-Ask-Questions-The-Stupid-Ways/blob/master/README.md">别像弱智一样提问</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>2024-07-04</h1>
+<ul>
+<li>软件的影响力体现在可以让大公司基础库为这个软件单独修改代码
+<ul>
+<li>示例: Mac OS的<a target="_blank" rel="noopener" href="https://opensource.apple.com/source/libmalloc/libmalloc-317.40.8/private/make_tapi_happy.h.auto.html">libmalloc</a>库里, 就有这么一行代码(PS: 文件名是 make_tapi_happy, TAPI 是腾讯官方 API 的名称简写)</li>
+<li>微信用到了这一行, 但这个明明没有任何用途, 天知道他们为啥这么用</li>
+<li><code>/* WeChat references this, only god knows why.  This symbol does nothing. */</code></li>
+<li>相关新闻: <a target="_blank" rel="noopener" href="https://www.51cto.com/article/641948.html">苹果底层开源代码被发现包含兼容微信的代码</a></li>
+</ul>
+</li>
+</ul>
+<h1>2024-06-26</h1>
+<ul>
+<li>利用GPT实现Excel函数编写.</li>
+<li>示例提问: 帮我编写EXCEL函数,对于B列的第n行，在C列中查找是否有和A列第n行元素相同的元素,如果没有,返回0,如果在第m行匹配到了结果,返回D列m行的元素的值</li>
+<li>豆包回答: <code>=IFERROR(INDEX(D:D,MATCH(A1,C:C,0)),0)</code> 你将这个公式放在与B列第n行对应的单元格，然后向下填充公式即可。这个公式先使用 MATCH 函数在C列中查找与A列第n行相同的元素，如果找到则返回其行号，然后 INDEX 函数根据这个行号从D列中获取对应的值，如果查找不到则 IFERROR 会返回0.</li>
+</ul>
+<h1>2024-06-20</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/blog/mlabonne/abliteration">通过屏蔽模块, 解除Llama 模型内置的审查策略</a>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://news.ycombinator.com/item?id=40669291">太长不看版</a>: 运行这段<a target="_blank" rel="noopener" href="https://colab.research.google.com/drive/1VYm3hOcvCpbGiqKZb141gJwjdmmCcVpR?usp=sharing#scrollTo=BErEJu5WVekL">代码</a>, 可以在本地跑一个无限制的大模型</li>
+</ul>
+</li>
+</ul>
+<h1>2024-06-06</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7135011216199516190">Web Vibration API</a>
+<ul>
+<li>可以通过Vibration API, 触发手机震动. 且当前大多数浏览器都支持该接口(截止2024-06-06, Safari尚不支持)</li>
+<li><a target="_blank" rel="noopener" href="https://codepen.io/lio-zero/pen/YzZxRWY">手机示例地址</a></li>
+</ul>
+</li>
+</ul>
+<h1>2024-05-09</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/zed-industries/zed/blob/main/crates/assistant/src/prompts.rs">Zed基于GPT实现代码自动生成的原理</a>
+<ul>
+<li>本质仍是prompt工程</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://ft07.com/prompt-of-cursor-editor/">cursor基于GPT实现代码自动生成的原理</a>
+<ul>
+<li>本质仍是prompt工程</li>
+</ul>
+<blockquote>
+<p>system<br>
+You are an intelligent programmer. You are helping a colleague rewrite a piece of code.</p>
+<p>Your colleague is going to give you a file and a selection to edit, along with a set of instructions. Please rewrite &gt; the selected code according to their instructions.</p>
+<p>Think carefully and critically about the rewrite that best follows their instructions.</p>
+<p>user<br>
+This is my current file. The selection will be denoted by comments “Start of Selection” and “End of Selection”:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs index.js">// Start of Selection<br><br>&lt;这里是代码&gt;<br><br>...(about 356 lines omitted)...    <br><br>&lt;这里是代码&gt;<br><br>// End of Selection<br><br></code></pre></td></tr></table></figure>
+<hr>
+<h2 id="Potentially-helpful-context">Potentially helpful context</h2>
+<p>(no additional relevant context found)</p>
+<p>user<br>
+Please rewrite this selection following these instructions:</p>
+<h2 id="Edit-Prompt">Edit Prompt</h2>
+<p>&lt;这里是用户输入的改写要求&gt;</p>
+<h2 id="Selection-to-Rewrite">Selection to Rewrite</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs index.js">// Start of Selection<br>&lt;这里是被选中的代码部分&gt;<br>// End of Selection<br></code></pre></td></tr></table></figure>
+<p>Please rewrite the selected code according to the instructions. Remember to only rewrite the code in the selection.</p>
+<p>Please format your output as:</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> Start of Selection<br><span class="hljs-regexp">//</span> INSERT_YOUR_REWRITE_HERE<br><span class="hljs-regexp">//</span> End of Selection<br></code></pre></td></tr></table></figure>
+<p>Immediately start your response with ```</p>
+</blockquote>
+</li>
+</ul>
+<h1>2024-04-28</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/oLz_F7zhUN6-b-KaI8CMRw">Android的离奇陷阱 — 设置线程优先级导致的微信卡顿惨案</a>
+<ul>
+<li>三行代码导致微信客户端的一次线上故障</li>
+<li>当<code>GetTid()</code>为0时, <code>setPriority</code>会设置<code>调用线程</code>的优先级, 而非当前实例的优先级. 而<code>start()</code>方法正好是异步方法.</li>
+<li>属于代码API不符合预期导致的惨案</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Thread</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>();<br>t.start();<br>t.setPriority(<span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1>2024-04-01</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/663256825">在web中实现docx的渲染</a>
+<ul>
+<li>开发周期一个月, 1万行代码</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/688241706">在web中实现excel的渲染</a>
+<ul>
+<li>同上, 但是逻辑更复杂</li>
+</ul>
+</li>
+</ul>
+<h1>2024-02-23</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://hughfenghen.github.io/posts/2023/12/23/web-spy/">web端各种劫持技巧汇总</a>
+<ul>
+<li>通过劫持请求, 实现开发者工具</li>
+<li>网络 API （xhr, fetch, WebSocket）
+<ul>
+<li>性能监控、统一错误码处理</li>
+<li>添加额外 HTTP 参数（header, query）实现接口染色功能</li>
+<li>修改 Host 将接口自动转向代理服务，实现远程调试接口、Mock 数据</li>
+</ul>
+</li>
+<li>修改原型 （<a target="_blank" rel="noopener" href="http://Array.prototype.at">Array.prototype.at</a> = …）
+<ul>
+<li>polyfill 库的必备手段</li>
+</ul>
+</li>
+<li>页面跳转 API （window.open, history.go back pushState）
+<ul>
+<li>修改跳转的目的页面</li>
+<li>自动添加页面跳转埋点</li>
+</ul>
+</li>
+<li>删除特定 API 禁用浏览器功能
+<ul>
+<li>禁止 js 访问摄像头 navigator.mediaDevices.getDisplayMedia = null</li>
+<li>禁止 p2p 连接 window.RTCPeerConnection = null</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1>2024-02-17</h1>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/56773.html?spm=a2c4g.11186623.0.i1#topic2272">阿里云各类产品SLA协议汇总</a>
+<ul>
+<li>可用于制定自身服务SLA时进行参考</li>
+<li><a target="_blank" rel="noopener" href="https://terms.alicdn.com/legal-agreement/terms/ali_cloud_sla/ali_cloud_sla202011281308_99746.html">阿里云serverless的SLA协议</a></li>
+</ul>
+</li>
 </ul>
 <h1>2024-02-06</h1>
 <ul>
