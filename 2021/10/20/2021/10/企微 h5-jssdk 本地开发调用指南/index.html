@@ -26,7 +26,7 @@
 <meta property="og:description" content="企微在 h5 环境下调用 js-sdk, 需要解决以下五个问题  在已验证的域名下调用, 域名下要有指定文件 域名不能带端口号(想在本地开发时测试 api, dev-server 必须启动在 80 端口下) 初始化 api 时, 企微 sdk 会发送请求验证是否有 api 调用权限(重要) 初始化 api 时, 配置参数要带校验签名, 该签名由 signature + 当前域名计算得出  由于该项">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-20T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-28T14:48:17.678Z">
+<meta property="article:modified_time" content="2025-10-02T00:22:22.359Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -115,7 +115,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.0.0"></head>
 
 
 <body>
@@ -343,7 +343,7 @@
 <h1>方案三</h1>
 <ol>
 <li>购买一个域名, 一年 30~50 元左右(我用的是个人博客域名)</li>
-<li>利用阿里云的<a target="_blank" rel="noopener" href="https://fcnext.console.aliyun.com/">函数计算(serverless)</a> 服务, 实现权限验证
+<li>利用阿里云的<a href="https://fcnext.console.aliyun.com/">函数计算(serverless)</a> 服务, 实现权限验证
 <ol>
 <li>例如, 首先配置一个函数 hello_world, 返回值为验证文件内容</li>
 <li>将购买的域名和该函数相绑定, 并指定路由, 在阿里云上可以直接操作
@@ -376,7 +376,7 @@
 <li>企微中没有开发者工具, 所有日志只能通过 alert 查看, 非常痛苦
 <ol>
 <li>使用 VConsole , 它会在页面上由 js 画出一个 console 界面, 用于查看 console.log 和网络请求信息</li>
-<li>使用文档: <a target="_blank" rel="noopener" href="https://github.com/Tencent/vConsole/blob/HEAD/README_CN.md">https://github.com/Tencent/vConsole/blob/HEAD/README_CN.md</a></li>
+<li>使用文档: <a href="https://github.com/Tencent/vConsole/blob/HEAD/README_CN.md">https://github.com/Tencent/vConsole/blob/HEAD/README_CN.md</a></li>
 </ol>
 </li>
 <li>线上怎么用 vconsole?

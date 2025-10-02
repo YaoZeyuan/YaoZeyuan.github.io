@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/parse_component_by_babel/doc/img/%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/parse_compontent_by_babel/doc/img/%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B.png">
 <meta property="article:published_time" content="2021-01-10T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-28T14:48:17.648Z">
+<meta property="article:modified_time" content="2025-10-02T00:22:22.329Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/parse_component_by_babel/doc/img/%E5%9F%BA%E7%A1%80%E6%B5%81%E7%A8%8B.png">
@@ -118,7 +118,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.0.0"></head>
 
 
 <body>
@@ -309,7 +309,7 @@
 -->
 <p><img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/parse_compontent_by_babel/doc/img/%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B.png" srcset="/img/loading.gif" lazyload alt="解析流程"></p>
 <p>然后剩下的就是体力活: babel 解析出的所有语法树节点类型都在<code>babel-types</code>包中, 需要做的, 就是针对包中的每一种语法结构(导入/变量解构/重命名/函数调用/…)编写处理函数, 最后将所有结果输出为一个 json.</p>
-<p>代码比较冗长, 全文可以翻看这个<a target="_blank" rel="noopener" href="https://github.com/YaoZeyuan/parse_component_by_babel">Github 项目</a>, 这里只展示一下用于统计的数据解构</p>
+<p>代码比较冗长, 全文可以翻看这个<a href="https://github.com/YaoZeyuan/parse_component_by_babel">Github 项目</a>, 这里只展示一下用于统计的数据解构</p>
 <h3 id="项目数据汇总-SummaryCollection">项目数据汇总: SummaryCollection</h3>
 <p>针对每个项目创建一个<code>SummaryCollection</code>对象. 调用 add 方法登记每个文件的解析结果</p>
 <table>
@@ -474,14 +474,14 @@
 </table>
 <h1>参考资料</h1>
 <p>👇 介绍了 babel 处理语法树的流程(Visitor 模式), 抽象语法树概念, babel 工作原理, 必读</p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903746804137991">深入 Babel，这一篇就够了</a></p>
+<p><a href="https://juejin.cn/post/6844903746804137991">深入 Babel，这一篇就够了</a></p>
 <p>👇 同上, 也是对 babel 的介绍.</p>
-<p><a target="_blank" rel="noopener" href="https://www.zoo.team/article/babel">前端工程师需要了解的 Babel 知识</a></p>
+<p><a href="https://www.zoo.team/article/babel">前端工程师需要了解的 Babel 知识</a></p>
 <p>👇 babel 使用 <code>@babel/babel-parser</code> 解析 js 代码, 而 <code>@babel/babel-parser</code> 则是 fork 的<code>acorn</code>. 处理 babel 生成的抽象语法树时, 必然需要理解每个语法树节点 type 字段的含义(如<code>VariableDeclaration</code>, <code>ImportDefaultSpecifier</code>).</p>
-<p>标准文档在<a target="_blank" rel="noopener" href="https://github.com/babel/babel/blob/master/packages/babel-parser/ast/spec.md">这里</a>, 不过是英文的, 下边是一份汉语版, 开发过程中可以参考</p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903450287800327">使用 Acorn 来解析 JavaScript</a></p>
+<p>标准文档在<a href="https://github.com/babel/babel/blob/master/packages/babel-parser/ast/spec.md">这里</a>, 不过是英文的, 下边是一份汉语版, 开发过程中可以参考</p>
+<p><a href="https://juejin.cn/post/6844903450287800327">使用 Acorn 来解析 JavaScript</a></p>
 <p>👇 在线将 js 代码转换为 AST. 编写相关代码时的必备佳品</p>
-<p><a target="_blank" rel="noopener" href="https://astexplorer.net/">抽象语法树预览</a></p>
+<p><a href="https://astexplorer.net/">抽象语法树预览</a></p>
 
                 
               </div>

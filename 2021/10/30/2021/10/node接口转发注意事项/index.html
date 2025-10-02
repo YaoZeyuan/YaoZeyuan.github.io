@@ -26,7 +26,7 @@
 <meta property="og:description" content="前端开发过程中经常遇到接口跨域问题, 很难处理. 因此有了本地起一个 koa, 通过转发接口绕过跨域限制的方案. 这个方案具体实现步骤如下 处理同一服务的不同接口 假设本地开发的请求需要转移到 a1.ke.com 项目上, 那么我们需要做这么几件事  添加中间件, 捕获以指定字符串开始的请求, 以便后续转移   首先配置服务地址, 区分本地&#x2F;dev&#x2F;测试&#x2F;预览&#x2F;线上环境  123456789101">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-30T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-28T14:48:17.678Z">
+<meta property="article:modified_time" content="2025-10-02T00:22:22.359Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -115,7 +115,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.0.0"></head>
 
 
 <body>
@@ -280,7 +280,7 @@
                 
                 <p>前端开发过程中经常遇到接口跨域问题, 很难处理. 因此有了本地起一个 koa, 通过转发接口绕过跨域限制的方案. 这个方案具体实现步骤如下</p>
 <h2 id="处理同一服务的不同接口">处理同一服务的不同接口</h2>
-<p>假设本地开发的请求需要转移到 <a target="_blank" rel="noopener" href="http://a1.ke.com">a1.ke.com</a> 项目上, 那么我们需要做这么几件事</p>
+<p>假设本地开发的请求需要转移到 <a href="http://a1.ke.com">a1.ke.com</a> 项目上, 那么我们需要做这么几件事</p>
 <ol>
 <li>添加中间件, 捕获以指定字符串开始的请求, 以便后续转移</li>
 </ol>
@@ -305,7 +305,7 @@
 <li>这样, 本地开发时, js 只要请求<code>/api/a1/hello/world</code>, 经 dev-server 转发到刚才启动的 koa 服务上后, 即可被转发给<code>http://a1.ke.com/a1/api/hello/world</code>(注意 h5 发出的请求是/api/a1, 实际有效请求 url 是<code>/hello/world</code>, koa 将 config 中配置的 host 地址<code>http://a1.ke.com/a1/api</code>和有效 url 请求<code>/hello/world</code>拼接后, 生成最后的实际请求地址<code>http://a1.ke.com/a1/api/hello/world</code>)</li>
 </ul>
 <h2 id="处理多个服务的接口转发请求">处理多个服务的接口转发请求</h2>
-<p>在上述单服务端口转发请求示例中, 我们通过<code>src/config/api-host/a1.ke.com.ts</code>, <code>getApiHost</code>和<code>getAsyncRedirectResponse</code>已经留出了配置多个服务的扩展空间, 这里仅以添加对 <a target="_blank" rel="noopener" href="http://b2.ke.com">b2.ke.com</a> 的转发服务为例</p>
+<p>在上述单服务端口转发请求示例中, 我们通过<code>src/config/api-host/a1.ke.com.ts</code>, <code>getApiHost</code>和<code>getAsyncRedirectResponse</code>已经留出了配置多个服务的扩展空间, 这里仅以添加对 <a href="http://b2.ke.com">b2.ke.com</a> 的转发服务为例</p>
 <ul>
 <li>添加 config 文件</li>
 </ul>
@@ -315,7 +315,7 @@
 </ul>
 <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// src/service/api_redirect.ts</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * ...其他代码忽略</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> B2_Ke_Com_ApiHost <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;~/src/config/api-host/b2.ke.com&quot;</span>;<br><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">Type</span>_Prefix =<br>  | <span class="hljs-keyword">typeof</span> A1_Ke_Com_ApiHost.<span class="hljs-property">Const_Prefix</span><br>  | <span class="hljs-keyword">typeof</span> B2_Ke_Com_ApiHost.<span class="hljs-property">Const_Prefix</span>;<br><br><span class="hljs-comment">// getApiHost 修改为</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">getApiHost</span>(<span class="hljs-params">prefix: Type_Prefix</span>) &#123;<br>  <span class="hljs-keyword">switch</span> (prefix) &#123;<br>    <span class="hljs-keyword">case</span> A1_Ke_Com_ApiHost.<span class="hljs-property">Const_Prefix</span>:<br>      <span class="hljs-keyword">return</span> A1_Ke_Com_ApiHost.<span class="hljs-property">Const_Host</span>;<br>    <span class="hljs-keyword">case</span> B2_Ke_Com_ApiHost.<span class="hljs-property">Const_Prefix</span>:<br>      <span class="hljs-keyword">return</span> B2_Ke_Com_ApiHost.<span class="hljs-property">Const_Host</span>;<br>    <span class="hljs-attr">default</span>:<br>      <span class="hljs-keyword">return</span> A1_Ke_Com_ApiHost.<span class="hljs-property">Const_Host</span>;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// getAsyncRedirectResponse 修改为</span><br><span class="hljs-comment">// ------↓↓↓↓↓getAsyncRedirectResponse内容↓↓↓↓↓-------</span><br><span class="hljs-comment">// 根据api类别添加额外处理逻辑</span><br><span class="hljs-keyword">if</span> (prefix === A1_Ke_Com_ApiHost.<span class="hljs-property">Const_Prefix</span>) &#123;<br>  <span class="hljs-comment">// a1.ke.com需要在header中额外添加token字段, 以进行权限校验</span><br>  headers[<span class="hljs-string">&quot;a1.ke.com-token&quot;</span>] = token;<br>&#125;<br><span class="hljs-keyword">if</span> (prefix === B2_Ke_Com_ApiHost.<span class="hljs-property">Const_Prefix</span>) &#123;<br>  <span class="hljs-comment">// b2.ke.com不需要进行额外操作</span><br>  <span class="hljs-comment">// headers[&quot;a1.ke.com-token&quot;] = token;</span><br>&#125;<br><span class="hljs-comment">// ------↑↑↑↑↑getAsyncRedirectResponse内容↑↑↑↑↑-------</span><br><br><span class="hljs-comment">// 注册b2服务系列接口</span><br><span class="hljs-comment">// b2服务系列接口</span><br><span class="hljs-keyword">let</span> b2_ke_com_ApiRouter = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Router</span>();<br>b2_ke_com_ApiRouter.<span class="hljs-title function_">all</span>(<br>  B2_Ke_Com_ApiHost.<span class="hljs-property">Const_Match_Reg</span>,<br>  <span class="hljs-comment">// 获取b2.ke.com服务对应的接口处理函数</span><br>  <span class="hljs-title function_">getAsyncRedirectResponse</span>(B2_Ke_Com_ApiHost.<span class="hljs-property">Const_Prefix</span>)<br>);<br><br><span class="hljs-comment">// 在总路由中注册b2路由</span><br>totalRouter.<span class="hljs-title function_">use</span>(b2_ke_com_ApiRouter.<span class="hljs-title function_">routes</span>());<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * ...其他代码忽略</span><br><span class="hljs-comment"> */</span><br></code></pre></td></tr></table></figure>
 <p>这样, 通过一个文件即可解决前端开发中对接口转发的需求.</p>
-<p>示例项目可戳 =&gt; <a target="_blank" rel="noopener" href="https://github.com/YaoZeyuan/demo-koa-api-proxy">https://github.com/YaoZeyuan/demo-koa-api-proxy</a></p>
+<p>示例项目可戳 =&gt; <a href="https://github.com/YaoZeyuan/demo-koa-api-proxy">https://github.com/YaoZeyuan/demo-koa-api-proxy</a></p>
 
                 
               </div>

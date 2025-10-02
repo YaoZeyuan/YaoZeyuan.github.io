@@ -57,7 +57,7 @@
 <meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlwtp2tpkj30x70rc43d.jpg">
 <meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlwxm1meoj30nz0bxac0.jpg">
 <meta property="article:published_time" content="2018-05-18T09:48:01.000Z">
-<meta property="article:modified_time" content="2025-09-28T14:48:17.645Z">
+<meta property="article:modified_time" content="2025-10-02T00:22:22.326Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlvsaa7f5j30ns07sgm6.jpg">
@@ -147,7 +147,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.0.0"></head>
 
 
 <body>
@@ -377,7 +377,7 @@
 <p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frji65o0ktj30iz06l0sz.jpg" srcset="/img/loading.gif" lazyload alt="原始immutable对象打印效果"></p>
 <p>解决办法也简单, F12 打开开发者工具, 然后 F1 打开开发者工具的设置, 勾选<code>Preference-&gt;Console -&gt; Enable Customer Formatters</code></p>
 <p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frji9k26gqj31hc0gpdhp.jpg" srcset="/img/loading.gif" lazyload alt="开启Enable Customer Formatters"></p>
-<p>然后点击安装<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/immutablejs-object-format/hgldghadipiblonfkkicmgcbbijnpeog">Immutable.js Object Formatter</a>插件</p>
+<p>然后点击安装<a href="https://chrome.google.com/webstore/detail/immutablejs-object-format/hgldghadipiblonfkkicmgcbbijnpeog">Immutable.js Object Formatter</a>插件</p>
 <p>重启一下控制台, 再打印一下 Immutable 对象看看?</p>
 <p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frji9vkq22j30dt095gls.jpg" srcset="/img/loading.gif" lazyload alt="新immutable对象打印效果"></p>
 <h2 id="彩色-log">彩色 log</h2>
@@ -386,7 +386,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<br>  <span class="hljs-string">&quot;%c    &quot;</span>,<br>  <span class="hljs-string">&quot;padding:10% 50%background:ur(&#x27;https://stcms.beisen.com/CmsPortal/107965/107965_mdias_2018514_2018514logo.png&#x27;) no-repeatbackground-position:center center&quot;</span><br>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<br>  <span class="hljs-string">&quot;确认过眼神，你就是对的人\n来到链家，你可以尽发挥自己的特长\n来到链家，你可以不断提高自己的技术\n加入家，加入贝壳，成就房产行业新的巅峰&quot;</span><br>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<br>  <span class="hljs-string">&quot;请将简历发送至 %c guliming@lianjia.com（邮件标题请以“姓名-应聘XX职位-来自console”命名）&quot;</span>,<br>  <span class="hljs-string">&quot;color:red&quot;</span><br>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<br>  <span class="hljs-string">&quot;%c前端，PHP，QA等等各个岗位各个级别都有在哦，期待你的加入！&quot;</span>,<br>  <span class="hljs-string">&quot;color:red&quot;</span><br>);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;职位介绍：https://join.lianjia.com/&quot;</span>);<br></code></pre></td></tr></table></figure>
 <p>效果 =&gt;</p>
 <p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frjy6sr74xj327y0yuwpb.jpg" srcset="/img/loading.gif" lazyload alt="彩色log效果"></p>
-<p>参考 =&gt; <a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-devtools/console/console-write?hl=zh-cn#_8">Chrome 开发者文档文档</a></p>
+<p>参考 =&gt; <a href="https://developers.google.com/web/tools/chrome-devtools/console/console-write?hl=zh-cn#_8">Chrome 开发者文档文档</a></p>
 <table>
 <thead>
 <tr>
@@ -441,7 +441,7 @@
 <p>如果想要模拟 App 操作的话, 只要选择 Edit, 添加上 App 的 UA 就可以了(具体值用 Charles 抓)</p>
 <p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frmd6rnzvcj30mq0g4776.jpg" srcset="/img/loading.gif" lazyload alt="更换UA_1"><br>
 <img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frltst5my3j30ro0mst94.jpg" srcset="/img/loading.gif" lazyload alt="更换UA_2"></p>
-<p>一般来说靠这两步就可以解决 99%的移动端调试问题, 但是谷歌显然还觉得不够, 如果你想了解进一步模拟 DPI 修改, 媒体查询检测等功能的话, 在<a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-devtools/device-mode/emulate-mobile-viewports?hl=zh-cn">这里</a>可以看到谷歌官方的说明(当然是汉语)</p>
+<p>一般来说靠这两步就可以解决 99%的移动端调试问题, 但是谷歌显然还觉得不够, 如果你想了解进一步模拟 DPI 修改, 媒体查询检测等功能的话, 在<a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/emulate-mobile-viewports?hl=zh-cn">这里</a>可以看到谷歌官方的说明(当然是汉语)</p>
 <h2 id="远程调试">远程调试</h2>
 <p>当然, 模拟归模拟, 谷歌表示有些移动端的功能实在模拟不了(iOS7 不支持 WebGL, iOS 5 的方向缩放有 bug, etc). 所以 Chrome 也提供了远程调试功能.可以让我们在电脑上<strong>直接</strong>调试 App 内的网页.</p>
 <p>方法如下:</p>
@@ -454,15 +454,15 @@
 <p>效果 =&gt;</p>
 <p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlukz6y9rj31a20o1doa.jpg" srcset="/img/loading.gif" lazyload alt="Chrome调试手机WebView"></p>
 <p>然后就跟正常调试页面一样了, 想打断点打断点, 想看 log 看 log, 比用 Charles 把线上 js 替换成本地 js, 然后一个一个的写 alert 效率高多了</p>
-<p>详细说明见<a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/?hl=zh-cn">官方文档</a></p>
+<p>详细说明见<a href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/?hl=zh-cn">官方文档</a></p>
 <p>PS 一句, iOS 下也可以这么干, 除了要用 Safari 而不是 Chrome 调试外, 其他地方都一样</p>
 <h2 id="远程调试微信页面">远程调试微信页面</h2>
 <p>和 Chrome 远程调试一样, 微信也支持远程调试功能, 只是需要手工开启一下</p>
 <ol>
-<li>微信内访问<a target="_blank" rel="noopener" href="https://debugx5.qq.com/">https://debugx5.qq.com/</a>, 或者直接扫描二维码<img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlv4pbutvj308c08ca9y.jpg" srcset="/img/loading.gif" lazyload alt="二维码"></li>
+<li>微信内访问<a href="https://debugx5.qq.com/">https://debugx5.qq.com/</a>, 或者直接扫描二维码<img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlv4pbutvj308c08ca9y.jpg" srcset="/img/loading.gif" lazyload alt="二维码"></li>
 <li>如果是首次使用需要先装线上 TBS 内核<br>
 <img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlv77513rj30qo1hcju5.jpg" srcset="/img/loading.gif" lazyload alt="安装线上TBS内核"></li>
-<li>然后打开<a target="_blank" rel="noopener" href="https://debugx5.qq.com/">https://debugx5.qq.com/</a>, 勾选 信息-TBS Setting- 打开 TBS 内核 inspect 调试功能</li>
+<li>然后打开<a href="https://debugx5.qq.com/">https://debugx5.qq.com/</a>, 勾选 信息-TBS Setting- 打开 TBS 内核 inspect 调试功能</li>
 <li>剩下的和 Chrome 远程调试一样, 折腾完打开<a href="chrome://inspect/">chrome://inspect/</a>, 完毕<br>
 <img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlva13rsbj317y0m60xw.jpg" srcset="/img/loading.gif" lazyload alt="微信调试效果图"></li>
 </ol>
@@ -487,7 +487,7 @@
 <p>浏览器里我们看到的密码都是打过马赛克的, 解码的方式也很简单----只要把 input 的 type 类型从 password 随便改成其他值, 就可以看见我们输入的密码</p>
 <p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlwm3r2gtj30le0feaf5.jpg" srcset="/img/loading.gif" lazyload alt="密码找回"></p>
 <h2 id="源代码下载">源代码下载</h2>
-<p>有些公司安全意识不强, 代码发布上线的时候还是 debug 版本(知乎), 甚至连 source map 都带上了. 如果是 debug 版本, 我们可以用 React/Vue 开发者工具查看他们的页面结构, 如果是 source map 都有的话, 加个<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/aioimldmpakibclgckpdfpfkadbflfkn">插件</a>, 可以直接还原出页面的源码 =&gt; <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26033573">点我看原理</a></p>
+<p>有些公司安全意识不强, 代码发布上线的时候还是 debug 版本(知乎), 甚至连 source map 都带上了. 如果是 debug 版本, 我们可以用 React/Vue 开发者工具查看他们的页面结构, 如果是 source map 都有的话, 加个<a href="https://chrome.google.com/webstore/detail/aioimldmpakibclgckpdfpfkadbflfkn">插件</a>, 可以直接还原出页面的源码 =&gt; <a href="https://zhuanlan.zhihu.com/p/26033573">点我看原理</a></p>
 <p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/6671cfa8ly1frnq0euhx9j227y16ytrl.jpg" srcset="/img/loading.gif" lazyload alt="Chrome 查看源代码"></p>
 <p><img src="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/00749HCsly1frlwtp2tpkj30x70rc43d.jpg" srcset="/img/loading.gif" lazyload alt="源码下载"></p>
 <h2 id="Copy-as-Curl">Copy as Curl</h2>
@@ -496,9 +496,9 @@
 <h1>扩展资料</h1>
 <ul>
 <li>我整理的<a href="https://www.yaozeyuan.online/2018/01/08/2018/01/Chrome%E6%89%A9%E5%B1%95%E6%8E%A8%E8%8D%90/">Chrome 常用插件 &amp; 推荐理由</a></li>
-<li><a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-devtools/?hl=zh-cn">谷歌开发者工具文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://umaar.github.io/devtools-animated-2016/">你不知道的 devtools</a></li>
-<li><a target="_blank" rel="noopener" href="https://umaar.com/dev-tips/">未来的 DevTools(里面提到的新功能, 目前仅在 Canary 中可用(2018))</a></li>
+<li><a href="https://developers.google.com/web/tools/chrome-devtools/?hl=zh-cn">谷歌开发者工具文档</a></li>
+<li><a href="https://umaar.github.io/devtools-animated-2016/">你不知道的 devtools</a></li>
+<li><a href="https://umaar.com/dev-tips/">未来的 DevTools(里面提到的新功能, 目前仅在 Canary 中可用(2018))</a></li>
 </ul>
 
                 

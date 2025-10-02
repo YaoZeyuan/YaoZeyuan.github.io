@@ -26,7 +26,7 @@
 <meta property="og:description" content="记录一些我认为比较有意思的CSS使用方法  属性选择器 众所周知，CSS说白了就是对各种选择器的排列组合。子代（tr &gt; td，只选择tr的直接子元素td） ， 后代（tr  td选择tr下的所有td元素）， 相邻元素(tr + tbody, 紧接着tr元素的tbody元素)， 以及地球人都会用的 元素、类、伪类、ID选择器，略过不提。 跟上边这些被各种w3cSchool讲烂了的选择器相比">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-06-24T09:48:01.000Z">
-<meta property="article:modified_time" content="2025-09-28T14:48:17.645Z">
+<meta property="article:modified_time" content="2025-10-02T00:22:22.326Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -115,7 +115,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.0.0"></head>
 
 
 <body>
@@ -224,7 +224,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.6k 字
+          2.5k 字
         
       </span>
     
@@ -236,7 +236,7 @@
         
         
           <!-- compatible with older versions-->
-          22 分钟
+          21 分钟
         
       </span>
     
@@ -310,7 +310,7 @@
 <li>对于选择器中给定的各个类属性值、属性选择器或者伪类选择器(<code>:link</code>、<code>:active</code>)，加0,0,1,0</li>
 <li>对于选择其中给定的各个元素和伪元素(<code>:after</code>、<code>:before</code>),加0,0,0,1</li>
 <li>对于结合符（<code>+</code>）和通配符（<code>*</code>）选择器，特殊性加0,0,0,0</li>
-<li>继承得来的属性，没有任何特殊性（需要说明的是，没有特殊性的特殊性小于（0,0,0,0），也就是说，如果你在一开始声明<code>*&#123;color:red;&#125;</code>（特殊性（0，0，0，0））的话，那么所有元素都会变成红色）</li>
+<li>继承得来的属性，没有任何特殊性（需要说明的是，没有特殊性的特殊性小于（0,0,0,0），也就是说，如果你在一开始声明<code>*{color:red;}</code>（特殊性（0，0，0，0））的话，那么所有元素都会变成红色）</li>
 <li>对于内联样式，特殊性加(1,0,0,0)</li>
 <li>对于<code>!important</code>重要声明，它的特殊性是</li>
 <li>对不起，<code>!important</code>不计算特殊性，浏览器在计算的时候会把所有样式分成重要和非重要两组，分别计算特殊性</li>
@@ -328,17 +328,17 @@
 <p>Over</p>
 <h1>零散的CSS小Tip</h1>
 <ul>
-<li>cursor属性可以更改鼠标在元素上的样式，<code>&#123;cursor:default;&#125;</code>是正常的箭头，<code>&#123;cursor:pointer;&#125;</code>是小手，这是CSS中的一组系统级样式，可以根据属性值的不同调用系统中对应鼠标样式进行显示，这条在用CSS标记一个链接已经被访问过时可以用上</li>
+<li>cursor属性可以更改鼠标在元素上的样式，<code>{cursor:default;}</code>是正常的箭头，<code>{cursor:pointer;}</code>是小手，这是CSS中的一组系统级样式，可以根据属性值的不同调用系统中对应鼠标样式进行显示，这条在用CSS标记一个链接已经被访问过时可以用上</li>
 <li>利用<code>:before</code>和<code>:after</code>这两个伪元素，可以在指定元素的前后生成并不存在的元素。</li>
-<li>比如可以用<code>a:before&#123;content:'链接:'&#125;</code>，在所有链接前都加上『链接：』提示语</li>
+<li>比如可以用<code>a:before{content:'链接:'}</code>，在所有链接前都加上『链接：』提示语</li>
 <li>更进一步，利用<code>:before</code>和<code>:after</code>的<code>content</code>属性，我们还可以展示元素属性中的内容</li>
-<li>例如<code>a[href]:after&#123;content:attr(href)&#125;</code>，显示所有<code>a</code>元素的链接；</li>
-<li><code>*[class]:after&#123;content:attr(class)&#125;</code>，显示所有元素的class</li>
+<li>例如<code>a[href]:after{content:attr(href)}</code>，显示所有<code>a</code>元素的链接；</li>
+<li><code>*[class]:after{content:attr(class)}</code>，显示所有元素的class</li>
 <li>etc……</li>
-<li>行内元素的居中对齐：<code>&#123;text-align:center&#125;</code></li>
-<li>垂直对齐：<code>&#123;vertical-align:middle&#125;</code></li>
-<li>块元素居中：<code>&#123;margin:auto&#125;</code></li>
-<li>使用<code>display</code>可以更改一个元素的显示，比如可以用<code>&#123;display:table&#125;</code>,<code>&#123;display:table-row&#125;</code>,<code>&#123;display:cell&#125;</code>,能硬生生的用div画出一个表格</li>
+<li>行内元素的居中对齐：<code>{text-align:center}</code></li>
+<li>垂直对齐：<code>{vertical-align:middle}</code></li>
+<li>块元素居中：<code>{margin:auto}</code></li>
+<li>使用<code>display</code>可以更改一个元素的显示，比如可以用<code>{display:table}</code>,<code>{display:table-row}</code>,<code>{display:cell}</code>,能硬生生的用div画出一个表格</li>
 <li>打印网页时可以用<code>page-break-before</code>&amp;<code>page-break-after</code>控制分页，兼容所有的浏览器，用过都说好</li>
 </ul>
 

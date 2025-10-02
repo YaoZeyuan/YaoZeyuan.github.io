@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/784c51422e7646a190c9d3deefbaeab8~tplv-k3u1fbpfcp-zoom-1.image">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/reconciler_hostconfig_renderer.jpg">
 <meta property="article:published_time" content="2021-07-28T00:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-28T14:48:17.678Z">
+<meta property="article:modified_time" content="2025-10-02T00:22:22.359Z">
 <meta property="article:author" content="姚泽源">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/img/im%E5%B9%BF%E5%9C%BA.jpg">
@@ -124,7 +124,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.0.0"></head>
 
 
 <body>
@@ -245,7 +245,7 @@
         
         
           <!-- compatible with older versions-->
-          132 分钟
+          131 分钟
         
       </span>
     
@@ -480,7 +480,7 @@ Native(转发)-&gt;&gt;V8: 点击事件
 <p>Reconciler 调和器是 Fiber 模型的核心, 内部实现了时间分片/优先级调度/Fiber 节点 diff 等一系列算法. 这些我们都可以视为黑盒, 只要知道 Reconciler 的输入是 react 组件的状态更新, 输出是对渲染器的实际操作指令就可以了.</p>
 <p>Reconciler 在计算完成后, 会调用 Renderer 渲染器上的方法. 这些方法包括不限于:</p>
 <figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jsx">createInstance; <span class="hljs-comment">// 创建节点实例</span><br>createTextInstance; <span class="hljs-comment">// 创建文本节点</span><br><br>appendChild; <span class="hljs-comment">// 在实例下添加子节点</span><br>removeChild; <span class="hljs-comment">// 在实例下删除子节点</span><br><br>appendChildToContainer; <span class="hljs-comment">// 在根容器内添加子节点</span><br>removeChildFromContainer; <span class="hljs-comment">// 在容器内删除子节点</span><br></code></pre></td></tr></table></figure>
-<p>这些方法合称为 <a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/main/packages/react-reconciler/src/forks/ReactFiberHostConfig.custom.js">HostConfig</a>, 相当于调和器和渲染器之间的协议. HostConfig 本身是一个具有以上方法的普通对象, 调和器实例化时接收这个对象, 然后会按实际需要调用 HostConfig 上的接口. HostConfig 收到请求后, 转调渲染器中的方法. 而渲染器的任务就是实现这些方法, 在平台上渲染出实际节点.</p>
+<p>这些方法合称为 <a href="https://github.com/facebook/react/blob/main/packages/react-reconciler/src/forks/ReactFiberHostConfig.custom.js">HostConfig</a>, 相当于调和器和渲染器之间的协议. HostConfig 本身是一个具有以上方法的普通对象, 调和器实例化时接收这个对象, 然后会按实际需要调用 HostConfig 上的接口. HostConfig 收到请求后, 转调渲染器中的方法. 而渲染器的任务就是实现这些方法, 在平台上渲染出实际节点.</p>
 <p><img src="https://cdn.jsdelivr.net/gh/YaoZeyuan/blog/source/_posts/2021/07/./img/reconciler_hostconfig_renderer.jpg" srcset="/img/loading.gif" lazyload alt="Reconciler--&gt;HostConfig--&gt;Reconciler"></p>
 <p>但这里要注意下, 根据 HostConfig, 我们只要求渲染器实现<code>createInstance</code>/<code>appendChild</code>这些方法, 但没要求这些方法具体怎么实现. 像 <code>appendChild</code> 这种 dom 对象上直接就有的方法, 在 web 平台上写渲染器当然方便, 但要是我在 iOS 平台上也实现一套 HostConfig 协议呢?</p>
 <p>当然没问题.</p>
@@ -489,7 +489,7 @@ Native(转发)-&gt;&gt;V8: 点击事件
 <li>微软在 Windows 平台上实现了一套 HostConfig, 就是 react-native-windows</li>
 <li>除此之外, 还有 react-canvas/react-tv/react-sketchapp/react-test-renderer</li>
 </ul>
-<p>github 上有人专门整理了一份<a target="_blank" rel="noopener" href="https://github.com/chentsulin/awesome-react-renderer">awesome-react-renderer</a>, 是基于 HostConfig 实现的在各个平台上的渲染器, 把常见的平台都覆盖了, 很震撼.</p>
+<p>github 上有人专门整理了一份<a href="https://github.com/chentsulin/awesome-react-renderer">awesome-react-renderer</a>, 是基于 HostConfig 实现的在各个平台上的渲染器, 把常见的平台都覆盖了, 很震撼.</p>
 <table>
 <thead>
 <tr>
@@ -500,23 +500,23 @@ Native(转发)-&gt;&gt;V8: 点击事件
 <tbody>
 <tr>
 <td style="text-align:left">移动端</td>
-<td style="text-align:left"><a target="_blank" rel="noopener" href="https://github.com/facebook/react-native">react-native</a></td>
+<td style="text-align:left"><a href="https://github.com/facebook/react-native">react-native</a></td>
 </tr>
 <tr>
 <td style="text-align:left">桌面端</td>
-<td style="text-align:left"><a target="_blank" rel="noopener" href="https://microsoft.github.io/react-native-windows/">react-native-windows</a></td>
+<td style="text-align:left"><a href="https://microsoft.github.io/react-native-windows/">react-native-windows</a></td>
 </tr>
 <tr>
 <td style="text-align:left">canvas</td>
-<td style="text-align:left"><a target="_blank" rel="noopener" href="https://github.com/Flipboard/react-canvas">react-canvas</a></td>
+<td style="text-align:left"><a href="https://github.com/Flipboard/react-canvas">react-canvas</a></td>
 </tr>
 <tr>
 <td style="text-align:left">电视</td>
-<td style="text-align:left"><a target="_blank" rel="noopener" href="https://github.com/raphamorim/react-tv">react-tv</a></td>
+<td style="text-align:left"><a href="https://github.com/raphamorim/react-tv">react-tv</a></td>
 </tr>
 <tr>
 <td style="text-align:left">Test Utilities</td>
-<td style="text-align:left"><a target="_blank" rel="noopener" href="https://github.com/facebook/react/tree/main/packages/react-test-renderer">react-test-renderer</a></td>
+<td style="text-align:left"><a href="https://github.com/facebook/react/tree/main/packages/react-test-renderer">react-test-renderer</a></td>
 </tr>
 </tbody>
 </table>
@@ -593,7 +593,7 @@ Native(转发)-&gt;&gt;V8: 点击事件
 <p>在这套流程里, 我们挂载上了组件, 准备好了监听组件的变动情况, 也能正常回调组件生命周期函数…但是, 用户输入在哪儿获取?</p>
 <p>在 jsx 中, 我们获取用户输入用一般是给 onClick, onInput 事件绑定处理函数, 但我们给 webview 传过去的是字符串形式的构建指令, 而且事件处理函数中依赖的环境变量也不能传到 webview 里, 这时候该怎么办?</p>
 <p>答: 不能传递函数, 但是我们可以传递函数名.</p>
-<p>在生成 Dom 构建命令时, 我们会建立一个事件处理函数映射表, 函数名命名规范为<code>$&#123;事件名&#125;_$&#123;递增计数器&#125;_handler</code>. 在 webview 中则用 addEventListener 为对应 dom 节点绑定事件处理函数. 当事件发生时, 把 event 对象中的数据和需要调用的参数名通过 Native 传回 V8 引擎, 然后 V8 调用对应的实际函数, 触发组件状态变更, 组件重新渲染, 小程序运行流程形成闭环.</p>
+<p>在生成 Dom 构建命令时, 我们会建立一个事件处理函数映射表, 函数名命名规范为<code>${事件名}_${递增计数器}_handler</code>. 在 webview 中则用 addEventListener 为对应 dom 节点绑定事件处理函数. 当事件发生时, 把 event 对象中的数据和需要调用的参数名通过 Native 传回 V8 引擎, 然后 V8 调用对应的实际函数, 触发组件状态变更, 组件重新渲染, 小程序运行流程形成闭环.</p>
 <h1>收尾</h1>
 <p>上边这些是对微壳小程序整体技术架构的简单介绍. 小程序的实际开发中涉及到了很多技术点, 这里先列一下, 以后有机会的话可以继续分享</p>
 <ul>
@@ -622,16 +622,16 @@ Native(转发)-&gt;&gt;V8: 点击事件
 <li>so many…</li>
 </ul>
 <h1>参考资料</h1>
-<p><a target="_blank" rel="noopener" href="https://zhaomenghuan.js.org/blog/wechat-miniprogram-principle-analysis.html">微信小程序技术原理分析</a><br>
-<a target="_blank" rel="noopener" href="https://nuzhi.site/react-3renderer#6be02729ab9e4eba94704242ec565819">React 源码学习</a><br>
-<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59831684">小前端读源码 - React 组件更新原理</a><br>
-<a target="_blank" rel="noopener" href="https://blog.atulr.com/react-custom-renderer-1/#references">Beginners guide to Custom React Renderers</a></p>
+<p><a href="https://zhaomenghuan.js.org/blog/wechat-miniprogram-principle-analysis.html">微信小程序技术原理分析</a><br>
+<a href="https://nuzhi.site/react-3renderer#6be02729ab9e4eba94704242ec565819">React 源码学习</a><br>
+<a href="https://zhuanlan.zhihu.com/p/59831684">小前端读源码 - React 组件更新原理</a><br>
+<a href="https://blog.atulr.com/react-custom-renderer-1/#references">Beginners guide to Custom React Renderers</a></p>
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6881597846307635214#heading-24">https://juejin.cn/post/6881597846307635214#heading-24</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+<li id="fn1" class="footnote-item"><p><a href="https://juejin.cn/post/6881597846307635214#heading-24">https://juejin.cn/post/6881597846307635214#heading-24</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn2" class="footnote-item"><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/266892192">https://zhuanlan.zhihu.com/p/266892192</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+<li id="fn2" class="footnote-item"><p><a href="https://zhuanlan.zhihu.com/p/266892192">https://zhuanlan.zhihu.com/p/266892192</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>

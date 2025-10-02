@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h4zqfhuozbj343v2b6x6p.jpg">
 <meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h554kg0ub0j30u0140avy.jpg">
 <meta property="article:published_time" content="2022-07-16T05:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-28T14:48:17.685Z">
+<meta property="article:modified_time" content="2025-10-02T00:22:22.366Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="一本正经的胡说八道">
 <meta name="twitter:card" content="summary_large_image">
@@ -121,7 +121,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.0.0"></head>
 
 
 <body>
@@ -312,13 +312,13 @@
 <li>对于线上环境, 可以在以下层面进行分流
 <ul>
 <li>运营商分流: 移动/联通分配到不同服务器(大区服务器)</li>
-<li>地区分流: 通过在地域内配置 DNS 把流量分配到不同节点(山东地区对 <a target="_blank" rel="noopener" href="http://baidu.com">baidu.com</a> 的解析结果为 1.1.1.1, 山西地区对 <a target="_blank" rel="noopener" href="http://baidu.com">baidu.com</a> 的解析结果为 2.2.2.2)</li>
+<li>地区分流: 通过在地域内配置 DNS 把流量分配到不同节点(山东地区对 <a href="http://baidu.com">baidu.com</a> 的解析结果为 1.1.1.1, 山西地区对 <a href="http://baidu.com">baidu.com</a> 的解析结果为 2.2.2.2)</li>
 <li>服务器内分流: 流量首先进入 Nginx 集群, 根据客户端 ip 进行 hash, 分配到不同服务器
 <ul>
 <li>确保同一 ip 总被分配到同一服务器</li>
-<li>为避免新增服务器改动 hash 总数引起任务重分流, 可以使用<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000008925205">环形 hash 方案</a>: 先将任务分配到虚拟任务节点中(例如分散到 65535 个虚拟节点上), 然后每个实际服务器承载指定的虚拟节点, 通过新增中间层的方式将用户请求和实际服务进行解耦
+<li>为避免新增服务器改动 hash 总数引起任务重分流, 可以使用<a href="https://segmentfault.com/a/1190000008925205">环形 hash 方案</a>: 先将任务分配到虚拟任务节点中(例如分散到 65535 个虚拟节点上), 然后每个实际服务器承载指定的虚拟节点, 通过新增中间层的方式将用户请求和实际服务进行解耦
 <ul>
-<li>计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决, via <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Indirection">Butler Lampson</a></li>
+<li>计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决, via <a href="https://en.wikipedia.org/wiki/Indirection">Butler Lampson</a></li>
 </ul>
 </li>
 </ul>
@@ -400,7 +400,7 @@
 <p>答案当然是游客并没有动, 但游客感受到了自己在高速移动. 所以问题转化成了: 如何在让游客本身不移动的情况下, 感受到自己在快速移动? 或者换一种问法: 人类为什么会认为自己在移动?</p>
 <p>答案是视觉和加速度.</p>
 <p>视觉方面, 我们通过周围景物的变化来判断自己是否在移动. 实际生活中当我们坐在火车里, 对面火车开动时就会有&quot;我们这趟火车开动&quot;了的错觉. 如果我们站在沙滩上, 潮水褪去时脚边卷起的沙子也会让我们产生&quot;正在前行&quot;的错觉. 而在 4D 体验中, 这种视觉错觉则是通过球形屏幕实现的. 环球影城首先通过向内凹陷的座位限制我们的可视范围, 然后再让座位对准一个球形荧幕, 在这个荧幕上播放摄像机视角拍摄的场景. 由于拍摄时摄像机在高速移动, 所以坐在座位上以摄像机视角观看电影的我们, 看到了和快速移动的摄像机一样的景象, 也就产生了我们在快速移动的错觉.</p>
-<p>值得一提的是, 这种电影错觉只会让我们形成快速移动的感觉, 但不会有立体感. 而为了实现立体感, 需要进一步的模拟----正常情况下, 由于双眼之间有 65mm 的间距, 因此我们双眼正常看到的物体都会有微小的差距, 这种差别被称之为<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19553745/answer/61901095">双目视差</a>. 而为实现这种效果, 火种争夺战中使用的是偏振光技术, 通过让观众带偏振光眼镜, 眼镜的两个镜片各只允许一个方向的偏振光进入, 从而实现双眼看到图像不一, 形成立体感. 到了禁忌之旅, 则不需要佩戴眼镜. 这种可能是没有考虑立体效果, 但也可能是通过光屏障/柱状透镜技术, 让双眼看到不同的可视画面, 进而形成立体感.</p>
+<p>值得一提的是, 这种电影错觉只会让我们形成快速移动的感觉, 但不会有立体感. 而为了实现立体感, 需要进一步的模拟----正常情况下, 由于双眼之间有 65mm 的间距, 因此我们双眼正常看到的物体都会有微小的差距, 这种差别被称之为<a href="https://www.zhihu.com/question/19553745/answer/61901095">双目视差</a>. 而为实现这种效果, 火种争夺战中使用的是偏振光技术, 通过让观众带偏振光眼镜, 眼镜的两个镜片各只允许一个方向的偏振光进入, 从而实现双眼看到图像不一, 形成立体感. 到了禁忌之旅, 则不需要佩戴眼镜. 这种可能是没有考虑立体效果, 但也可能是通过光屏障/柱状透镜技术, 让双眼看到不同的可视画面, 进而形成立体感.</p>
 <p>视觉上的立体运动感搞定后, 下一步就是身体的运动感. 根据伽利略发现的相对性原理: 一切彼此做匀速直线运动的惯性系，对于描写机械运动的力学规律来说是完全等价的。也就是说, 我们并不能通过自身的感觉来判断我们当前所处的位置是静止还是匀速直线运动(这两种状态下我们的感觉都完全一致). 那我们是怎么判断自己是否在运动或者自己在向那个方向运动的呢? 答: 依靠重力加速度的方向, 或者说, 依靠地心引力的方向.</p>
 <p>千百万年的进化让我们的生物身体形成了&quot;重力的方向就是下&quot;的先验概念, 借助这个概念, 我们就可以对身体进行 hack: 既然重力方向就是下, 那么如果旋转座椅朝向, 让我们背朝下, 会不会产生我们在&quot;向上&quot;的错觉? 再配合球形荧幕下视觉系统中我们在不断前进的反馈, 就形成了我们在&quot;快速飞升&quot;的错觉. 同样的道理, 通过调整球形荧幕的景像和座位的朝向, 就能让我们产生我们在快速运动的感觉. 这一切是那么完美, 所以设备启动前才会有那句提示: “不要将头部伸出座仓外”…</p>
 <p>当发现自己真的在楚门的世界, 眼前城堡只是锅盖面上的投影而锅盖边缘清晰可见…这种感觉可以说是相当出戏了 😂</p>

@@ -27,7 +27,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://mirror-4-web.bookflaneur.cn/https://tva1.sinaimg.cn/large/007Yq4pTly1h67n1pxubej314k0nodtd.jpg">
 <meta property="article:published_time" content="2022-09-18T05:00:00.000Z">
-<meta property="article:modified_time" content="2025-09-28T14:48:17.685Z">
+<meta property="article:modified_time" content="2025-10-02T00:22:22.366Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="稳定性">
 <meta name="twitter:card" content="summary_large_image">
@@ -118,7 +118,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.0.0"></head>
 
 
 <body>
@@ -282,8 +282,8 @@
               <div class="markdown-body">
                 
                 <blockquote>
-<p>本文为阅读&lt;<a target="_blank" rel="noopener" href="https://pdf.dfcfw.com/pdf/H3_AP202206221573942205_1.pdf?">分布式系统稳定性建设指南-2022版</a>&gt;后的摘抄<br>
-原文: <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/cMaFsSdVkkluLAgEm9ZIdw">重磅发布|《信息系统稳定性保障能力建设指南（1.0）》，附下载方式</a></p>
+<p>本文为阅读&lt;<a href="https://pdf.dfcfw.com/pdf/H3_AP202206221573942205_1.pdf?">分布式系统稳定性建设指南-2022版</a>&gt;后的摘抄<br>
+原文: <a href="https://mp.weixin.qq.com/s/cMaFsSdVkkluLAgEm9ZIdw">重磅发布|《信息系统稳定性保障能力建设指南（1.0）》，附下载方式</a></p>
 </blockquote>
 <h1>分布式系统稳定性建设目标</h1>
 <h2 id="稳定性建设目标">稳定性建设目标</h2>
@@ -369,8 +369,8 @@
 </li>
 <li>扩展:
 <ul>
-<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039291350">干货丨一文带你了解灾备系统的衡量指标</a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/rjV5lOZEp97hRCmMDaHCEw">国际标准 SHARE78 的七级灾备</a>
+<li><a href="https://segmentfault.com/a/1190000039291350">干货丨一文带你了解灾备系统的衡量指标</a></li>
+<li><a href="https://mp.weixin.qq.com/s/rjV5lOZEp97hRCmMDaHCEw">国际标准 SHARE78 的七级灾备</a>
 <ul>
 <li>有专门的灾备系统, 提供的定义仅用于参考, 对当前项目没有实际价值</li>
 </ul>
@@ -568,7 +568,7 @@
 <li>水平型拆分主要针对数据，是指按照用户或请求的维度对数据进行水平拆分. 行业内水平拆分的技术可以参考 TDDL 等技术
 <ol>
 <li>TDDL: Taobao Distributed Data Layer, 主要用于解决分库分表场景下的访问路由（持久层与数据访问层的配合）以及异构数据库之间的数据同步</li>
-<li>类似方案: <a target="_blank" rel="noopener" href="https://dorgenjones.github.io/2019/01/03/database/zbera/zebra/">美团开源的数据库中间件 Zebra</a></li>
+<li>类似方案: <a href="https://dorgenjones.github.io/2019/01/03/database/zbera/zebra/">美团开源的数据库中间件 Zebra</a></li>
 <li>围观即可</li>
 </ol>
 </li>
@@ -910,7 +910,7 @@
 <li>SLI（service level indicator）:服务等级对象，指的是对象，例如：qps，响应时间，准确性等</li>
 <li>SLO（service level objective）:服务等级目标，指的是目标，例如：qps 99.99% ，响应时间 10ms 等</li>
 <li>SLA 指的是整个协议，协议的内容包含了 SLI，SLO 以及恢复的方式和时间等等一系列所构成的协议，是与服务对象就 SLO 所签署的协议。具体用公式表达为: SLA = SLO + 后果 ，当然协议中有时规定的可能不仅仅是一个 SLO 指标，这时也会出现 SLO 可能是部分不达到或全部不达到的情况，如：达到响应时间 SLO+未达到可用性 SLO</li>
-<li>via <a target="_blank" rel="noopener" href="https://www.361way.com/sre-slo/6471.html">SRE 运维（五）从 SLO 开始</a></li>
+<li>via <a href="https://www.361way.com/sre-slo/6471.html">SRE 运维（五）从 SLO 开始</a></li>
 </ol>
 </li>
 <li>全链路的点位能力，包括定位到问题节点、定位到节点根因</li>
