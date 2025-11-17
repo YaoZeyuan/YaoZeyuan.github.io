@@ -28,11 +28,13 @@
 <meta property="og:site_name" content="代号647">
 <meta property="og:description" content="记录每天看到的优秀文章-生活相关">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/xaoyaoo/PyWxDump/blob/master/img/lsh.jpg">
 <meta property="article:published_time" content="2025-01-01T05:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-16T15:52:17.010Z">
+<meta property="article:modified_time" content="2025-11-17T05:06:52.625Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="what-read-today">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://github.com/xaoyaoo/PyWxDump/blob/master/img/lsh.jpg">
   
   
   
@@ -226,7 +228,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.8k 字
+          4.2k 字
         
       </span>
     
@@ -238,7 +240,7 @@
         
         
           <!-- compatible with older versions-->
-          32 分钟
+          36 分钟
         
       </span>
     
@@ -293,6 +295,29 @@
 <li><a href="/2022/06/25/what-read-today/2022-%E7%94%9F%E6%B4%BB%E7%9B%B8%E5%85%B3/">2022-生活相关</a></li>
 <li><a href="/2023/01/01/what-read-today/2023-%E7%94%9F%E6%B4%BB%E7%9B%B8%E5%85%B3/">2023-生活相关</a></li>
 <li><a href="/2024/01/01/what-read-today/2024-%E7%94%9F%E6%B4%BB%E7%9B%B8%E5%85%B3/">2024-生活相关</a></li>
+</ul>
+<h1>2025-11-17</h1>
+<ul>
+<li>现有微信聊天记录导出项目
+<ul>
+<li><a href="https://sarv.blog/posts/chatlog/">chatlog原理介绍</a>
+<ul>
+<li>原项目已被移除，代码可从这个<a href="https://github.com/fyxt/chatlog">fork</a>中查看</li>
+<li>有爱好者做了<a href="https://github.com/sinyu1012/chatlog-web">chatlog-web</a>，也可以参考</li>
+</ul>
+</li>
+<li>pywxdump
+<ul>
+<li>参阅微信团队律师函: <img src="https://github.com/xaoyaoo/PyWxDump/blob/master/img/lsh.jpg" srcset="/img/loading.gif" lazyload alt="微信团队律师函"></li>
+<li>原项目已被移除，代码及思路可从这个<a href="https://github.com/imldy/PyWxDump/blob/master/pywxdump/analyzer/chat_analysis.py#L62">fork</a>中查看</li>
+<li>可供参考的微信消息类型</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-string">type_name_dict</span> <span class="hljs-string">=</span> &#123;<br>    <span class="hljs-attr">1:</span> &#123;<span class="hljs-attr">0:</span> <span class="hljs-string">&quot;文本&quot;</span>&#125;,<br>    <span class="hljs-attr">3:</span> &#123;<span class="hljs-attr">0:</span> <span class="hljs-string">&quot;图片&quot;</span>&#125;,<br>    <span class="hljs-attr">34:</span> &#123;<span class="hljs-attr">0:</span> <span class="hljs-string">&quot;语音&quot;</span>&#125;,<br>    <span class="hljs-attr">43:</span> &#123;<span class="hljs-attr">0:</span> <span class="hljs-string">&quot;视频&quot;</span>&#125;,<br>    <span class="hljs-attr">47:</span> &#123;<span class="hljs-attr">0:</span> <span class="hljs-string">&quot;动画表情&quot;</span>&#125;,<br>    <span class="hljs-attr">49:</span> &#123;<span class="hljs-attr">0:</span> <span class="hljs-string">&quot;文本&quot;</span>, <span class="hljs-attr">1:</span> <span class="hljs-string">&quot;类文本消息&quot;</span>, <span class="hljs-attr">5:</span> <span class="hljs-string">&quot;卡片式链接&quot;</span>, <span class="hljs-attr">6:</span> <span class="hljs-string">&quot;文件&quot;</span>, <span class="hljs-attr">8:</span> <span class="hljs-string">&quot;上传的GIF表情&quot;</span>,<br>          <span class="hljs-attr">19:</span> <span class="hljs-string">&quot;合并转发聊天记录&quot;</span>, <span class="hljs-attr">33:</span> <span class="hljs-string">&quot;分享的小程序&quot;</span>, <span class="hljs-attr">36:</span> <span class="hljs-string">&quot;分享的小程序&quot;</span>, <span class="hljs-attr">57:</span> <span class="hljs-string">&quot;带有引用的文本&quot;</span>,<br>          <span class="hljs-attr">63:</span> <span class="hljs-string">&quot;视频号直播或回放等&quot;</span>,<br>          <span class="hljs-attr">87:</span> <span class="hljs-string">&quot;群公告&quot;</span>, <span class="hljs-attr">88:</span> <span class="hljs-string">&quot;视频号直播或回放等&quot;</span>, <span class="hljs-attr">2000:</span> <span class="hljs-string">&quot;转账消息&quot;</span>, <span class="hljs-attr">2003:</span> <span class="hljs-string">&quot;红包封面&quot;</span>&#125;,<br>    <span class="hljs-attr">50:</span> &#123;<span class="hljs-attr">0:</span> <span class="hljs-string">&quot;语音通话&quot;</span>&#125;,<br>    <span class="hljs-attr">10000:</span> &#123;<span class="hljs-attr">0:</span> <span class="hljs-string">&quot;系统通知&quot;</span>, <span class="hljs-attr">4:</span> <span class="hljs-string">&quot;拍一拍&quot;</span>, <span class="hljs-attr">8000:</span> <span class="hljs-string">&quot;系统通知&quot;</span>&#125;<br> &#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>原项目还在，<a href="https://github.com/0xlane/wechat-dump-rs/blob/v4/sample_scripts/%E5%AF%BC%E5%87%BA%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%E5%88%B0TXT/chat_room_record_export_to_txt.py#L130">wechat-dump-rs</a>, 也是整理下消息类型</li>
+</ul>
+ <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs text">1               文本消息<br>3               图片消息<br>34              语音消息<br>42              名片消息<br>43              视频消息<br>47              第三方动画表情<br>48              位置消息<br>244813135921    引用消息<br>17179869233     卡片式链接（带描述）<br>21474836529     卡片式链接<br>154618822705    小程序分享<br>12884901937     音乐卡片<br>8594229559345   红包卡片<br>81604378673     聊天记录合并转发消息<br>266287972401    拍一拍消息<br>8589934592049   转账卡片<br>270582939697    视频号直播卡片<br>25769803825     文件消息<br>10000           系统消息（撤回、加入群聊、群管理、群语音通话等）<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <h1>2025-10-24</h1>
 <ul>
