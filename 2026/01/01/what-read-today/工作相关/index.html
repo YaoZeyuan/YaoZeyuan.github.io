@@ -29,7 +29,7 @@
 <meta property="og:description" content="记录每天看到的优秀文章-工作相关">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-01-01T05:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-08T15:13:41.483Z">
+<meta property="article:modified_time" content="2026-09-13T13:16:41.430Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="what-read-today">
 <meta name="twitter:card" content="summary_large_image">
@@ -226,7 +226,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          963 字
+          1.5k 字
         
       </span>
     
@@ -238,7 +238,7 @@
         
         
           <!-- compatible with older versions-->
-          9 分钟
+          13 分钟
         
       </span>
     
@@ -295,6 +295,123 @@
 <li><a href="/2024/01/01/what-read-today/2024-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3/">2024-工作相关</a></li>
 <li><a href="/2025/01/01/what-read-today/2025-%E5%B7%A5%E4%BD%9C%E7%9B%B8%E5%85%B3/">2025-工作相关</a></li>
 </ul>
+<h1>2026-09-13</h1>
+<ul>
+<li>常见API的生命周期状态码, by <a href="https://docs.apifox.com/x-apifox-status">x-apifox-status</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>designing</td>
+<td>设计中</td>
+</tr>
+<tr>
+<td>pending</td>
+<td>待确定</td>
+</tr>
+<tr>
+<td>developing</td>
+<td>开发中</td>
+</tr>
+<tr>
+<td>integrating</td>
+<td>联调中</td>
+</tr>
+<tr>
+<td>testing</td>
+<td>测试中</td>
+</tr>
+<tr>
+<td>tested</td>
+<td>已测完</td>
+</tr>
+<tr>
+<td>released</td>
+<td>已发布</td>
+</tr>
+<tr>
+<td>deprecated</td>
+<td>将废弃</td>
+</tr>
+<tr>
+<td>exception</td>
+<td>有异常</td>
+</tr>
+<tr>
+<td>obsolete</td>
+<td>已废弃</td>
+</tr>
+</tbody>
+</table>
+<p>也可以参考vue的api生命周期</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">流转顺序</th>
+<th style="text-align:left">阶段</th>
+<th style="text-align:left">状态标记称呼</th>
+<th style="text-align:left">触发条件 / 触发时机</th>
+<th style="text-align:left">状态说明与表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>1</strong></td>
+<td style="text-align:left">新增-提案</td>
+<td style="text-align:left"><strong>Pending / Discussion</strong> (讨论中)</td>
+<td style="text-align:left">开发者在 Vue RFC 仓库提交 Pull Request。</td>
+<td style="text-align:left">核心团队与社区对该 API 的设计、命名和必要性进行公开辩论。</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>2</strong></td>
+<td style="text-align:left">新增-合并</td>
+<td style="text-align:left"><strong>Active</strong> (已激活/通过)</td>
+<td style="text-align:left">RFC 提案通过并被合并。</td>
+<td style="text-align:left">该 API 确定会被引入，正式进入核心库的代码开发排期。</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>3</strong></td>
+<td style="text-align:left">新增-测试</td>
+<td style="text-align:left"><strong>Experimental</strong> (实验性)</td>
+<td style="text-align:left">API 随新版本（常为次版本）发布，但带有不确定性。</td>
+<td style="text-align:left">允许开发者提前尝鲜，但 API 签名可能会变。通常需要显式开启或通过特殊的 <code>compilerOptions</code> 启用（如曾经的 <code>ref-sugar</code>）。</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>4</strong></td>
+<td style="text-align:left">稳定-生产</td>
+<td style="text-align:left"><strong>Stable / Landed</strong> (正式稳定)</td>
+<td style="text-align:left">API 移除了实验性标记，正式写入官方文档。</td>
+<td style="text-align:left">成为 Vue 的标准推荐特性，进入长期支持（LTS）范畴，开发者可在生产环境中放心使用。</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>5</strong></td>
+<td style="text-align:left">废弃-警告</td>
+<td style="text-align:left"><strong>Deprecated</strong> (已废弃)</td>
+<td style="text-align:left">随新的大版本或次版本发布，宣布未来将不再支持该 API。</td>
+<td style="text-align:left">代码依然保留且功能正常，但在开发环境（Development Mode）的控制台会打印出显式的黄色警告，并提示平替方案（如 Vue 3 中的 <code>filters</code> 或 <code>$on</code>）。</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>6</strong></td>
+<td style="text-align:left">废弃-兼容</td>
+<td style="text-align:left"><strong>Legacy / Compat Mode</strong> (兼容过渡)</td>
+<td style="text-align:left">处于大版本交替期（如 Vue 3 推出的 <code>@vue/compat</code> 兼容包）。</td>
+<td style="text-align:left">API 在原生核心库中已被移除，但通过官方兼容层提供平滑过渡，帮助老项目在不重构代码的情况下升级基建。</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>7</strong></td>
+<td style="text-align:left">彻底移除</td>
+<td style="text-align:left"><strong>Removed / Deleted</strong> (已移除)</td>
+<td style="text-align:left">新的次版本迭代或下一个大版本发布。</td>
+<td style="text-align:left">源代码被彻底删除，不再提供任何向下兼容。若继续使用该 API，代码将直接报错（如 <code>TypeError: ... is not a function</code>）。</td>
+</tr>
+</tbody>
+</table>
 <h1>2026-07-27</h1>
 <ul>
 <li>对于重要/紧急四象限，区分口诀为: <code>重要看收益，紧急看损失.做事有规划，止损要及时</code></li>
