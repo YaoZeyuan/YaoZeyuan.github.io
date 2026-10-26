@@ -1,0 +1,914 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/img/favicon.png">
+  <link rel="icon" href="/static/img/favicon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="姚泽源">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="上了一天统计学，尝试借助这篇文章梳理下学到的概念。  假设检验: P值的含义 前提说明: 仅基于正态分布考虑 如mba统计学笔记(1):从6σ管理到放之四海皆准的标准差分布所说，基于标准差的概率分布对所有能算出平均数和方差的数据分布都有效。为方便讨论，后续所有数据均假设都是正态分布 如果不是正态分布怎么办，比如当日温度? 答案是请人艰不拆，请互相尊重。MBA统计学教授的重点是意识与思路，而非具体">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mba统计学笔记(2):p值与t检验">
+<meta property="og:url" content="https://www.yaozeyuan.online/2026/10/25/2026/10/mba-%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%AC%94%E8%AE%B02-p%E5%80%BC%E4%B8%8Et%E6%A3%80%E9%AA%8C/index.html">
+<meta property="og:site_name" content="代号647">
+<meta property="og:description" content="上了一天统计学，尝试借助这篇文章梳理下学到的概念。  假设检验: P值的含义 前提说明: 仅基于正态分布考虑 如mba统计学笔记(1):从6σ管理到放之四海皆准的标准差分布所说，基于标准差的概率分布对所有能算出平均数和方差的数据分布都有效。为方便讨论，后续所有数据均假设都是正态分布 如果不是正态分布怎么办，比如当日温度? 答案是请人艰不拆，请互相尊重。MBA统计学教授的重点是意识与思路，而非具体">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-10-25T05:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-26T03:57:12.717Z">
+<meta property="article:author" content="姚泽源">
+<meta property="article:tag" content="mba求学记">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>mba统计学笔记(2):p值与t检验 - 代号647</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/static/css/customer.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yaozeyuan.online","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":3},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"edcdb2b6206614cd62e6206e4c410bf5","google":null,"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"gtag":null,"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?edcdb2b6206614cd62e6206e4c410bf5";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 8.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>代号647</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/static/img/banner/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="mba统计学笔记(2):p值与t检验"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-10-25 13:00" pubdate>
+          2026年10月25日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          36 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">mba统计学笔记(2):p值与t检验</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>上了一天统计学，尝试借助这篇文章梳理下学到的概念。</p>
+</blockquote>
+<h1>假设检验: P值的含义</h1>
+<h2 id="前提说明-仅基于正态分布考虑">前提说明: 仅基于正态分布考虑</h2>
+<p>如<a href="./mba-%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%AC%94%E8%AE%B0-%E4%BB%8E6%CF%83%E7%AE%A1%E7%90%86%E5%BC%80%E5%A7%8B.md">mba统计学笔记(1):从6σ管理到放之四海皆准的标准差分布</a>所说，基于标准差的概率分布对所有能算出平均数和方差的数据分布都有效。为方便讨论，后续所有数据均假设都是正态分布</p>
+<p>如果不是正态分布怎么办，比如当日温度? 答案是请人艰不拆，请互相尊重。<strong>MBA统计学教授的重点是意识与思路</strong>，而<strong>非具体严谨的数学证明过程</strong>，如果真是这种神奇场景----且待碰到后，再请教AI解决策略即可</p>
+<h2 id="错误分布区间-标准误">错误分布区间: 标准误</h2>
+<p>$SE = \frac{s}{\sqrt{n}}$</p>
+<p>和标准差一样，标准误也是用于估计抽样误差的范围，只是估算的是<strong>当重复抽样时，每次抽样的「样本均值」本身分布</strong>的标准差。可以看到，如果样本量n增加，标准误会快速下降，直到接近0----说明计算出的样本均值非常接近真实值</p>
+<p>而样本均值本身也服从正态分布，因此可以借助标准误，给出其概率分布----</p>
+<ul>
+<li>$1\sigma$（1个标准差内）：可覆盖 68.27% 的数据</li>
+<li>$2\sigma$（2个标准差内）：可覆盖 95.45% 的数据</li>
+<li>$3\sigma$（3个标准差内）：可覆盖 99.73% 的数据</li>
+</ul>
+<h2 id="置信区间-p值">置信区间:p值</h2>
+<p>当多次随机抽样时，其值总会落入一个范围，这个范围所占面积就是准确度概率，上下界即为置信范围</p>
+<p>例如，10000次重复抽样后，发现腾讯股价有9000次落入200~500元这个区间，则腾讯股价90%的置信区间为200~500元之间，其<strong>p值</strong>则为假设失败的概率----也就是10%</p>
+<p>注意：p值就是假设不成立的概率。每一类假设检验对应的值，都有其概率分布图。因此t检验的5.83和F检验的8.59虽然值不同，但其假设不成立的概率都称之为p值。我们不需要关注p值具体含义，只要查表找到p值，就能知道假设不成立(以及对应假设成立)的概率</p>
+<p>至于计算p值的方法----一般是用积分算出来的总覆盖面积。可以根据具体情况问gemini，比如正态分布的概率曲线表达式就是</p>
+<p>$$f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}$$</p>
+<p>用1减去求区间内积分后的结果，即为p值</p>
+<h2 id="p值显著，但只表示显著">p值显著，但只表示显著</h2>
+<h3 id="P值能做的">P值能做的</h3>
+<ol>
+<li>判断运气成分: p值0.0432%，假设不是真的，那只有4.32%的概率会出现这种情况，可以认为不是运气</li>
+<li>差异有多大</li>
+<li></li>
+</ol>
+<h3 id="P值不能做的">P值不能做的</h3>
+<ol>
+<li>显著，但可能没用</li>
+</ol>
+<ul>
+<li>通过改良杯盖让满意度从8.02提升至8.10(满分100)，n=50000，p&lt;0.000001 ，P值显著，但对改变经营效果没用----顾客根本没感知</li>
+</ul>
+<ol start="2">
+<li>显著，但不赚钱</li>
+</ol>
+<ul>
+<li>某渠道转化率从2%提升至2.0001%，p=0.000001。确实显著，但增加的毛利抵不过推广费，做越多亏越多</li>
+</ul>
+<h2 id="t值检验">t值检验</h2>
+<h3 id="产生背景-不存在的整体方差σ">产生背景: 不存在的整体方差σ</h3>
+<p>如前所述，我们可以通过计算元素距离平均值的差额，除以标准差得到z分数</p>
+<p>$$Z = \frac{\bar{x} - \mu}{\sigma / \sqrt{n}}$$</p>
+<p>但有一个问题：这里的<strong>标准差是样本总体的标准差</strong>，但我们没有总体样本数据，拿不到啊</p>
+<p>所以退而求其次，<strong>用抽检数据本身的标准差s视作整体标准差</strong>，得到t分数</p>
+<p>$$t = \frac{\bar{x} - \mu}{s / \sqrt{n}}$$</p>
+<h3 id="具体应用-单样本t检验">具体应用: 单样本t检验</h3>
+<p>场景： 比较一个样本的平均值和某个固定的标准是否匹配</p>
+<p>例子： 某种零件的国际标准长度是 10cm，工厂随机抽查了 20 个，平均长度是 9.8cm。问这批零件是否合格</p>
+<p>这里 $\bar{x}$ 是样本的均值9.8cm， $\mu$是国标长度10cm，计算出这20个的方差后，可以得到标准误，进而得到t分数</p>
+<p>查表计算20个样本时的t分数对应p值，若p值小于0.05，则可认为合格</p>
+<h3 id="扩展-t检验的值分布是怎么计算出来的">扩展: t检验的值分布是怎么计算出来的</h3>
+<p>t值本身分布函数如下</p>
+<p>$$f(t) = \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\sqrt{\nu \pi} , \Gamma\left(\frac{\nu}{2}\right)} \left( 1 + \frac{t^2}{\nu} \right)^{-\frac{\nu + 1}{2}}$$</p>
+<p>包含两个关键要素:</p>
+<p><strong>系数</strong> $\frac{\Gamma(\dots)}{\sqrt{\nu \pi}\Gamma(\dots)}$：只是“归一化常数”。唯一使命就是确保整个曲线下面的总面积等于 1（因为所有概率加起来必须是 100%）。</p>
+<p><strong>主体项</strong> $\left( 1 + \frac{t^2}{\nu} \right)^{-\frac{\nu + 1}{2}}$：$t$ 是我们算出来的 t 值。$\nu$（读作 nu）是自由度（比如独立样本 t 检验里 $\nu = n_1 + n_2 - 2$）。由于指数项为负数，所以 $t^2$ 实际在分母位置。这意味着：$t$ 越大（无论正负），整个分式就越小，概率密度迅速下降。这就保证了曲线在 0 处最高（最容易靠运气撞出来），越往两边（极端 $t$ 值）越趋近于 0。</p>
+<p>当确定一个具体t值后（假设叫 $t_{\text{sample}}$），p值计算就是做一次定积分，计算阴影部分面积。具体数值，就是p值</p>
+<p>$$p\text{-value} = 2 \times \int_{\vert{}t_{\text{sample}}\vert{}}^{+\infty} f(t) , dt$$</p>
+<h3 id="扩展2-伽马函数是什么意思">扩展2: 伽马函数是什么意思</h3>
+<p>答: 这是阶乘函数的连续版。能画出一条平滑曲线，连接每一个阶乘结果(1!、2!、3!、4!……)，甚至负数的阶乘结果，具体定义如下</p>
+<p>$$\Gamma(z) = \int_0^{+\infty} x^{z-1} e^{-x} , dx$$</p>
+<p>该函数极好用，不光能算整数，也能算分数，例如<br>
+$\Gamma\left(\frac{1}{2}\right)$ 算出来等于 $\sqrt{\pi}$</p>
+<p>作者莱昂哈德·欧拉，1729年发现该函数。推导过程略，但如果分部积分的话，可以看到有</p>
+<p>$$\Gamma(z+1) = z \cdot \Gamma(z)$$</p>
+<p>完美符合阶乘定义 $n! = n \times (n-1)!$ ，证明了该函数即为阶乘在连续数轴上的推广</p>
+<h3 id="扩展3：自由度-nu-是怎么出来的">扩展3：自由度$\nu$是怎么出来的</h3>
+<p>“自由度”（Degrees of Freedom，简称 $df$ 或 $\nu$）堪称统计学中最抽象、但也最灵魂的概念。</p>
+<p>每次在公式里看到那个希腊字母 $\nu$（nu）或者 $n-1$，很多人都会一头雾水：<strong>为什么总是要减去 1？这个“自由”到底指什么？</strong></p>
+<p>我们可以从一个生活中的直觉比喻开始，然后层层剥开它在数学上的真实来源。</p>
+<hr>
+<h4 id="一、-什么是“自由度”？（直觉比喻）">一、 什么是“自由度”？（直觉比喻）</h4>
+<p>想象一下，你妈给你买了几件衣服，并给你定了一个规矩：<strong>“这几件衣服的总价必须刚好是 300 元。”</strong></p>
+<ul>
+<li><strong>场景 A（只有 1 件衣服）：</strong> 如果你手里只有 1 件衣服，总价要等于 300 元，这件衣服的价格<strong>毫无选择</strong>，只能是 300 元。你的自由度是 <strong>0</strong>（你没有任何自由决定的空间）。</li>
+<li><strong>场景 B（有 2 件衣服）：</strong> 如果有 2 件衣服（A 和 B），总价要等于 300 元。你可以<strong>自由决定</strong> A 买多少钱（比如 100 元），但一旦 A 定下来，B 的价格就被彻底锁死了（必须是 200 元）。在这个过程中，你有 <strong>1 个自由度</strong>（只有 1 个名额可以随便变）。</li>
+<li><strong>场景 C（有 3 件衣服）：</strong> A、B、C 三件衣服总价 300。你可以随便挑两件（比如 A 买 50，B 买 100），最后剩下的 C 必须补齐到 150 元。在这个过程中，你有 <strong>2 个自由度</strong>。</li>
+</ul>
+<p><strong>结论：</strong> 自由度 = <strong>总数据个数 - 强加给它们的约束条件个数</strong>。</p>
+<hr>
+<h4 id="二、-统计学里的“自由度”是怎么出来的？（以样本方差为例）">二、 统计学里的“自由度”是怎么出来的？（以样本方差为例）</h4>
+<p>回到我们前面学过的<strong>样本方差公式</strong>：</p>
+<p>$$s^2 = \frac{\sum (x_i - \bar{x})^2}{n - 1}$$</p>
+<p>为什么分母是 $n - 1$，而不是总人数 $n$？<strong>这个减去的 1，就是自由度被“吃掉”的地方！</strong></p>
+<p>假设你手里有 <strong>$n = 5$</strong> 个学生的考试分数。</p>
+<ol>
+<li>在算方差时，我们需要先算出这 5 个人的<strong>平均数（$\bar{x}$）</strong>。</li>
+<li>一旦你把平均数算出来（假设平均是 80 分），这就产生了一条<strong>铁律约束</strong>：<strong>这 5 个数字减去平均数之后的总偏差，加起来必须等于 0</strong>（即 $\sum (x_i - \bar{x}) = 0$）。</li>
+<li>当你拿着这 5 个空位准备填数据时：</li>
+</ol>
+<ul>
+<li>第 1 个学生的分数：你可以<strong>自由</strong>填任何数。</li>
+<li>第 2 个学生的分数：你可以<strong>自由</strong>填任何数。</li>
+<li>第 3 个学生的分数：你可以<strong>自由</strong>填任何数。</li>
+<li>第 4 个学生的分数：你可以<strong>自由</strong>填任何数。</li>
+<li><strong>第 5 个学生的分数：你没有任何自由了！</strong> 为了保证大家加起来的平均数刚好是 80，最后这个人必须死死卡在那个特定的数字上。</li>
+</ul>
+<p>因此，在这 5 个人里，<strong>真正能够“自由晃动、提供独立信息”的只有 4 个人</strong>。<br>
+这就是为什么样本方差的分母必须除以 $n - 1$（因为我们为了算方差，提前消耗了 1 个自由度去算平均数）。</p>
+<hr>
+<h4 id="三、-为什么-t-分布的公式里一定要有-nu-（自由度）？">三、 为什么 t 分布的公式里一定要有 $\nu$（自由度）？</h4>
+<p>当我们把视线拉回 <strong>t 分布</strong>：</p>
+<p>$$f(t) = \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\sqrt{\nu \pi} , \Gamma\left(\frac{\nu}{2}\right)} \left( 1 + \frac{t^2}{\nu} \right)^{-\frac{\nu + 1}{2}}$$</p>
+<p>公式里的 $\nu$（对于独立样本来说，$\nu = n_1 + n_2 - 2$）直接决定了这根曲线长什么样。<strong>为什么样本量的大小会直接决定曲线的胖瘦？</strong></p>
+<ol>
+<li><strong>小样本（自由度 $\nu$ 很小，比如等于 3）：</strong></li>
+</ol>
+<ul>
+<li>说明你手里只有几个可怜的样本。因为样本太少，你用样本标准差去估计总体时，<strong>极其容易翻车、遇到极端情况</strong>（比如刚好抽到几个极端的奇葩）。</li>
+<li>因为不确定性巨大，数学上的概率分布尾巴就会拉得特别宽、特别胖（代表容易出现极端的 t 值）。</li>
+</ul>
+<ol start="2">
+<li><strong>大样本（自由度 $\nu$ 很大，比如等于 100）：</strong></li>
+</ol>
+<ul>
+<li>说明你调查了成百上千人。样本标准差极其稳定，几乎逼近真实的总体标准差。</li>
+<li>随着 $\nu$ 越来越大，t 分布公式里的那些多余项会被逐渐冲淡，<strong>t 分布的曲线会慢慢收窄、变高，最终完美蜕变成标准的正态分布（Z 分布）！</strong></li>
+</ul>
+<p>所以，<strong>自由度 $\nu$ 其实就是 t 分布的“身份证号”</strong>。它精确地告诉数学模型：“我这次实验的样本量有多大，我的估计究竟有多大程度的不确定性”，从而决定这条概率曲线到底该画得多胖或多瘦。</p>
+<h3 id="具体应用2-配对样本t检验">具体应用2: 配对样本t检验</h3>
+<p><strong>场景</strong>：同一批人或同一组对象在“前后”两个不同状态下的对比。</p>
+<p><strong>例子</strong>：记录 30 个人减肥前的体重和减肥后的体重，看看他们到底有没有真的瘦。</p>
+<p><strong>原理</strong>:</p>
+<ol>
+<li>计算每个人变化的差值，形成一组新数据</li>
+<li>针对这组数据计算t值，看是否显著</li>
+</ol>
+<p>配对 t 检验的公式</p>
+<p>$$t = \frac{\bar{d} - 0}{s_d / \sqrt{n}}$$</p>
+<ul>
+<li><strong>$\bar{d}$（分子上的信号）：</strong> 这 30 个人差值的平均数（比如平均每人瘦了 4.5 斤）。</li>
+<li><strong>$s_d$（差值的标准差）：</strong> 这 30 个人减肥效果参差不齐的波动程度。</li>
+<li><strong>$n$（对子数）：</strong> 这里的 $n$ 是<strong>对子的数量</strong>（比如 30 个人，而不是 60 个数据）。</li>
+<li><strong>自由度 $\nu$：</strong> 因为本质是单样本，所以自由度是 $\nu = n - 1$（30 个人就是 30 - 1 = 29</li>
+</ul>
+<h3 id="具体应用3-独立双样本-t-检验">具体应用3:  独立双样本 t 检验</h3>
+<p>场景：比较两个完全独立的群体有没有差异。</p>
+<p>例子： A 组用管理方法A，B 组用传统管理方法，研发效率有没有显著差异？（这就是 A/B 测试的核心原理之一）</p>
+<p>基本思路</p>
+<p>$$t = \frac{\text{两组平均值的差距（你看到的“信号”画布）}}{\text{个体自身本来就有的波动（背景里的“噪声”噪音）}}$$</p>
+<p>具体计算公式</p>
+<p>$$t = \frac{\bar{x}_1 - \bar{x}_2}{s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$分子 ($\bar{x}_1 - \bar{x}_2$)： 两组平均数的差（这就是我们要找的信号）。分母 ($s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$)； 刚才提到的“合并方差”算出来的联合标准误（这就是两组各自内部的噪声）。</p>
+<p>这里的$s_p$为整体 A/B组混合后整体的标准差，$\sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$ 用于平均标准差的变化。</p>
+<p>计算原理略，这里直接贴gemini的回答</p>
+<h4 id="扩展4-为什么计算时要用组数的倒数并开平方">扩展4: 为什么计算时要用组数的倒数并开平方</h4>
+<p>这是一个非常直击概率论核心的问题！“为什么是倒数相加（$\frac{1}{n_1} + \frac{1}{n_2}$），而不是别的什么？”</p>
+<p>答案藏在概率论里一个极其重要、甚至有点反直觉的铁律里：<strong>“当两个独立的随机变量相加或相减时，它们的方差（不确定性）永远是相加的。”</strong></p>
+<p>我们可以分三步，把这个“倒数相加再开方”的公式彻底拆解开：</p>
+<hr>
+<h5 id="第一步：单个平均数的波动有多大？（-frac-s-2-n-）">第一步：单个平均数的波动有多大？（$\frac{s^2}{n}$）</h5>
+<p>首先，我们来看看<strong>一个</strong>样本的平均数（$\bar{x}$）是怎么晃动的。<br>
+假设总体方差是 $s^2$，如果你只抽查 1 个人（$n=1$），这个人的数据波动有多大，你的平均数晃动就有多大。<br>
+但如果你抽查了 $n$ 个人：</p>
+<ul>
+<li>样本量越多，偶然性就越被平均掉。</li>
+<li>概率论（大数定律）证明：<strong>样本平均数的方差，等于总体方差除以样本量 $n$</strong>。</li>
+<li>也就是说：<br>
+$$\text{Var}(\bar{x}) = \frac{s^2}{n}$$</li>
+</ul>
+<p>所以，对于 A 组和 B 组来说：</p>
+<ul>
+<li>A 组平均数的波动（方差）是：$\frac{s^2}{n_1}$</li>
+<li>B 组平均数的波动（方差）是：$\frac{s^2}{n_2}$</li>
+</ul>
+<hr>
+<h5 id="第二步：两个变量相减，方差为什么是“加”而不是“减”？">第二步：两个变量相减，方差为什么是“加”而不是“减”？</h5>
+<p>现在，我们要对比的是<strong>两组平均数的差（$\bar{x}_1 - \bar{x}_2$）</strong>。</p>
+<p>很多人凭直觉会想：“既然中间是个减号（相减），那它们的波动是不是也会互相抵消、从而变成减法？”</p>
+<p><strong>大错特错！</strong> 这是概率论中最容易翻车的地方。<br>
+想象一下这个场景：</p>
+<ul>
+<li>你和一个朋友各自蒙着眼在原地转圈（都在随机晃动）。</li>
+<li>现在，裁判要求你们计算“你们俩之间的距离”。</li>
+<li>你的朋友往左晃了一步，你往右晃了一步，你们之间的距离是不是被拉得更大了？如果你们俩都往各自的方向乱晃，你们之间的<strong>相对不确定性</strong>非但没有抵消，反而<strong>加剧了</strong>。</li>
+</ul>
+<p>在数学上，无论两个独立变量是相加（$X + Y$）还是相减（$X - Y$），它们各自带来的<strong>不确定性（方差）永远只会叠加，不会抵消</strong>。<br>
+所以：</p>
+<p>$$\text{Var}(\bar{x}_1 - \bar{x}_2) = \text{Var}(\bar{x}_1) + \text{Var}(\bar{x}_2)$$</p>
+<p>把第一步的结论代进去：</p>
+<p>$$\text{Var}(\bar{x}_1 - \bar{x}_2) = \frac{s^2}{n_1} + \frac{s^2}{n_2}$$</p>
+<p>把公因数 $s^2$ 提出来，就变成了：</p>
+<p>$$\text{Var}(\bar{x}_1 - \bar{x}_2) = s^2 \left( \frac{1}{n_1} + \frac{1}{n_2} \right)$$</p>
+<p>看！<strong>$\frac{1}{n_1} + \frac{1}{n_2}$ 这个“倒数相加”的结构，就这样自然而然地从方差的叠加中蹦出来了！</strong></p>
+<hr>
+<h5 id="第三步：为什么最后还要“开平方根”？">第三步：为什么最后还要“开平方根”？</h5>
+<p>我们刚才算出来的 $\text{Var}(\bar{x}_1 - \bar{x}_2)$ 是<strong>方差</strong>（也就是平方单位）。<br>
+但我们在一开始的分子上，用的是<strong>平均数的差</strong>（比如“多背了 5 个单词”，单位是一次方的单词数）。<br>
+为了让分母的单位和分子保持一致（才能做除法），我们必须对整个方差<strong>开一次平方根（Square Root）</strong>。</p>
+<p>把刚刚的公式整体加上根号：</p>
+<p>$$\text{标准误 (SE)} = \sqrt{s^2 \left( \frac{1}{n_1} + \frac{1}{n_2} \right)} = s \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$$</p>
+<p>这就是独立样本 t 检验分母的由来！</p>
+<hr>
+<h5 id="总结">总结</h5>
+<ul>
+<li><strong>为什么是倒数？</strong> 因为每一个样本平均数的方差公式里，样本量 $n$ 本来就位于分母（$\frac{s^2}{n}$）。</li>
+<li><strong>为什么是加号？</strong> 因为两个随机变量在相减时，它们的运气和波动（不确定性）不会互相抵消，而是会像两个醉汉走路一样，把各自的晃动幅度叠加在一起。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/mba%E6%B1%82%E5%AD%A6%E8%AE%B0/" class="print-no-link">#mba求学记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>mba统计学笔记(2):p值与t检验</div>
+      <div>https://www.yaozeyuan.online/2026/10/25/2026/10/mba-统计学笔记2-p值与t检验/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>姚泽源</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年10月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/10/25/2026/10/mba-%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%AC%94%E8%AE%B01-%E4%BB%8E6%CF%83%E7%AE%A1%E7%90%86%E5%BC%80%E5%A7%8B/" title="mba统计学笔记(1):从6σ管理到放之四海皆准的标准差分布">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">mba统计学笔记(1):从6σ管理到放之四海皆准的标准差分布</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/10/18/2026/10/mba%E5%B0%8F%E7%BB%84%E4%BD%9C%E4%B8%9A%E4%B8%80%E8%A6%81%E6%B1%82/" title="mba小组作业一题干">
+                        <span class="hidden-mobile">mba小组作业一题干</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="gitalk-container"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#gitalk-container', function() {
+      Fluid.utils.createCssLink('/css/gitalk.css')
+      Fluid.utils.createScript('https://lib.baomitu.com/gitalk/1.8.0/gitalk.min.js', function() {
+        var options = Object.assign(
+          {"clientID":"cb51e467ab7545f311d9","clientSecret":"8712d8263ec17f168dc461ec5ba948d71ea9fb06","repo":"YaoZeyuan.github.io","owner":"YaoZeyuan","admin":["YaoZeyuan"],"language":"zh-CN","labels":["Gitalk"],"perPage":10,"pagerDirection":"last","distractionFreeMode":false,"createIssueManually":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","id":"pageId"},
+          {
+            id: '95b2d95ceabe6868599d944b8a940fdd'
+          }
+        )
+        var gitalk = new Gitalk(options);
+        gitalk.render('gitalk-container');
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/static/js/customer.js"></script>
+<script src="/static/js/md5.min.js"></script>
+<script src="/static/js/gitalk.config.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
