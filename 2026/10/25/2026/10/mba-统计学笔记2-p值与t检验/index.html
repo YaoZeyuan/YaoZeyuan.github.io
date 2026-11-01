@@ -29,7 +29,7 @@
 <meta property="og:description" content="上了一天统计学，尝试借助这篇文章梳理下学到的概念。  假设检验: P值的含义 前提说明: 仅基于正态分布考虑 如mba统计学笔记(1):从6σ管理到放之四海皆准的标准差分布所说，基于标准差的概率分布对所有能算出平均数和方差的数据分布都有效。为方便讨论，后续所有数据均假设都是正态分布 如果不是正态分布怎么办，比如当日温度? 答案是请人艰不拆，请互相尊重。MBA统计学教授的重点是意识与思路，而非具体">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-10-25T06:00:00.000Z">
-<meta property="article:modified_time" content="2026-10-30T23:27:17.366Z">
+<meta property="article:modified_time" content="2026-11-01T13:00:32.565Z">
 <meta property="article:author" content="姚泽源">
 <meta property="article:tag" content="mba求学记">
 <meta name="twitter:card" content="summary_large_image">
@@ -226,7 +226,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.2k 字
+          4.3k 字
         
       </span>
     
@@ -325,7 +325,7 @@
 </ul>
 <h2 id="t值检验">t值检验</h2>
 <h3 id="产生背景-不存在的整体方差σ">产生背景: 不存在的整体方差σ</h3>
-<p>如前所述，我们可以通过计算元素距离平均值的差额，除以标准差得到z分数</p>
+<p>如前所述，我们可以通过计算元素距离平均值的差额，除以标准差得到z分数，从而得到这组元素的平均水平（$\bar{x}$）相较国标（$\mu$）是否合格(偏差是否显著)</p>
 <p>$$Z = \frac{\bar{x} - \mu}{\sigma / \sqrt{n}}$$</p>
 <p>但有一个问题：这里的<strong>标准差是样本总体的标准差</strong>，但我们没有总体样本数据，拿不到啊</p>
 <p>所以退而求其次，<strong>用抽检数据本身的标准差s视作整体标准差</strong>，得到t分数</p>
@@ -334,7 +334,7 @@
 <p>场景： 比较一个样本的平均值和某个固定的标准是否匹配</p>
 <p>例子： 某种零件的国际标准长度是 10cm，工厂随机抽查了 20 个，平均长度是 9.8cm。问这批零件是否合格</p>
 <p>这里 $\bar{x}$ 是样本的均值9.8cm， $\mu$是国标长度10cm，计算出这20个的方差后，可以得到标准误，进而得到t分数</p>
-<p>查表计算20个样本时的t分数对应p值，若p值小于0.05，则可认为合格</p>
+<p>查表计算20个样本时的t分数对应p值，若p值<strong>大于</strong>0.05，说明这种偏差经常发生(显著)，本批产品合格</p>
 <h3 id="扩展-t检验的值分布是怎么计算出来的">扩展: t检验的值分布是怎么计算出来的</h3>
 <p>t值本身分布函数如下</p>
 <p>$$f(t) = \frac{\Gamma\left(\frac{\nu + 1}{2}\right)}{\sqrt{\nu \pi} , \Gamma\left(\frac{\nu}{2}\right)} \left( 1 + \frac{t^2}{\nu} \right)^{-\frac{\nu + 1}{2}}$$</p>
